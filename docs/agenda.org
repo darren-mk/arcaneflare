@@ -1,6 +1,7 @@
 ***** DONE deploy
 - deployed through heroku using basic dyno
 ***** DONE change namespace to tia
+***** DONE remove licence file
 ***** TODO publicize
 - purchased `purplelights.net` from namecheap.
 - connected to heroku account

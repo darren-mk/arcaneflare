@@ -3,6 +3,7 @@
    [clojure.string :as cstr]
    [tia.layout :as layout]
    [tia.db.core :as db]
+   [tia.pages.landing :as landing]
    [tia.middleware :as middleware]
    [ring.util.response]
    [clojure.java.jdbc :as jdbc]))
@@ -18,14 +19,9 @@
                      (map :tick (jdbc/query connection "SELECT tick FROM ticks"))))]
      (str "Database Output\n\n" (cstr/join "\n" (map #(str "Read from DB: " %) ticks))))))
 
-(defn ttt [_req]
-  (layout/html (str "<p>"
-                    _req
-                    "</p>")))
-
 (defn routes []
   ["" {:middleware [middleware/wrap-csrf
                     middleware/wrap-formats]}
    ["/" {:get home}]
-   ["/ttt" {:get ttt}]
+   ["/ttt" {:get landing/ttt}]
    ["/database" {:get database}]])

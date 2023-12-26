@@ -1,4 +1,4 @@
-(ns clojure-getting-started.config
+(ns tia.config
   (:require
    [cprop.core :refer [load-config]]
    [cprop.source :as source]

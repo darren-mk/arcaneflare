@@ -1,12 +1,12 @@
-(ns clojure-getting-started.middleware
+(ns tia.middleware
   (:require
-   [clojure-getting-started.env :refer [defaults]]
+   [tia.env :refer [defaults]]
    [clojure.tools.logging :as log]
-   [clojure-getting-started.layout :refer [error-page]]
+   [tia.layout :refer [error-page]]
    [ring.middleware.anti-forgery :refer [wrap-anti-forgery]]
-   [clojure-getting-started.middleware.formats :as formats]
+   [tia.middleware.formats :as formats]
    [muuntaja.middleware :refer [wrap-format wrap-params]]
-   [clojure-getting-started.config :refer [env]]
+   [tia.config :refer [env]]
    [ring.middleware.flash :refer [wrap-flash]]
    [ring.adapter.undertow.middleware.session :refer [wrap-session]]
    [ring.middleware.defaults :refer [site-defaults wrap-defaults]]))

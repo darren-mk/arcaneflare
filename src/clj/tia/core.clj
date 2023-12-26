@@ -1,9 +1,9 @@
-(ns clojure-getting-started.core
+(ns tia.core
   (:require
-   [clojure-getting-started.handler :as handler]
+   [tia.handler :as handler]
    [luminus.http-server :as http]
-   [luminus-migrations.core :as migrations]
-   [clojure-getting-started.config :refer [env]]
+   #_[luminus-migrations.core :as migrations]
+   [tia.config :refer [env]]
    [clojure.tools.cli :refer [parse-opts]]
    [clojure.tools.logging :as log]
    [mount.core :as mount])
@@ -50,5 +50,5 @@
 (defn -main [& args]
   (-> args
       (parse-opts cli-options)
-      (mount/start-with-args #'clojure-getting-started.config/env))
+      (mount/start-with-args #'tia.config/env))
   (start-app args))

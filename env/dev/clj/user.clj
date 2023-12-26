@@ -1,13 +1,13 @@
 (ns user
   "Userspace functions you can run by default in your local REPL."
   (:require
-   [clojure-getting-started.config :refer [env]]
+   [tia.config :refer [env]]
    [clojure.pprint]
    [clojure.spec.alpha :as s]
    [expound.alpha :as expound]
    [mount.core :as mount]
-   [clojure-getting-started.core :refer [start-app]]
-   [clojure-getting-started.db.core]
+   [tia.core :refer [start-app]]
+   [tia.db.core]
    [conman.core :as conman]
    [luminus-migrations.core :as migrations]))
 
@@ -35,10 +35,10 @@
 (defn restart-db
   "Restarts database."
   []
-  (mount/stop #'clojure-getting-started.db.core/*db*)
-  (mount/start #'clojure-getting-started.db.core/*db*)
-  (binding [*ns* (the-ns 'clojure-getting-started.db.core)]
-    (conman/bind-connection clojure-getting-started.db.core/*db* "sql/queries.sql")))
+  (mount/stop #'tia.db.core/*db*)
+  (mount/start #'tia.db.core/*db*)
+  (binding [*ns* (the-ns 'tia.db.core)]
+    (conman/bind-connection tia.db.core/*db* "sql/queries.sql")))
 
 (defn reset-db
   "Resets database."

@@ -1,4 +1,4 @@
-(ns clojure-getting-started.middleware.formats
+(ns tia.middleware.formats
   (:require
    [luminus-transit.time :as time]
    [muuntaja.core :as m]))

@@ -1,4 +1,4 @@
-(defproject clojure-getting-started "0.1.0-SNAPSHOT"
+(defproject tia "0.1.0-SNAPSHOT"
 
   :dependencies [[ch.qos.logback/logback-classic "1.4.4"]
                  [cheshire "5.11.0"]
@@ -31,14 +31,14 @@
   :test-paths ["test/clj"]
   :resource-paths ["resources"]
   :target-path "target/%s/"
-  :main ^:skip-aot clojure-getting-started.core
+  :main ^:skip-aot tia.core
 
   :plugins [[lein-cljfmt "0.9.2"]]
 
   :profiles
   {:uberjar {:omit-source true
              :aot :all
-             :uberjar-name "clojure-getting-started.jar"
+             :uberjar-name "tia.jar"
              :source-paths ["env/prod/clj" ]
              :resource-paths ["env/prod/resources"]}
 

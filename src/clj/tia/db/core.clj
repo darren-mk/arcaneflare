@@ -1,4 +1,4 @@
-(ns clojure-getting-started.db.core
+(ns tia.db.core
   (:require
    [cheshire.core :refer [generate-string parse-string]]
    [next.jdbc.date-time]
@@ -6,7 +6,7 @@
    [next.jdbc.result-set]
    [clojure.tools.logging :as log]
    [conman.core :as conman]
-   [clojure-getting-started.config :refer [env]]
+   [tia.config :refer [env]]
    [mount.core :refer [defstate]])
   (:import (org.postgresql.util PGobject)))
 

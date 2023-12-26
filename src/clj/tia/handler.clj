@@ -1,10 +1,10 @@
-(ns clojure-getting-started.handler
+(ns tia.handler
   (:require
-   [clojure-getting-started.middleware :as middleware]
-   [clojure-getting-started.layout :refer [error-page]]
-   [clojure-getting-started.routes :refer [routes]]
+   [tia.middleware :as middleware]
+   [tia.layout :refer [error-page]]
+   [tia.routes :refer [routes]]
    [reitit.ring :as ring]
-   [clojure-getting-started.env :refer [defaults]]
+   [tia.env :refer [defaults]]
    [mount.core :as mount]))
 
 (declare init-app)

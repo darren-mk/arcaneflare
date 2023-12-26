@@ -1,4 +1,4 @@
-(ns clojure-getting-started.layout
+(ns tia.layout
   (:require
    [clojure.java.io]
    [selmer.parser :as parser]
@@ -16,8 +16,13 @@
 
 (defn plain
   [text]
-  {:status  200
+  {:status 200
    :headers {"Content-Type" "text/plain"}
+   :body text})
+
+(defn html [text]
+  {:status 200
+   :headers {"Content-Type" "text/html"}
    :body text})
 
 (defn render

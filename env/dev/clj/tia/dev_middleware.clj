@@ -1,6 +1,6 @@
-(ns clojure-getting-started.dev-middleware
+(ns tia.dev-middleware
   (:require
-   [clojure-getting-started.config :refer [env]]
+   [tia.config :refer [env]]
    [ring.middleware.reload :refer [wrap-reload]]
    [selmer.middleware :refer [wrap-error-page]]
    [prone.middleware :refer [wrap-exceptions]]))
@@ -10,4 +10,4 @@
       wrap-reload
       wrap-error-page
       ;; disable prone middleware, it can not handle async
-      (cond-> (not (env :async?)) (wrap-exceptions {:app-namespaces ['clojure-getting-started]}))))
+      (cond-> (not (env :async?)) (wrap-exceptions {:app-namespaces ['tia]}))))

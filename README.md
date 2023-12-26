@@ -1,3 +1,6 @@
+# Purple Lights
+Portal web app that enlists, communicates, and advertize strip clubs in the globe.
+
 # Clojure: Getting Started
 
 A barebones Clojure app, which can easily be deployed to Heroku.

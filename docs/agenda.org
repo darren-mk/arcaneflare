@@ -6,6 +6,7 @@
 ***** DONE adopt hiccup for html
 ***** DONE adopt garden and systemize css
 ***** DONE remove redundant clj folder
+***** DONE initiate to rewrite readme
 ***** TODO create navbar
 ***** TODO adopt htmx
 ***** TODO adopt open props

@@ -5,14 +5,15 @@
 ***** DONE structure folder for pages
 ***** DONE adopt hiccup for html
 ***** DONE adopt garden and systemize css
+***** DONE remove redundant clj folder
+***** TODO create navbar
+***** TODO adopt htmx
+***** TODO adopt open props
+***** TODO design logo
 ***** TODO publicize
 - purchased `purplelights.net` from namecheap.
 - connected to heroku account
 - but SSL is failing. NEED TO figure out.
-***** TODO adopt htmx
-***** TODO adopt open props
-***** TODO design logo
-***** TODO create navbar
 ***** TODO create joining workflow
 1. join -> ask nickname and email
 2. email gets sent

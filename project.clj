@@ -29,8 +29,8 @@
 
   :min-lein-version "2.0.0"
   
-  :source-paths ["src/clj"]
-  :test-paths ["test/clj"]
+  :source-paths ["src"]
+  :test-paths ["test"]
   :resource-paths ["resources"]
   :target-path "target/%s/"
   :main ^:skip-aot tia.core

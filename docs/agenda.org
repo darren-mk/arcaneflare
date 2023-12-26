@@ -3,6 +3,7 @@
 ***** DONE change namespace to tia
 ***** DONE remove licence file
 ***** DONE structure folder for pages
+***** DONE adopt hiccup for html
 ***** TODO publicize
 - purchased `purplelights.net` from namecheap.
 - connected to heroku account

@@ -1,6 +1,7 @@
 (ns tia.layout
   (:require
    [clojure.java.io]
+   [hiccup2.core :as h]
    [selmer.parser :as parser]
    [ring.util.http-response :refer [content-type ok]]
    [ring.util.anti-forgery :refer [anti-forgery-field]]
@@ -20,10 +21,10 @@
    :headers {"Content-Type" "text/plain"}
    :body text})
 
-(defn html [text]
+(defn html [hiccup-data]
   {:status 200
    :headers {"Content-Type" "text/html"}
-   :body text})
+   :body (str (h/html hiccup-data))})
 
 (defn render
   "renders the HTML template located relative to resources/html"

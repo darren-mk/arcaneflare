@@ -10,6 +10,8 @@
    [mount.core :refer [defstate]])
   (:import (org.postgresql.util PGobject)))
 
+(declare *db*)
+
 (defstate ^:dynamic *db*
   :start (if-let [jdbc-url (env :jdbc-database-url)]
            (conman/connect! {:jdbc-url jdbc-url})

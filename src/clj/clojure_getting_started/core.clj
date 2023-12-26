@@ -9,6 +9,8 @@
    [mount.core :as mount])
   (:gen-class))
 
+(declare http-server)
+
 ;; log uncaught exceptions in threads
 (Thread/setDefaultUncaughtExceptionHandler
  (reify Thread$UncaughtExceptionHandler

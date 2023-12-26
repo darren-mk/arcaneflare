@@ -4,14 +4,17 @@
    [clojure-getting-started.layout :refer [error-page]]
    [clojure-getting-started.routes :refer [routes]]
    [reitit.ring :as ring]
-   [ring.middleware.content-type :refer [wrap-content-type]]
    [clojure-getting-started.env :refer [defaults]]
    [mount.core :as mount]))
+
+(declare init-app)
+(declare app-routes)
 
 (mount/defstate init-app
   :start ((or (:init defaults) (fn [])))
   :stop  ((or (:stop defaults) (fn []))))
 
+#_
 (defn- async-aware-default-handler
   ([_] nil)
   ([_ respond _] (respond nil)))

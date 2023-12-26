@@ -1,0 +1,16 @@
+***** DONE deploy
+- deployed through heroku using basic dyno
+***** TODO publicize
+- purchased `purplelights.net` from namecheap.
+- connected to heroku account
+- but SSL is failing. NEED TO figure out.
+***** TODO adopt htmx
+***** TODO adopt open props
+***** TODO design logo
+***** TODO create navbar
+***** TODO create joining workflow
+1. join -> ask nickname and email
+2. email gets sent
+3. web alerts says "account has been created. check your email and activate your account" with okay button
+4. clicking link in email, goes to page that prompts to set a password.
+5. web alerts says "password is set"

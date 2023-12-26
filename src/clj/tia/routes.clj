@@ -1,6 +1,7 @@
 (ns tia.routes
   (:require
    [clojure.string :as cstr]
+   [tia.style :as style]
    [tia.layout :as layout]
    [tia.db.core :as db]
    [tia.pages.landing :as landing]
@@ -24,4 +25,5 @@
                     middleware/wrap-formats]}
    ["/" {:get home}]
    ["/ttt" {:get landing/ttt}]
+   ["/css" {:get style/core}]
    ["/database" {:get database}]])

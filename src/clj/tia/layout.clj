@@ -22,9 +22,18 @@
    :body text})
 
 (defn html [hiccup-data]
+  (let [head [:head [:link {:rel :stylesheet
+                            :type "text/css"
+                            :href "/css"}]]
+        html [:html head hiccup-data]]
+    {:status 200
+     :headers {"Content-Type" "text/html"}
+     :body (str (h/html html))}))
+
+(defn css [s]
   {:status 200
-   :headers {"Content-Type" "text/html"}
-   :body (str (h/html hiccup-data))})
+   :headers {"Content-Type" "text/css"}
+   :body s})
 
 (defn render
   "renders the HTML template located relative to resources/html"

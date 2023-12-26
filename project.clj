@@ -7,6 +7,7 @@
                  [cprop "0.1.19"]
                  [expound "0.9.0"]
                  [funcool/struct "1.4.0"]
+                 [garden "1.3.10"]
                  [hiccup "2.0.0-RC2"]
                  [json-html "0.4.7"]
                  [luminus-migrations "0.7.5"]

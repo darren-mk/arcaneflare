@@ -6,7 +6,8 @@
    [ring.util.http-response :refer [content-type ok]]
    [ring.util.anti-forgery :refer [anti-forgery-field]]
    [ring.middleware.anti-forgery :refer [*anti-forgery-token*]]
-   [ring.util.response]))
+   [ring.util.response]
+   [tia.components.navbar :refer [navbar]]))
 
 (parser/set-resource-path!
  (clojure.java.io/resource "html"))
@@ -21,11 +22,16 @@
    :headers {"Content-Type" "text/plain"}
    :body text})
 
-(defn html [hiccup-data]
-  (let [head [:head [:link {:rel :stylesheet
-                            :type "text/css"
-                            :href "/css"}]]
-        html [:html head hiccup-data]]
+(defn html [data]
+  (let [bulma "https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css"
+        head [:head
+              [:link {:rel :stylesheet
+                      :href bulma}]
+              [:link {:rel :stylesheet
+                      :type "text/css"
+                      :href "/css"}]]
+        body [:body (navbar) data]
+        html [:html head body]]
     {:status 200
      :headers {"Content-Type" "text/html"}
      :body (str (h/html html))}))

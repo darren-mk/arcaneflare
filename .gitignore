@@ -18,3 +18,4 @@ profiles.clj
 /log
 .clj-kondo/
 .DS_Store
+.env

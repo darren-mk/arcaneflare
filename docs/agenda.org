@@ -18,7 +18,8 @@ in namecheap,
 | CNAME Record | www  | (dns target from heroku) | 30 min |
 ***** TODO choose and connect db
 - purchase postgresql from heroku
-- choose between psql and xtdb
+- chose postgresql over xtdb
+- ignore dot env file from git
 ***** TODO adopt htmx
 ***** TODO adopt open props
 ***** TODO design logo

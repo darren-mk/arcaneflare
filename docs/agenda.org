@@ -16,12 +16,12 @@ in namecheap,
 | Type         | Host | Value                    | TTL    |
 | ALIAS Record | @    | (dns target from heroku) | 5 min  |
 | CNAME Record | www  | (dns target from heroku) | 30 min |
-***** TODO choose and connect db
+***** DONE choose and connect db
 - purchase postgresql from heroku
 - chose postgresql over xtdb
-- ignore dot env file from git
 - set local database
-- remove dev config file
+- uncommit and remove dot env file
+- uncommit and use dev config file
 ***** TODO adopt htmx
 ***** TODO adopt open props
 ***** TODO design logo

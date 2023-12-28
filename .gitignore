@@ -19,3 +19,4 @@ profiles.clj
 .clj-kondo/
 .DS_Store
 .env
+dev-config.edn

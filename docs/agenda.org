@@ -20,6 +20,8 @@ in namecheap,
 - purchase postgresql from heroku
 - chose postgresql over xtdb
 - ignore dot env file from git
+- set local database
+- remove dev config file
 ***** TODO adopt htmx
 ***** TODO adopt open props
 ***** TODO design logo

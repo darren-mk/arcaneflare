@@ -6,10 +6,16 @@
 
 (declare env)
 
+(defn dev-config []
+  (try (load-file "dev-config.edn")
+       (catch Exception e
+         (println "prod mode or dev config file does not exists." e))))
+
 (defstate env
   :start
   (load-config
    :merge
    [(args)
+    (dev-config)
     (source/from-system-props)
     (source/from-env)]))

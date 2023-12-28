@@ -7,6 +7,7 @@
    [ring.util.anti-forgery :refer [anti-forgery-field]]
    [ring.middleware.anti-forgery :refer [*anti-forgery-token*]]
    [ring.util.response]
+   [tia.data :as d]
    [tia.components.navbar :refer [navbar]]))
 
 (parser/set-resource-path!
@@ -19,26 +20,26 @@
 (defn plain
   [text]
   {:status 200
-   :headers {"Content-Type" "text/plain"}
+   :headers (:plain d/content-type)
    :body text})
 
 (defn html [data]
-  (let [bulma "https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css"
+  (let [bulma d/bulma-url
         head [:head
               [:link {:rel :stylesheet
                       :href bulma}]
               [:link {:rel :stylesheet
-                      :type "text/css"
+                      :type (-> d/text-css)
                       :href "/css"}]]
         body [:body (navbar) data]
         html [:html head body]]
     {:status 200
-     :headers {"Content-Type" "text/html"}
+     :headers (:html d/content-type)
      :body (str (h/html html))}))
 
 (defn css [s]
   {:status 200
-   :headers {"Content-Type" "text/css"}
+   :headers (:css d/content-type)
    :body s})
 
 (defn render

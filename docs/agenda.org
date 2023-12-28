@@ -22,6 +22,7 @@ in namecheap,
 - set local database
 - uncommit and remove dot env file
 - uncommit and use dev config file
+***** DONE adopt data namespace
 ***** TODO adopt htmx
 ***** TODO adopt open props
 ***** TODO design logo

@@ -1,5 +1,4 @@
 (defproject tia "0.1.0-SNAPSHOT"
-
   :dependencies [[ch.qos.logback/logback-classic "1.4.4"]
                  [cheshire "5.11.0"]
                  [clojure.java-time "1.1.0"]
@@ -26,41 +25,33 @@
                  [ring/ring-defaults "0.3.4"]
                  [org.clojure/java.jdbc "0.7.12"]
                  [selmer "1.12.55"]]
-
   :min-lein-version "2.0.0"
-  
   :source-paths ["src"]
   :test-paths ["test"]
   :resource-paths ["resources"]
   :target-path "target/%s/"
   :main ^:skip-aot tia.core
-
   :plugins [[lein-cljfmt "0.9.2"]]
-
-  :profiles
-  {:uberjar {:omit-source true
-             :aot :all
-             :uberjar-name "tia.jar"
-             :source-paths ["env/prod/clj" ]
-             :resource-paths ["env/prod/resources"]}
-
-   :dev           [:project/dev :profiles/dev]
-
-   :project/dev  {:jvm-opts ["-Dconf=dev-config.edn" ]
-                  :dependencies [[org.clojure/tools.namespace "1.3.0"]
-                                 [pjstadig/humane-test-output "0.11.0"]
-                                 [prone "2021-04-23"]
-                                 [ring/ring-devel "1.9.6"]
-                                 [ring/ring-mock "0.4.0"]]
-                  :plugins      [[com.jakemccrary/lein-test-refresh "0.24.1"]
-                                 [jonase/eastwood "1.2.4"]
-                                 [cider/cider-nrepl "0.30.0"]]
-                  
-                  :source-paths ["env/dev/clj" ]
-                  :resource-paths ["env/dev/resources"]
-                  :repl-options {:init-ns user
-                                 :timeout 120000}
-                  :injections [(require 'pjstadig.humane-test-output)
-                               (pjstadig.humane-test-output/activate!)]}
-   :profiles/dev {}
-   :profiles/test {}})
+  :profiles {:uberjar {:omit-source true
+                       :aot :all
+                       :uberjar-name "tia.jar"
+                       :source-paths ["env/prod/clj"]
+                       :resource-paths ["env/prod/resources"]}
+             :dev [:project/dev :profiles/dev]
+             :project/dev {:jvm-opts ["-Dconf=dev-config.edn"]
+                           :dependencies [[org.clojure/tools.namespace "1.3.0"]
+                                          [pjstadig/humane-test-output "0.11.0"]
+                                          [prone "2021-04-23"]
+                                          [ring/ring-devel "1.9.6"]
+                                          [ring/ring-mock "0.4.0"]]
+                           :plugins [[com.jakemccrary/lein-test-refresh "0.24.1"]
+                                     [jonase/eastwood "1.2.4"]
+                                     [cider/cider-nrepl "0.30.0"]]
+                           :source-paths ["env/dev/clj"]
+                           :resource-paths ["env/dev/resources"]
+                           :repl-options {:init-ns user
+                                          :timeout 120000}
+                           :injections [(require 'pjstadig.humane-test-output)
+                                        (pjstadig.humane-test-output/activate!)]}
+             :profiles/dev {}
+             :profiles/test {}})

@@ -15,9 +15,8 @@
 (defstate ^:dynamic *db*
   :start (if-let [jdbc-url (env :jdbc-database-url)]
            (conman/connect! {:jdbc-url jdbc-url})
-           (do
-             (log/warn "database connection URL was not found")
-             *db*))
+           (do (log/warn "database connection URL was not found")
+               *db*))
   :stop (conman/disconnect! *db*))
 
 (defn pgobj->clj [^org.postgresql.util.PGobject pgobj]

@@ -2,7 +2,7 @@
   (:require
    [tia.handler :as handler]
    [luminus.http-server :as http]
-   #_[luminus-migrations.core :as migrations]
+   [luminus-migrations.core :as migrations]
    [tia.config :refer [env]]
    [clojure.tools.cli :refer [parse-opts]]
    [clojure.tools.logging :as log]
@@ -28,7 +28,7 @@
   (http/start
    (-> env
        (update :io-threads #(or % (* 2 (.availableProcessors (Runtime/getRuntime)))))
-       (assoc  :handler (handler/app))
+       (assoc :handler (handler/app))
        (update :port #(or (-> env :options :port) %))
        (select-keys [:io-threads :handler :host :port :async?])))
   :stop
@@ -50,5 +50,9 @@
 (defn -main [& args]
   (-> args
       (parse-opts cli-options)
-      (mount/start-with-args #'tia.config/env))
+      (mount/start-with-args
+       #'tia.config/env))
+  (migrations/migrate
+   ["migrate"]
+   (select-keys env [:database-url]))
   (start-app args))

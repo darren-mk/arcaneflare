@@ -11,9 +11,12 @@
    [conman.core :as conman]
    [luminus-migrations.core :as migrations]))
 
-(alter-var-root #'s/*explain-out* (constantly expound/printer))
+(alter-var-root
+ #'s/*explain-out*
+ (constantly expound/printer))
 
-(add-tap (bound-fn* clojure.pprint/pprint))
+(add-tap
+ (bound-fn* clojure.pprint/pprint))
 
 (defn start
   "Starts application.
@@ -43,19 +46,35 @@
 (defn reset-db
   "Resets database."
   []
-  (migrations/migrate ["reset"] (select-keys env [:jdbc-database-url])))
+  (migrations/migrate
+   ["reset"]
+   (select-keys env [:database-url])))
 
 (defn migrate
   "Migrates database up for all outstanding migrations."
   []
-  (migrations/migrate ["migrate"] (select-keys env [:jdbc-database-url])))
+  (migrations/migrate
+   ["migrate"]
+   (select-keys env [:database-url])))
 
 (defn rollback
   "Rollback latest database migration."
   []
-  (migrations/migrate ["rollback"] (select-keys env [:jdbc-database-url])))
+  (migrations/migrate
+   ["rollback"]
+   (select-keys env [:database-url])))
 
 (defn create-migration
   "Create a new up and down migration file with a generated timestamp and `name`."
   [name]
-  (migrations/create name (select-keys env [:jdbc-database-url])))
+  (migrations/create
+   name
+   (select-keys env [:database-url])))
+
+(comment
+  (restart)
+  (restart-db)
+  (reset-db)
+  (migrate)
+  (rollback)
+  (create-migration "wording-for-migration"))

@@ -23,6 +23,11 @@ in namecheap,
 - uncommit and remove dot env file
 - uncommit and use dev config file
 ***** DONE adopt data namespace
+***** DONE set up sql migration
+- fixed key name conflict between :jdbc-database-url and :database-url.
+***** DONE install uuid extension in db
+***** TODO create clubs table in db
+- id, name, address, phone, and so on.
 ***** TODO adopt htmx
 ***** TODO adopt open props
 ***** TODO design logo

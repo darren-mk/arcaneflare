@@ -13,7 +13,7 @@
 (declare *db*)
 
 (defstate ^:dynamic *db*
-  :start (if-let [jdbc-url (env :jdbc-database-url)]
+  :start (if-let [jdbc-url (env :database-url)]
            (conman/connect! {:jdbc-url jdbc-url})
            (do (log/warn "database connection URL was not found")
                *db*))

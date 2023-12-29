@@ -26,8 +26,9 @@ in namecheap,
 ***** DONE set up sql migration
 - fixed key name conflict between :jdbc-database-url and :database-url.
 ***** DONE install uuid extension in db
-***** TODO create clubs table in db
-- id, name, address, phone, and so on.
+***** DONE create schema diagram
+- use mermaid
+- save the file in docs folder
 ***** TODO adopt htmx
 ***** TODO adopt open props
 ***** TODO design logo

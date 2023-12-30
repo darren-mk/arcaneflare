@@ -1,0 +1,77 @@
+flowchart TB
+
+   club* --> club%
+   map* --> map%
+   dancer* --> dancer%
+   gallery* --> gallery%
+   review* --> review%
+   channel* --> channel%
+   article* --> article%
+   coupon* --> coupon%
+   shopping* --> shopping%
+   login* --> login%
+   join* --> join%
+
+   subgraph nav
+       club*
+       map*
+       dancer*
+       gallery*
+       review*
+       channel*
+       article*
+       coupon*
+       shopping*
+       login*
+       join*
+   end
+
+   subgraph "/clubs"
+       club%
+   end
+
+   subgraph "/clubs/club-name"
+       single-club
+   end
+
+   subgraph map-pg
+       map%
+   end
+
+   subgraph dancer-pg
+       dancer%
+   end
+
+   subgraph gallery-pg
+       gallery%
+   end
+
+   subgraph review-pg
+       review%
+   end
+
+   subgraph channel-pg
+       channel%
+   end
+
+   subgraph article-pg
+       article%
+   end
+
+   subgraph coupon-pg
+       coupon%
+   end
+
+   subgraph shopping-pg
+       shopping%
+   end
+
+   if-not-joined --> join%
+   subgraph login-pg
+       login%
+       if-not-joined
+   end
+
+   subgraph join-pg
+       join%
+   end

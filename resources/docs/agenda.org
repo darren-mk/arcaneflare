@@ -33,6 +33,7 @@ in namecheap,
 - define entities including addresses, clubs, users, posts, comments, and payments.
 - define relationships including manages.
 - define timely records including exclusives.
+***** DONE create paging diagram
 ***** TODO create tables by diagram
 ***** TODO adopt htmx
 ***** TODO adopt open props

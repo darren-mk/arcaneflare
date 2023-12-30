@@ -37,6 +37,8 @@ in namecheap,
 ***** TODO create tables by diagram
 - create continents table
 - prepopulate continents table
+- create countries table
+- prepopulate countries table
 ***** TODO adopt htmx
 ***** TODO adopt open props
 ***** TODO design logo

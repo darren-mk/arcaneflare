@@ -29,7 +29,7 @@ in namecheap,
 ***** DONE create schema diagram
 - use mermaid
 - save the file in docs folder
-- define data including countries, states, and formats.
+- define data including continents, countries, states, and formats.
 - define entities including addresses, clubs, users, posts, comments, and payments.
 - define relationships including manages.
 - define timely records including exclusives.

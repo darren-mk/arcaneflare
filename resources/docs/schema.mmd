@@ -1,5 +1,12 @@
 erDiagram
 
+    continents {
+    int id pk
+    string name
+    timestamp created_at
+    timestamp last_edited_at }
+
+    countries ||--o| continents : continent_id
     countries {
     int id pk
     string name

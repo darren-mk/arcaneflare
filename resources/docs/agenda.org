@@ -35,6 +35,8 @@ in namecheap,
 - define timely records including exclusives.
 ***** DONE create paging diagram
 ***** TODO create tables by diagram
+- create continents table
+- prepopulate continents table
 ***** TODO adopt htmx
 ***** TODO adopt open props
 ***** TODO design logo

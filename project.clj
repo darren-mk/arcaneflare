@@ -5,7 +5,6 @@
                  [com.xtdb/xtdb-core "1.24.3"]
                  [com.xtdb/xtdb-rocksdb "1.24.3"]
                  [com.xtdb/xtdb-jdbc "1.24.3"]
-                 [conman "0.9.5"]
                  [cprop "0.1.19"]
                  [expound "0.9.0"]
                  [funcool/struct "1.4.0"]

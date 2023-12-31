@@ -4,7 +4,7 @@
    [next.jdbc.prepare]
    [next.jdbc.result-set]
    [clojure.tools.logging :as log]
-   [tia.config :refer [env]]
+   [tia.config :as config]
    [tia.model :as model]
    [tia.util :as u]
    [malli.core :as m]
@@ -15,10 +15,14 @@
 
 (defstate ^:dynamic *db*
   :start
-  (if-let [db-spec {:host (:db_host env)
-                    :dbname (:db_name env)
-                    :user (:db_user env)
-                    :password (:db_password env)}]
+  (if-let [db-spec {:host (or (System/getenv "db_host")
+                              (:db_host config/env))
+                    :dbname (or (System/getenv "db_name")
+                                (:db_name config/env))
+                    :user (or (System/getenv "db_user")
+                              (:db_user config/env))
+                    :password (or (System/getenv "db_password")
+                                  (:db_password config/env))}]
     (do (log/info "DB configs are successfully loaded.")
         (xt/start-node
          {:xtdb.jdbc/connection-pool

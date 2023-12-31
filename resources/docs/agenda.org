@@ -28,6 +28,8 @@ in namecheap,
 ***** DONE choose and connect db
 - purchase postgresql from heroku
 - chose xtdb over postgresql
+***** DONE define address and club schema
+***** TODO render clubs on page
 ***** TODO adopt htmx
 ***** TODO adopt open props
 ***** TODO design logo

@@ -8,8 +8,8 @@
 
 (defn dev-config []
   (try (load-file "dev-config.edn")
-       (catch Exception e
-         (println "prod mode or dev config file does not exists." e))))
+       (catch Exception _
+         (println "prod mode or dev config file does not exists."))))
 
 (defstate env
   :start

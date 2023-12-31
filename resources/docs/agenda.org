@@ -16,16 +16,6 @@ in namecheap,
 | Type         | Host | Value                    | TTL    |
 | ALIAS Record | @    | (dns target from heroku) | 5 min  |
 | CNAME Record | www  | (dns target from heroku) | 30 min |
-***** DONE choose and connect db
-- purchase postgresql from heroku
-- chose postgresql over xtdb
-- set local database
-- uncommit and remove dot env file
-- uncommit and use dev config file
-***** DONE adopt data namespace
-***** DONE set up sql migration
-- fixed key name conflict between :jdbc-database-url and :database-url.
-***** DONE install uuid extension in db
 ***** DONE create schema diagram
 - use mermaid
 - save the file in docs folder
@@ -33,14 +23,11 @@ in namecheap,
 - define entities including addresses, clubs, users, posts, comments, and payments.
 - define relationships including manages.
 - define timely records including exclusives.
+***** DONE adopt data namespace
 ***** DONE create paging diagram
-***** TODO create tables by diagram
-- create continents table
-- prepopulate continents table
-- create countries table
-- prepopulate countries table
-- create states table
-- prepopulate states table
+***** DONE choose and connect db
+- purchase postgresql from heroku
+- chose xtdb over postgresql
 ***** TODO adopt htmx
 ***** TODO adopt open props
 ***** TODO design logo

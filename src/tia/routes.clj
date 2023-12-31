@@ -13,12 +13,11 @@
   (layout/render request "home.html"))
 
 (defn database [_request]
+  (db/tick!)
   (layout/plain
-   (let [ticks (jdbc/with-db-connection [connection {:datasource db/*db*}]
-                 (do (jdbc/execute! connection "CREATE TABLE IF NOT EXISTS ticks (tick timestamp)")
-                     (jdbc/execute! connection "INSERT INTO ticks VALUES (now())")
-                     (map :tick (jdbc/query connection "SELECT tick FROM ticks"))))]
-     (str "Database Output\n\n" (cstr/join "\n" (map #(str "Read from DB: " %) ticks))))))
+   (str "Database Output\n\n"
+        (cstr/join "\n" (map #(str "Read from DB: " %)
+                             (db/ticks))))))
 
 (defn routes []
   ["" {:middleware [middleware/wrap-csrf

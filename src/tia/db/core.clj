@@ -42,5 +42,6 @@
   (let [q (xt/q
             (xt/db *db*)
             '{:find [timestamp]
-              :where [[?tick :tick/timestamp timestamp]]})]
+              :where [[?tick :tick/timestamp timestamp]]
+              :order-by [[timestamp :asc]]})]
    (mapv first q)))

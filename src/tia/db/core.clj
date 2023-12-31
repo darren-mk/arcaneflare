@@ -15,12 +15,15 @@
 
 (defstate ^:dynamic *db*
   :start
-  (if-let [jdbc-url (env :database-url)]
+  (if-let [db-spec {:host (:db_host env)
+                    :dbname (:db_name env)
+                    :user (:db_user env)
+                    :password (:db_password env)}]
     (do (log/info "DB configs are successfully loaded.")
         (xt/start-node
          {:xtdb.jdbc/connection-pool
           {:dialect {:xtdb/module 'xtdb.jdbc.psql/->dialect}
-           :db-spec {:jdbcUrl jdbc-url}}
+           :db-spec db-spec}
           :xtdb/tx-log
           {:xtdb/module 'xtdb.jdbc/->tx-log
            :connection-pool :xtdb.jdbc/connection-pool}

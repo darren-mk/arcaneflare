@@ -5,7 +5,9 @@
    [next.jdbc.result-set]
    [clojure.tools.logging :as log]
    [tia.config :refer [env]]
+   [tia.model :as model]
    [tia.util :as u]
+   [malli.core :as m]
    [mount.core :refer [defstate]]
    [xtdb.api :as xt]))
 
@@ -35,13 +37,14 @@
         m {:xt/id id
            :tick/id id
            :tick/timestamp (u/now)}]
-    (xt/submit-tx *db*
-     [[::xt/put m]])))
+    (if (m/validate model/tick m)
+      (xt/submit-tx *db* [[::xt/put m]])
+      (log/error "tick data not validated."))))
 
 (defn ticks []
   (let [q (xt/q
-            (xt/db *db*)
-            '{:find [timestamp]
-              :where [[?tick :tick/timestamp timestamp]]
-              :order-by [[timestamp :asc]]})]
-   (mapv first q)))
+           (xt/db *db*)
+           '{:find [timestamp]
+             :where [[?tick :tick/timestamp timestamp]]
+             :order-by [[timestamp :asc]]})]
+    (mapv first q)))

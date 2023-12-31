@@ -2,7 +2,6 @@
   (:require
    [tia.handler :as handler]
    [luminus.http-server :as http]
-   [luminus-migrations.core :as migrations]
    [tia.config :refer [env]]
    [clojure.tools.cli :refer [parse-opts]]
    [clojure.tools.logging :as log]
@@ -52,7 +51,4 @@
       (parse-opts cli-options)
       (mount/start-with-args
        #'tia.config/env))
-  (migrations/migrate
-   ["migrate"]
-   (select-keys env [:database-url]))
   (start-app args))

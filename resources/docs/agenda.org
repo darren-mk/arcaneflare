@@ -30,6 +30,7 @@ in namecheap,
 - chose xtdb over postgresql
 ***** DONE define address and club schema
 ***** TODO render clubs on page
+- structure urls for club pages
 ***** TODO adopt htmx
 ***** TODO adopt open props
 ***** TODO design logo

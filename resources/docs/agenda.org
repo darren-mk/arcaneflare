@@ -29,8 +29,11 @@ in namecheap,
 - purchase postgresql from heroku
 - chose xtdb over postgresql
 ***** DONE define address and club schema
-***** TODO render clubs on page
+***** DONE initiate migration for xtdb
+***** DONE render clubs on page
 - structure urls for club pages
+- prepopulate existing club info in db
+- render club data by country, state, and handle
 ***** TODO adopt htmx
 ***** TODO adopt open props
 ***** TODO design logo

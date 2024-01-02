@@ -1,12 +1,17 @@
 (ns tia.pages.clubs.country
   (:require
+   [tia.data :as data]
    [tia.style :as stl]
    [tia.layout :as layout]))
 
-(defn page [_req]
-  (layout/html
-   [:h1 {:class (stl/c :css/nice)}
-    "clubs by country will be here"]))
+(defn page [req]
+  (let [country-key (-> req :path-params :country keyword)
+        data (mapv (fn [state-key]
+                     [:a {:href (str "/clubs/country/" (name country-key)
+                                     "/state/" (name state-key))}
+                      (-> data/states state-key :full-name)])
+                   (:states (get data/countries country-key)))]
+    (->> data (cons :div) vec layout/html)))
 
 (def routes
-  ["/clubs/:country" {:get page}])
+  ["/clubs/country/:country" {:get page}])

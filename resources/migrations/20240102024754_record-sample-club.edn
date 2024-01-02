@@ -1,0 +1,20 @@
+[#:migration{:id #uuid "bb008ec8-daf2-4abd-a9f9-49d9ff553cd8"
+             :label :record-sample-club
+             :timestamp #inst "2024-01-02T02:47:54.890-00:00"}
+ #:club{:website "http://johnnyashitchingpost.com/"
+        :address.id #uuid "c1cb1901-d48d-46dc-9ea5-2deb66b4da5c"
+        :label "Johnny A’s Hitching Post"
+        :nudity :bikini
+        :twitterx "https://twitter.com/hitchingpostnj"
+        :instagram "https://www.instagram.com/Hitching_Post_/"
+        :phone "1-973-684-7678"
+        :handle :johnny-as-hitching-post
+        :facebook "https://www.facebook.com/JohnnyAsHitchingPost"
+        :status :open
+        :id #uuid "23f58509-1cbe-4f11-a1d8-6a1fde6a85e4"}
+ #:address{:id #uuid "c1cb1901-d48d-46dc-9ea5-2deb66b4da5c"
+           :street "95 Barclay St"
+           :city "Paterson"
+           :state :nj
+           :zip "07503"
+           :country :usa}]

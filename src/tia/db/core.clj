@@ -3,9 +3,11 @@
    [next.jdbc.date-time]
    [next.jdbc.prepare]
    [next.jdbc.result-set]
+   [clojure.edn :as cedn]
+   [clojure.java.io :as io]
    [clojure.tools.logging :as log]
    [tia.config :as config]
-   [tia.model :as model]
+   [tia.model]
    [tia.util :as u]
    [malli.core :as m]
    [mount.core :refer [defstate]]
@@ -39,14 +41,35 @@
   :stop
   (.close *db*))
 
-(defn tick! []
-  (let [id (u/uuid)
-        m {:xt/id id
-           :tick/id id
-           :tick/timestamp (u/now)}]
-    (if (m/validate model/tick m)
+(defn query [ql var]
+  (xt/q (xt/db *db*) ql var))
+
+(comment
+  (query
+   '{:find [?migration]
+     :in [[migration-label]]
+     :where [[?migration :migration/label migration-label]]}
+   [:record-sample-club])
+  :=> #{[#uuid "bb008ec8-daf2-4abd-a9f9-49d9ff553cd8"]})
+
+(defn record! [data]
+  (let [ns-s (-> data keys first namespace)
+        id-k (keyword (str ns-s "/id"))
+        schema (-> (str "tia.model/" ns-s) symbol eval)
+        id-v (get data id-k)
+        m (assoc data :xt/id id-v)]
+    (if (m/validate schema m)
       (xt/submit-tx *db* [[::xt/put m]])
-      (log/error "tick data not validated."))))
+      (log/error "data not validated."))))
+
+(defn tick! []
+  (record! {:tick/id (u/uuid)
+            :tick/timestamp (u/now)}))
+
+(comment
+  (tick!)
+  :=> #:xtdb.api{:tx-id 222
+                 :tx-time #inst "2024-01-02T05:38:04.708-00:00"})
 
 (defn ticks []
   (let [q (xt/q
@@ -55,3 +78,26 @@
              :where [[?tick :tick/timestamp timestamp]]
              :order-by [[timestamp :asc]]})]
     (mapv first q)))
+
+(comment
+  (xt/pull
+   (xt/db *db*)
+   '{:find [(pull [*])]
+     :where [[?tick :tick/id]]}))
+
+(defn migrate-file! [filename]
+  (let [ms (->> filename (str "migrations/")
+                io/resource slurp cedn/read-string)
+        mg-label (-> ms first :migration/label)
+        exists? (boolean (ffirst (xt/q (xt/db *db*)
+                   '{:find [?migration]
+                     :in [[migration-label]]
+                     :where [[?migration :migration/label migration-label]]}
+                   [mg-label])))]
+    (if exists?
+      "already migrated."
+      (doseq [m ms]
+        (record! m)))))
+
+(comment
+  (migrate-file! "20240102024754_record-sample-club.edn"))

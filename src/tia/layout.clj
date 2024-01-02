@@ -24,10 +24,9 @@
    :body text})
 
 (defn html [data]
-  (let [bulma d/bulma-url
-        head [:head
+  (let [head [:head
               [:link {:rel :stylesheet
-                      :href bulma}]
+                      :href d/bulma-url}]
               [:link {:rel :stylesheet
                       :type (-> d/text-css)
                       :href "/css"}]]

@@ -4,7 +4,7 @@
    [tia.pages.clubs.root :as clubs-root]
    [tia.pages.clubs.country :as clubs-country]
    [tia.pages.clubs.state :as clubs-state]
-   [tia.pages.clubs.club :as clubs-club]
+   [tia.pages.clubs.individual :as clubs-individual]
    [tia.pages.database :as database]
    [tia.pages.landing :as landing]
    [tia.middleware :as middleware]
@@ -17,6 +17,6 @@
    clubs-root/routes
    clubs-country/routes
    clubs-state/routes
-   clubs-club/routes
+   clubs-individual/routes
    landing/routes
    database/routes])

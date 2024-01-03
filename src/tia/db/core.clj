@@ -18,23 +18,11 @@
 
 (defstate ^:dynamic *db*
   :start
-  (if-let [db-spec {:host (or (System/getenv "db_host")
-                              (:db_host config/env))
-                    :dbname (or (System/getenv "db_name")
-                                (:db_name config/env))
-                    :user (or (System/getenv "db_user")
-                              (:db_user config/env))
-                    :password (or (System/getenv "db_password")
-                                  (:db_password config/env))}]
-    (do (prn "######## :db_host from env" (:db_host config/env))
-        (prn "######## :db-host from env" (:db-host config/env))
-        (prn "######## :DB_HOST from env" (:DB_HOST config/env))
-        (prn "######## :DB-HOST from env" (:DB-HOST config/env))
-        (prn "######## :db_name from env" (:db_name config/env))
-        (prn "######## :db-name from env" (:db-name config/env))
-        (prn "######## :DB_NAME from env" (:DB_NAME config/env))
-        (prn "######## :DB-NAME from env" (:DB-NAME config/env))
-        (log/info "DB configs are successfully loaded.")
+  (if-let [db-spec {:host (:db-host config/env)
+                    :dbname (:db-name config/env)
+                    :user (:db-user config/env)
+                    :password (:db-password config/env)}]
+    (do (log/info "DB configs are successfully loaded.")
         (xt/start-node
          {:xtdb.jdbc/connection-pool
           {:dialect {:xtdb/module 'xtdb.jdbc.psql/->dialect}

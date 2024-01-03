@@ -34,6 +34,7 @@ in namecheap,
 - structure urls for club pages
 - prepopulate existing club info in db
 - render club data by country, state, and handle
+***** TODO automate migration process
 ***** TODO adopt htmx
 ***** TODO adopt open props
 ***** TODO design logo

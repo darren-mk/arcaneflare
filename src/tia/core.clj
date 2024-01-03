@@ -3,6 +3,7 @@
    [tia.handler :as handler]
    [luminus.http-server :as http]
    [tia.config :refer [env]]
+   [tia.db.core :as db]
    [clojure.tools.cli :refer [parse-opts]]
    [clojure.tools.logging :as log]
    [mount.core :as mount])
@@ -51,4 +52,5 @@
       (parse-opts cli-options)
       (mount/start-with-args
        #'tia.config/env))
+  (db/migrate!)
   (start-app args))

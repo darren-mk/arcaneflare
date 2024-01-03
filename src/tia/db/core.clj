@@ -5,6 +5,7 @@
    [next.jdbc.result-set]
    [clojure.edn :as cedn]
    [clojure.java.io :as io]
+   [clojure.string :as cstr]
    [clojure.tools.logging :as log]
    [tia.config :as config]
    [tia.model]
@@ -41,8 +42,11 @@
   :stop
   (.close *db*))
 
-(defn query [ql var]
-  (xt/q (xt/db *db*) ql var))
+(defn query
+  ([ql]
+   (xt/q (xt/db *db*) ql))
+  ([ql var]
+   (xt/q (xt/db *db*) ql var)))
 
 (comment
   (query
@@ -61,6 +65,10 @@
     (if (m/validate schema m)
       (xt/submit-tx *db* [[::xt/put m]])
       (log/error "data not validated."))))
+
+(defn delete! [id]
+  (xt/submit-tx *db*
+   [[::xt/delete id]]))
 
 (defn tick! []
   (record! {:tick/id (u/uuid)
@@ -99,5 +107,21 @@
       (doseq [m ms]
         (record! m)))))
 
-(comment
-  (migrate-file! "20240102024754_record-sample-club.edn"))
+(defn migration-exists? [id]
+  (let [read (query
+              '{:find [id]
+                :in [[id]]
+                :where [[?mig :migration/id id]]}
+              [id])]
+    (-> read ffirst boolean)))
+
+(defn migrate! []
+  (let [dir (io/file "resources/migrations")
+      read (map #(.getName %) (file-seq dir))
+      pred #(= ".edn" (cstr/join (take-last 4 %)))
+      files (filter pred read)]
+  (doseq [file files]
+    (if (migration-exists? file)
+      (log/info file "has already been migrated.")
+      (do (migrate-file! file)
+          (log/info file "is just migrated."))))))

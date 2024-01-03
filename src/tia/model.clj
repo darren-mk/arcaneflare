@@ -17,9 +17,8 @@
 
 (def migration
   [:map
-   [:migration/id :uuid]
-   [:migration/timestamp inst?]
-   [:migration/label :keyword]])
+   [:migration/id [:string {:min 1 :max 80}]]
+   [:migration/timestamp inst?]])
 
 (def address
   [:map

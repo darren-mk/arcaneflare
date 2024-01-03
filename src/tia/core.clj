@@ -46,6 +46,7 @@
                         :started)]
     (log/info component "started"))
   (db/migrate!)
+  (prn "@@@@@@@@" (keys env))
   (.addShutdownHook (Runtime/getRuntime) (Thread. stop-app)))
 
 (defn -main [& args]

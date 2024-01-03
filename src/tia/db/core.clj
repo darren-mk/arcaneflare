@@ -26,8 +26,8 @@
                               (:db_user config/env))
                     :password (or (System/getenv "db_password")
                                   (:db_password config/env))}]
-    (do (prn "######## db_host from getenv" (System/getenv "db_host"))
-        (prn "######## db_name from getenv" (System/getenv "db_name"))
+    (do (prn "######## db_host from env" (:db_host config/env))
+        (prn "######## db_name from env" (:db_name config/env))
         (log/info "DB configs are successfully loaded.")
         (xt/start-node
          {:xtdb.jdbc/connection-pool

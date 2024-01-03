@@ -45,6 +45,7 @@
                         mount/start-with-args
                         :started)]
     (log/info component "started"))
+  (db/migrate!)
   (.addShutdownHook (Runtime/getRuntime) (Thread. stop-app)))
 
 (defn -main [& args]
@@ -52,5 +53,4 @@
       (parse-opts cli-options)
       (mount/start-with-args
        #'tia.config/env))
-  (db/migrate!)
   (start-app args))

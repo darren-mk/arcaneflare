@@ -34,7 +34,10 @@ in namecheap,
 - structure urls for club pages
 - prepopulate existing club info in db
 - render club data by country, state, and handle
-***** TODO automate migration process
+***** DONE automate migration process
+- id of migration instances will be migration filename
+***** DONE fix heroku config issue
+- found out that heroku converts snakecase to kebabcase
 ***** TODO adopt htmx
 ***** TODO adopt open props
 ***** TODO design logo

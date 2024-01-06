@@ -36,8 +36,8 @@
 (defn restart-db
   "Restarts database."
   []
-  (mount/stop #'tia.db.core/*db*)
-  (mount/start #'tia.db.core/*db*))
+  (mount/stop #'tia.db.core/db)
+  (mount/start #'tia.db.core/db))
 
 (comment
   (restart)

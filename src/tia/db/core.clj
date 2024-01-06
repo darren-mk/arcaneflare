@@ -14,9 +14,9 @@
    [mount.core :refer [defstate]]
    [xtdb.api :as xt]))
 
-(declare *db*)
+(declare db)
 
-(defstate ^:dynamic *db*
+(defstate ^:dynamic db
   :start
   (if-let [db-spec {:host (:db-host config/env)
                     :dbname (:db-name config/env)
@@ -34,15 +34,15 @@
           {:xtdb/module 'xtdb.jdbc/->document-store
            :connection-pool :xtdb.jdbc/connection-pool}}))
     (do (log/warn "database connection URL was not found")
-        *db*))
+        db))
   :stop
-  (.close *db*))
+  (.close db))
 
 (defn query
   ([ql]
-   (xt/q (xt/db *db*) ql))
+   (xt/q (xt/db db) ql))
   ([ql var]
-   (xt/q (xt/db *db*) ql var)))
+   (xt/q (xt/db db) ql var)))
 
 (comment
   (query
@@ -59,11 +59,11 @@
         id-v (get data id-k)
         m (assoc data :xt/id id-v)]
     (if (m/validate schema m)
-      (xt/submit-tx *db* [[::xt/put m]])
+      (xt/submit-tx db [[::xt/put m]])
       (log/error "data not validated."))))
 
 (defn delete! [id]
-  (xt/submit-tx *db*
+  (xt/submit-tx db
    [[::xt/delete id]]))
 
 (defn tick! []
@@ -77,7 +77,7 @@
 
 (defn ticks []
   (let [q (xt/q
-           (xt/db *db*)
+           (xt/db db)
            '{:find [timestamp]
              :where [[?tick :tick/timestamp timestamp]]
              :order-by [[timestamp :asc]]})]
@@ -85,7 +85,7 @@
 
 (comment
   (xt/pull
-   (xt/db *db*)
+   (xt/db db)
    '{:find [(pull [*])]
      :where [[?tick :tick/id]]}))
 
@@ -93,7 +93,7 @@
   (let [ms (->> filename (str "migrations/")
                 io/resource slurp cedn/read-string)
         mg-label (-> ms first :migration/label)
-        exists? (boolean (ffirst (xt/q (xt/db *db*)
+        exists? (boolean (ffirst (xt/q (xt/db db)
                    '{:find [?migration]
                      :in [[migration-label]]
                      :where [[?migration :migration/label migration-label]]}

@@ -38,6 +38,7 @@ in namecheap,
 - id of migration instances will be migration filename
 ***** DONE fix heroku config issue
 - found out that heroku converts snakecase to kebabcase
+***** DONE connect aws s3 for media files
 ***** TODO adopt htmx
 ***** TODO adopt open props
 ***** TODO design logo

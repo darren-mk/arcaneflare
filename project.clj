@@ -1,5 +1,6 @@
 (defproject tia "0.1.0-SNAPSHOT"
-  :dependencies [[ch.qos.logback/logback-classic "1.4.4"]
+  :dependencies [[amazonica "0.3.165"]
+                 [ch.qos.logback/logback-classic "1.4.4"]
                  [cheshire "5.11.0"]
                  [clojure.java-time "1.1.0"]
                  [com.xtdb/xtdb-core "1.24.3"]

@@ -5,6 +5,7 @@
    [clojure.pprint]
    [clojure.spec.alpha :as s]
    [expound.alpha :as expound]
+   [malli.instrument :as mi]
    [mount.core :as mount]
    [tia.core]
    [tia.db.core]))
@@ -15,6 +16,9 @@
 
 (add-tap
  (bound-fn* clojure.pprint/pprint))
+
+(defn inst []
+  (mi/instrument!))
 
 (defn start
   "Starts application.
@@ -40,5 +44,6 @@
   (mount/start #'tia.db.core/db))
 
 (comment
+  (inst)
   (restart)
   (restart-db))

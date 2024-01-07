@@ -1,0 +1,25 @@
+(ns tia.db.tick
+  (:require
+   [tia.db.common :as common]
+   [tia.util :as u]))
+
+(defn tick! []
+  (common/record!
+   {:tick/id (u/uuid)
+    :tick/timestamp (u/now)}))
+
+(comment
+  (tick!)
+  :=> #:xtdb.api{:tx-id 222
+                 :tx-time #inst "2024-01-02T05:38:04.708-00:00"})
+
+(defn ticks []
+  (let [ql '{:find [timestamp]
+             :where [[?tick :tick/timestamp timestamp]]
+             :order-by [[timestamp :asc]]}]
+    (mapv first (common/query ql))))
+
+(comment
+  (ticks)
+  :=> [#inst "2023-12-30T23:20:06.288-00:00"
+       #inst "2023-12-30T23:22:51.720-00:00"])

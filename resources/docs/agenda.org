@@ -39,6 +39,7 @@ in namecheap,
 ***** DONE fix heroku config issue
 - found out that heroku converts snakecase to kebabcase
 ***** DONE connect aws s3 for media files
+***** DONE fix migration process
 ***** TODO adopt htmx
 ***** TODO adopt open props
 ***** TODO design logo

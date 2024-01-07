@@ -5,7 +5,8 @@
    [tia.util :as u]))
 
 (def tick
-  [:map
+  [:map {:closed true}
+   [:xt/id {:optional true} :uuid]
    [:tick/id :uuid]
    [:tick/timestamp inst?]])
 
@@ -16,12 +17,15 @@
     :tick/timestamp (u/now)}) :=> true)
 
 (def migration
-  [:map
-   [:migration/id [:string {:min 1 :max 80}]]
-   [:migration/timestamp inst?]])
+  [:map {:closed true}
+   [:xt/id {:optional true} :keyword]
+   [:migration/id :keyword]
+   [:migration/file :string]
+   [:migration/time inst?]])
 
 (def address
-  [:map
+  [:map {:closed true}
+   [:xt/id {:optional true} :uuid]
    [:address/id :uuid]
    [:address/street [:string {:min 1 :max 30}]]
    [:address/unit {:optional true} [:string {:min 1 :max 12}]]
@@ -31,7 +35,8 @@
    [:address/country (vec (cons :enum (keys d/countries)))]])
 
 (def club
-  [:map
+  [:map {:closed true}
+   [:xt/id {:optional true} :uuid]
    [:club/id :uuid]
    [:club/label [:string {:min 1 :max 30}]]
    [:club/handle :keyword]

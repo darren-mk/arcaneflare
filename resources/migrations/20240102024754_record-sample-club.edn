@@ -1,7 +1,4 @@
-[#:migration{:id #uuid "bb008ec8-daf2-4abd-a9f9-49d9ff553cd8"
-             :label :record-sample-club
-             :timestamp #inst "2024-01-02T02:47:54.890-00:00"}
- #:club{:website "http://johnnyashitchingpost.com/"
+[#:club{:website "http://johnnyashitchingpost.com/"
         :address.id #uuid "c1cb1901-d48d-46dc-9ea5-2deb66b4da5c"
         :label "Johnny A’s Hitching Post"
         :nudity :bikini

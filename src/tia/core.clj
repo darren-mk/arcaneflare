@@ -3,7 +3,7 @@
    [tia.handler :as handler]
    [luminus.http-server :as http]
    [tia.config :refer [env]]
-   [tia.db.core :as db]
+   [tia.db.migration :as migration]
    [clojure.tools.cli :refer [parse-opts]]
    [clojure.tools.logging :as log]
    [mount.core :as mount])
@@ -45,7 +45,7 @@
                         mount/start-with-args
                         :started)]
     (log/info component "started"))
-  (db/migrate!)
+  (migration/all!)
   (.addShutdownHook (Runtime/getRuntime) (Thread. stop-app)))
 
 (defn -main [& args]

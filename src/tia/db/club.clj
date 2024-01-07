@@ -1,17 +1,17 @@
 (ns tia.db.club
   (:require
-   [tia.db.core :as dbc]))
+   [tia.db.common :as common]))
 
 (defn find-clubs-by-state [state]
-  (dbc/query '{:find [?handle ?label]
-               :keys [handle label]
-               :in [[?state]]
-               :where [[?address :address/state ?state]
-                       [?address :address/id ?address-id]
-                       [?club :club/address.id ?address-id]
-                       [?club :club/handle ?handle]
-                       [?club :club/label ?label]]}
-             [state]))
+  (common/query '{:find [?handle ?label]
+                  :keys [handle label]
+                  :in [[?state]]
+                  :where [[?address :address/state ?state]
+                          [?address :address/id ?address-id]
+                          [?club :club/address.id ?address-id]
+                          [?club :club/handle ?handle]
+                          [?club :club/label ?label]]}
+                [state]))
 
 (comment
   (find-clubs-by-state :nj)
@@ -25,7 +25,7 @@
              :in [[handle]]
              :where [[?club :club/address.id ?address-id]
                      [?address :address/id ?address-id]]}]
-    (first (dbc/query ql [handle]))))
+    (first (common/query ql [handle]))))
 
 (comment
   (find-club-by-handle :johnny-as-hitching-post)

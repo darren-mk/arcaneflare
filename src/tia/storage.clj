@@ -7,8 +7,8 @@
 (declare aws)
 
 (defstate ^:dynamic aws
-  :start {:access-key (:aws-access-key env)
-          :secret-key (:aws-secret-key env)
+  :start {:access-key (:aws-access-key-id env)
+          :secret-key (:aws-secret-access-key env)
           :endpoint (:aws-region env)}
   :stop nil)
 

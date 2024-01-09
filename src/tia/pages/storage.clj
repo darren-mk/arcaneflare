@@ -1,10 +1,10 @@
 (ns tia.pages.storage
   (:require
    [tia.storage :as storage]
-   [tia.layout :as layout]))
+   [tia.layout :as l]))
 
 (defn page [_request]
-  (layout/plain
+  (l/plain
    (str "Storage connection: "
         (-> (storage/get-buckets)
             first :name))))

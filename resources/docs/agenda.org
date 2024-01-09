@@ -43,6 +43,7 @@ in namecheap,
 ***** DONE adopt dark mode
 - replaced bulma by halfmoon
 ***** DONE move pure functions to calc ns
+***** TODO draft bulletin boards
 ***** TODO adopt htmx
 ***** TODO adopt open props
 ***** TODO design logo

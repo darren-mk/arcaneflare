@@ -2,6 +2,7 @@
   (:require
    [clojure.tools.logging :as log]
    [tia.db.core :as dbcr :refer [db]]
+   [tia.calc :as c]
    [tia.util :as u]
    [malli.core :as m]
    [xtdb.api :as xt]))
@@ -13,9 +14,9 @@
    (xt/q (xt/db db) ql var)))
 
 (defn record! [data]
-  (let [ns-s (u/nsmap->ns data)
-        idk (u/ns->idk ns-s)
-        schema (u/ns->schema ns-s)
+  (let [ns-s (c/nsmap->ns data)
+        idk (c/ns->idk ns-s)
+        schema (c/ns->schema ns-s)
         idv (get data idk)
         m (assoc data :xt/id idv)]
     (if (m/validate schema m)
@@ -43,8 +44,8 @@
   (count-all-having-key :xt/id))
 
 (defn merge! [data]
-  (let [ns-s (u/nsmap->ns data)
-        idk (u/ns->idk ns-s)
+  (let [ns-s (c/nsmap->ns data)
+        idk (c/ns->idk ns-s)
         idv (get data idk)
         ex-m (pull-by-id idv)
         m (merge ex-m data)]

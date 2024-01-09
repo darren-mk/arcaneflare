@@ -1,6 +1,6 @@
 (ns tia.util
-  "utility functions that
-  involve side effects."
+  "utility functions that involve side effects
+  or that are not regarding domain logic."
   (:require
    [clojure.java.io :as io]
    [clojure.string :as cstr]
@@ -16,20 +16,6 @@
   (let [frm "yyyyMMddhhmmss"
         jdf (java.text.SimpleDateFormat. frm)]
     (.parse jdf s)))
-
-(defn nsmap->ns [m]
-  (-> (dissoc m :xt/id)
-      keys first namespace))
-
-(def ns->idk
-  #(keyword (str % "/id")))
-
-(def nsmap->idk
-  (comp ns->idk nsmap->ns))
-
-(def ns->schema
-  #(->> % (str "tia.model/")
-        symbol eval))
 
 (defn file-names! [dir]
   (let [obj (io/file dir)

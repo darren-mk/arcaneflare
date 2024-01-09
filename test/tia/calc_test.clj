@@ -7,3 +7,23 @@
   (t/is
    (= "abc def"
       (src/>s :abc :def))))
+
+(t/deftest nsmap->ns-test
+  (t/is
+   (= "abc"
+      (src/nsmap->ns
+       {:xt/id 7 :abc/x 1 :abc/y 2}))))
+
+(t/deftest ns->idk-test
+  (t/is
+   (= :abc/id
+      (src/ns->idk "abc"))))
+
+(t/deftest nsmap->idk-test
+  (t/is
+   (= :abc/id
+      (src/nsmap->idk
+       {:abc/x 1 :abc/y 2}))))
+
+(t/deftest ns->schema-test
+  (t/is (vector? (src/ns->schema "club"))))

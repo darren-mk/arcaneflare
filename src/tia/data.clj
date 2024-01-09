@@ -1,7 +1,29 @@
 (ns tia.data)
 
-(def bulma-url
-  "https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css")
+(def ui-style
+  [:link
+   {:rel :stylesheet
+    :crossorigin :anonymous
+    :integrity "sha256-SsJizWSIG9JT9Qxbiy8xnYJfjCAkhEQ0hihxRn7jt2M="
+    :href "https://cdn.jsdelivr.net/npm/halfmoon@2.0.1/css/halfmoon.min.css"}])
+
+(def theme-style
+  [:link
+   {:rel :stylesheet
+    :crossorigin :anonymous
+    :integrity "sha256-DD6elX+jPmbFYPsGvzodUv2+9FHkxHlVtQi0/RJVULs="
+    :href "https://cdn.jsdelivr.net/npm/halfmoon@2.0.1/css/cores/halfmoon.modern.css"}])
+
+(def ui-action
+  [:script
+   {:crossorigin :anonymous
+    :src "https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+    :integrity "sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"}])
+
+(def html-prop
+  {:lang :en
+   :data-bs-core :modern
+   :data-bs-theme :dark})
 
 (def content-type
   (let [k "Content-Type"]
@@ -9,8 +31,16 @@
      :css {k "text/css"}
      :html {k "text/html"}}))
 
-(def text-css
-  "text/css")
+(def css-link
+  [:link
+   {:rel :stylesheet
+    :type "text/css"
+    :href "/css"}])
+
+(def icons
+  [:script
+   {:src "https://kit.fontawesome.com/4c71c3e02a.js"
+    :crossorigin :anonymous}])
 
 (def continents
   {:north-america {:full-name "North America"

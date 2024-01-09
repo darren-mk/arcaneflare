@@ -40,6 +40,8 @@ in namecheap,
 - found out that heroku converts snakecase to kebabcase
 ***** DONE connect aws s3 for media files
 ***** DONE fix migration process
+***** DONE adopt dark mode
+- replaced bulma by halfmoon
 ***** TODO adopt htmx
 ***** TODO adopt open props
 ***** TODO design logo

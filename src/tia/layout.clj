@@ -25,13 +25,14 @@
 
 (defn html [data]
   (let [head [:head
-              [:link {:rel :stylesheet
-                      :href d/bulma-url}]
-              [:link {:rel :stylesheet
-                      :type (-> d/text-css)
-                      :href "/css"}]]
-        body [:body (navbar) data]
-        html [:html head body]]
+              d/ui-style
+              d/theme-style
+              d/css-link
+              d/icons]
+        body [:body.d-flex.flex-column.min-vh-100
+              (navbar) data d/ui-action]
+        html [:html d/html-prop
+              head body]]
     {:status 200
      :headers (:html d/content-type)
      :body (str (h/html html))}))

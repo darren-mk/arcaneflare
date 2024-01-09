@@ -20,15 +20,20 @@
 (defn inst []
   (mi/instrument!))
 
+(defn unst []
+  (mi/unstrument!))
+
 (defn start
   "Starts application.
   You'll usually want to run this on startup."
   []
+  (inst)
   (mount/start))
 
 (defn stop
   "Stops application."
   []
+  (unst)
   (mount/stop))
 
 (defn restart
@@ -45,5 +50,6 @@
 
 (comment
   (inst)
+  (unst)
   (restart)
   (restart-db))

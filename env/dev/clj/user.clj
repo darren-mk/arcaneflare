@@ -3,6 +3,7 @@
   (:require
    [tia.config]
    [clojure.pprint]
+   [clojure.string :as cstr]
    [clojure.spec.alpha :as s]
    [expound.alpha :as expound]
    [malli.instrument :as mi]
@@ -16,6 +17,11 @@
 
 (add-tap
  (bound-fn* clojure.pprint/pprint))
+
+(defn dot [s]
+  (as-> s $
+    (cstr/split $ #" ")
+    (cstr/join "." $)))
 
 (defn inst []
   (mi/instrument!))
@@ -49,6 +55,7 @@
   (mount/start #'tia.db.core/db))
 
 (comment
+  (dot "abc def")
   (inst)
   (unst)
   (restart)

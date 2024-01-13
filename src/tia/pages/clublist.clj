@@ -1,5 +1,6 @@
 (ns tia.pages.clublist
   (:require
+   [clojure.string :as cstr]
    [tia.data :as data]
    [tia.db.club :as club]
    [tia.layout :as layout]
@@ -7,8 +8,10 @@
    [malli.core :as m]))
 
 (defn item [{:keys [handle label]}]
-  [:a {:href (str "/club/" (name handle))}
-   label])
+  (let [href (cstr/join
+              "/" ["/club" (name handle) "info"])]
+    [:a {:href href}
+     label]))
 
 (m/=> section
       [:=> [:cat model/state]
@@ -29,9 +32,9 @@
       {:id (name state)
        :data-bs-parent "#accordion-example-1"}
       [:div.accordion-body
-       (vec (concat
-             [:div.d-flex.justify-content-start.flex-wrap.me-auto]
-             (map item clubs)))]]]))
+       (into
+        [:div.d-flex.justify-content-start.flex-wrap.me-auto]
+        (mapv item clubs))]]]))
 
 (m/=> accordion
       [:=> [:cat model/division]
@@ -84,13 +87,9 @@
         (accordion selection)]]])))
 
 (def routes
-  [["/clublist/us-northeast"
-    {:get (page :us-northeast)}]
-   ["/clublist/us-midwest"
-    {:get (page :us-midwest)}]
-   ["/clublist/us-south"
-    {:get (page :us-south)}]
-   ["/clublist/us-west"
-    {:get (page :us-west)}]
-   ["/clublist/canada"
-    {:get (page :canada)}]])
+  ["/clublist"
+   ["/us-northeast" {:get (page :us-northeast)}]
+   ["/us-midwest" {:get (page :us-midwest)}]
+   ["/us-south" {:get (page :us-south)}]
+   ["/us-west" {:get (page :us-west)}]
+   ["/canada" {:get (page :canada)}]])

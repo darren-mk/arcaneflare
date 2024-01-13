@@ -64,9 +64,13 @@
              :href "/clublist/us-northeast"})
       (path {:label "Dancer" :active? false
              :href "/dancerlist"})
-      (path {:label "Review" :href "#" :active? false})
-      (path {:label "Discussion" :href "#" :active? false})
-      (path {:label "Article" :href "#" :active? false})
-      (path {:label "Gallery" :href "#" :active? false})]
+      (path {:label "Review" :active? false
+             :href "/reviewlist"})
+      (path {:label "Discuss" :active? false
+             :href "/discusslist"})
+      (path {:label "Article" :active? false
+             :href "/articlelist"})
+      (path {:label "Gallery" :active? false
+             :href "/gallery"})]
      [:div.d-flex.align-items-center.justify-content-center
       (region) search (counter) (in)]]]])

@@ -1,6 +1,7 @@
 (ns tia.routes
   (:require
    [tia.style :as style]
+   [tia.pages.clublist :as clublist]
    [tia.pages.clubs.root :as clubs-root]
    [tia.pages.clubs.country :as clubs-country]
    [tia.pages.clubs.state :as clubs-state]
@@ -16,6 +17,7 @@
   ["" {:middleware [middleware/wrap-csrf
                     middleware/wrap-formats]}
    ["/css" {:get style/core}]
+   clublist/routes
    clubs-root/routes
    clubs-country/routes
    clubs-state/routes

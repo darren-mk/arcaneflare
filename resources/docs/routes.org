@@ -1,0 +1,14 @@
+| href             | description                              |
+| /clublist        | list of all clubs                        |
+| /club/:handle    | a specific club by handle                |
+| /dancerlist      | list of all dancers                      |
+| /dancer/:handle  | a specific dancer by handle              |
+| /reviewlist      | list of all reviews by given region      |
+| /review/:id      | a specific review by id                  |
+| /discussionlist  | list of all dicussions by given region   |
+| /discussion/:id  | a specific dicussion by id               |
+| /articlelist     | list of all articles by given region     |
+| /article/:handle | a specific article by handle             |
+| /gallery         | thumbnails of all images by given region |
+| /image/:id       | a specific image by id                   |
+| /region          | select interested region                 |

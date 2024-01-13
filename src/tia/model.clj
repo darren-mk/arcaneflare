@@ -72,3 +72,9 @@
     :address/state :nj
     :address/zip "07503"
     :address/country :usa}))
+
+(def division
+  (vec (cons :enum (keys d/divisions))))
+
+(def state
+  (vec (cons :enum (keys d/states))))

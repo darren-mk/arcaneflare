@@ -1,29 +1,5 @@
 erDiagram
 
-    continents {
-    int id pk
-    string name
-    timestamp created_at
-    timestamp last_edited_at }
-
-    countries ||--o| continents : continent_id
-    countries {
-    int id pk
-    string name
-    timestamp created_at
-    timestamp last_edited_at }
-
-    states ||--o| countries : country_id
-    states {
-    int id pk
-    int country_id fk
-    string code
-    string name
-    timestamp created_at
-    timestamp last_edited_at }
-
-    addresses ||--o| states : state_id
-    addresses ||--o| countries : country_id
     addresses {
     uuid id pk
     string street
@@ -34,7 +10,6 @@ erDiagram
     timestamp created_at
     timestamp last_edited_at }
 
-    clubs ||--o| addresses : address_id
     clubs {
     uuid id pk
     string name

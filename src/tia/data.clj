@@ -42,83 +42,101 @@
    {:src "https://kit.fontawesome.com/4c71c3e02a.js"
     :crossorigin :anonymous}])
 
-(def continents
-  {:north-america {:full-name "North America"
-                   :countries #{:usa :canada}}
-   :south-america {:full-name "South America"
-                   :countries #{:mexico}}})
+(def divisions
+  {:us-northeast
+   {:label "US Northeast"
+    :states #{:ct :me :ma :nh :ri :vt
+              :ny :nj :pa}}
+   :us-midwest
+   {:label "US Midwest"
+    :states #{:il :in :mi :oh :wi :ia
+              :ks :mn :mo :ne :nd :sd}}
+   :us-south
+   {:label "US South"
+    :states #{:de :fl :ga :md :nc :sc
+              :va :dc :wv :al :ky :ms
+              :tn :ar :la :ok :tx}}
+   :us-west
+   {:label "US West"
+    :states #{:az :co :id :mt :nv :nm
+              :ut :wy :ak :ca :hi :or
+              :wa}}
+   :canada
+   {:label "Canada"
+    :states #{:on :qc :ns :mb :bc :pe
+              :sk :ab :nl :nb}}})
 
 (def countries
-  {:usa {:full-name "United States"
+  {:usa {:label "United States"
          :states #{:al :ak :az :ar :ca :co :ct :de :dc :fl
                    :ga :hi :id :il :in :ia :ks :ky :la :me
                    :md :ma :mi :mn :ms :mo :mt :ne :nv :nh
                    :nj :nm :ny :nc :nd :oh :ok :or :pa :ri
                    :sc :sd :tn :tx :ut :vt :va :wa :wv :wi
                    :wy}}
-   :canada {:full-name "Canada"
+   :canada {:label "Canada"
             :states #{:on :qc :ns :mb :bc :pe :sk :ab :nl :nb}}
-   :mexico {:full-name "Mexico"}})
+   :mexico {:label "Mexico"}})
 
 (def states
-  {:al {:full-name "Alabama"}
-   :ak {:full-name "Alaska"}
-   :az {:full-name "Arizona"}
-   :ar {:full-name "Arkansas"}
-   :ca {:full-name "California"}
-   :co {:full-name "Colorado"}
-   :ct {:full-name "Connecticut"}
-   :de {:full-name "Delaware"}
-   :dc {:full-name "District of Columbia"}
-   :fl {:full-name "Florida"}
-   :ga {:full-name "Georgia"}
-   :hi {:full-name "Hawaii"}
-   :id {:full-name "Idaho"}
-   :il {:full-name "Illinois"}
-   :in {:full-name "Indiana"}
-   :ia {:full-name "Iowa"}
-   :ks {:full-name "Kansas"}
-   :ky {:full-name "Kentucky"}
-   :la {:full-name "Louisiana"}
-   :me {:full-name "Maine"}
-   :md {:full-name "Maryland"}
-   :ma {:full-name "Massachusetts"}
-   :mi {:full-name "Michigan"}
-   :mn {:full-name "Minnesota"}
-   :ms {:full-name "Mississippi"}
-   :mo {:full-name "Missouri"}
-   :mt {:full-name "Montana"}
-   :ne {:full-name "Nebraska"}
-   :nv {:full-name "Nevada"}
-   :nh {:full-name "New Hampshire"}
-   :nj {:full-name "New Jersey"}
-   :nm {:full-name "New Mexico"}
-   :ny {:full-name "New York"}
-   :nc {:full-name "North Carolina"}
-   :nd {:full-name "North Dakota"}
-   :oh {:full-name "Ohio"}
-   :ok {:full-name "Oklahoma"}
-   :or {:full-name "Oregon"}
-   :pa {:full-name "Pennsylvania"}
-   :ri {:full-name "Rhode Island"}
-   :sc {:full-name "South Carolina"}
-   :sd {:full-name "South Dakota"}
-   :tn {:full-name "Tennessee"}
-   :tx {:full-name "Texas"}
-   :ut {:full-name "Utah"}
-   :vt {:full-name "Vermont"}
-   :va {:full-name "Virginia"}
-   :wa {:full-name "Washington"}
-   :wv {:full-name "West Virginia"}
-   :wi {:full-name "Wisconsin"}
-   :wy {:full-name "Wyoming"}
-   :on {:full-name "Ontario"}
-   :qc {:full-name "Quebec"}
-   :ns {:full-name "Nova Scotia"}
-   :mb {:full-name "Manitoba"}
-   :bc {:full-name "British Columbia"}
-   :pe {:full-name "Prince Edward Island"}
-   :sk {:full-name "Saskatchewan"}
-   :ab {:full-name "Alberta"}
-   :nl {:full-name "Newfoundland and Labrador"}
-   :nb {:full-name "New Brunswick"}})
+  {:al {:label "Alabama"}
+   :ak {:label "Alaska"}
+   :az {:label "Arizona"}
+   :ar {:label "Arkansas"}
+   :ca {:label "California"}
+   :co {:label "Colorado"}
+   :ct {:label "Connecticut"}
+   :de {:label "Delaware"}
+   :dc {:label "District of Columbia"}
+   :fl {:label "Florida"}
+   :ga {:label "Georgia"}
+   :hi {:label "Hawaii"}
+   :id {:label "Idaho"}
+   :il {:label "Illinois"}
+   :in {:label "Indiana"}
+   :ia {:label "Iowa"}
+   :ks {:label "Kansas"}
+   :ky {:label "Kentucky"}
+   :la {:label "Louisiana"}
+   :me {:label "Maine"}
+   :md {:label "Maryland"}
+   :ma {:label "Massachusetts"}
+   :mi {:label "Michigan"}
+   :mn {:label "Minnesota"}
+   :ms {:label "Mississippi"}
+   :mo {:label "Missouri"}
+   :mt {:label "Montana"}
+   :ne {:label "Nebraska"}
+   :nv {:label "Nevada"}
+   :nh {:label "New Hampshire"}
+   :nj {:label "New Jersey"}
+   :nm {:label "New Mexico"}
+   :ny {:label "New York"}
+   :nc {:label "North Carolina"}
+   :nd {:label "North Dakota"}
+   :oh {:label "Ohio"}
+   :ok {:label "Oklahoma"}
+   :or {:label "Oregon"}
+   :pa {:label "Pennsylvania"}
+   :ri {:label "Rhode Island"}
+   :sc {:label "South Carolina"}
+   :sd {:label "South Dakota"}
+   :tn {:label "Tennessee"}
+   :tx {:label "Texas"}
+   :ut {:label "Utah"}
+   :vt {:label "Vermont"}
+   :va {:label "Virginia"}
+   :wa {:label "Washington"}
+   :wv {:label "West Virginia"}
+   :wi {:label "Wisconsin"}
+   :wy {:label "Wyoming"}
+   :on {:label "Ontario"}
+   :qc {:label "Quebec"}
+   :ns {:label "Nova Scotia"}
+   :mb {:label "Manitoba"}
+   :bc {:label "British Columbia"}
+   :pe {:label "Prince Edward Island"}
+   :sk {:label "Saskatchewan"}
+   :ab {:label "Alberta"}
+   :nl {:label "Newfoundland and Labrador"}
+   :nb {:label "New Brunswick"}})

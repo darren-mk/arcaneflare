@@ -23,14 +23,15 @@
    :headers (:plain d/content-type)
    :body text})
 
-(defn html [data]
+(defn html [prop data]
   (let [head [:head
               d/ui-style
               d/theme-style
               d/css-link
               d/icons]
         body [:body.d-flex.flex-column.min-vh-100
-              (navbar) data d/ui-action]
+              (navbar (-> prop :nav :selection))
+              data d/ui-action]
         html [:html d/html-prop
               head body]]
     {:status 200

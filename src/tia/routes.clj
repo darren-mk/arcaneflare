@@ -1,11 +1,8 @@
 (ns tia.routes
   (:require
    [tia.style :as style]
+   [tia.pages.club :as club]
    [tia.pages.clublist :as clublist]
-   [tia.pages.clubs.root :as clubs-root]
-   [tia.pages.clubs.country :as clubs-country]
-   [tia.pages.clubs.state :as clubs-state]
-   [tia.pages.clubs.individual :as clubs-individual]
    [tia.pages.database :as database]
    [tia.pages.landing :as landing]
    [tia.pages.review :as review]
@@ -17,11 +14,8 @@
   ["" {:middleware [middleware/wrap-csrf
                     middleware/wrap-formats]}
    ["/css" {:get style/core}]
+   club/routes
    clublist/routes
-   clubs-root/routes
-   clubs-country/routes
-   clubs-state/routes
-   clubs-individual/routes
    landing/routes
    database/routes
    review/routes

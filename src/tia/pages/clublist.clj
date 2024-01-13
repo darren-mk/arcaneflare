@@ -6,11 +6,7 @@
    [tia.model :as model]
    [malli.core :as m]))
 
-(m/=> item
-      [:=> [:cat model/club]
-       :any])
-
-(defn item [{:keys [handle label] :as _club}]
+(defn item [{:keys [handle label]}]
   [:a {:href (str "/club/" (name handle))}
    label])
 
@@ -22,9 +18,8 @@
   (let [clubs (club/find-clubs-by-state state)]
     [:div.accordion-item
      [:h2.accordion-header
-      [:button
-       {:class "accordion-button collapsed",
-        :type "button",
+      [:button.accordion-button.collapsed
+       {:type "button",
         :data-bs-toggle "collapse",
         :data-bs-target (str "#" (name state))
         :aria-expanded "false",
@@ -80,7 +75,7 @@
 
 (defn page [selection]
   (fn [_]
-    (layout/html
+    (layout/html {:nav {:selection :club}}
      [:div.container-md.px-3.px-sm-4.px-xl-5
       [:div.row
        [:div.py-3.py-sm-4

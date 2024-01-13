@@ -52,7 +52,7 @@
    {:href "/docs/download/"}
    "Log In"])
 
-(defn navbar []
+(defn navbar [selection]
   [:nav.navbar.navbar-expand-md.border-bottom.border-secondary.border-opacity-25
    {:style {:background-color "var(--bs-content-bg)"
             :border-bottom "var(--bs-border-width) solid var(--bs-content-border-color)"}}
@@ -60,8 +60,10 @@
     logo toggler
     [:div.collapse.navbar-collapse {:id "navbar-collapse-1"}
      [:ul.navbar-nav.me-auto.mb-2.mb-lg-0
-      (path {:label "Club" :href "#" :active? false})
-      (path {:label "Dancer" :href "#" :active? false})
+      (path {:label "Club" :active? (= :club selection)
+             :href "/clublist/us-northeast"})
+      (path {:label "Dancer" :active? false
+             :href "/dancerlist"})
       (path {:label "Review" :href "#" :active? false})
       (path {:label "Discussion" :href "#" :active? false})
       (path {:label "Article" :href "#" :active? false})

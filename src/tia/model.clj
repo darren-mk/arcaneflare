@@ -72,3 +72,33 @@
 
 (def state
   (vec (cons :enum (keys d/states))))
+
+(def person
+  [:map {:closed true}
+   [:xt/id {:optional true} :uuid]
+   [:person/id :uuid]
+   [:person/fname [:string {:min 1 :max 30}]]
+   [:person/lname [:string {:min 1 :max 30}]]
+   [:person/nickname [:string {:min 1 :max 30}]]
+   [:person/email [:string {:min 1 :max 30}]]
+   [:person/role [:enum :customer :dancer :staff]]])
+
+(def post
+  [:map {:closed true}
+   [:xt/id {:optional true} :uuid]
+   [:post/id :uuid]
+   [:post/title {:optional true} [:string {:min 1 :max 60}]]
+   [:post/content :string]
+   [:post/created inst?]
+   [:post/updated inst?]
+   [:post/person.id :uuid]])
+
+(def commentary
+  [:map {:closed true}
+   [:xt/id {:optional true} :uuid]
+   [:commentary/id :uuid]
+   [:commentary/content :string]
+   [:commentary/created inst?]
+   [:commentary/updated inst?]
+   [:commentary/post.id :uuid]
+   [:commentary/person.id :uuid]])

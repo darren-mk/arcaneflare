@@ -49,8 +49,7 @@
 
 (defn in []
   [:a.btn.btn-primary.text-nowrap
-   {:href "/docs/download/"}
-   "Log In"])
+   {:href "/login"} "Log In"])
 
 (defn navbar [selection]
   [:nav.navbar.navbar-expand-md.border-bottom.border-secondary.border-opacity-25

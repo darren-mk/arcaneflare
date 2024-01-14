@@ -16,13 +16,6 @@
    {:tick/id (u/uuid)
     :tick/timestamp (u/now)}) :=> true)
 
-(def migration
-  [:map {:closed true}
-   [:xt/id {:optional true} :keyword]
-   [:migration/id :keyword]
-   [:migration/file :string]
-   [:migration/time inst?]])
-
 (def address
   [:map {:closed true}
    [:xt/id {:optional true} :uuid]
@@ -30,6 +23,7 @@
    [:address/street [:string {:min 1 :max 30}]]
    [:address/unit {:optional true} [:string {:min 1 :max 12}]]
    [:address/city [:string {:min 1 :max 30}]]
+   [:address/region (vec (cons :enum (keys d/regions)))]
    [:address/state (vec (cons :enum (keys d/states)))]
    [:address/zip [:string {:min 3 :max 10}]]
    [:address/country (vec (cons :enum (keys d/countries)))]])

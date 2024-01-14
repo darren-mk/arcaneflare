@@ -1,4 +1,4 @@
-(ns tia.pages.review
+(ns tia.pages.reviewlist
   (:require
    [tia.calc :refer [>s]]
    [tia.layout :as l]))
@@ -20,15 +20,6 @@
   [:div.list-group
    (for [_ (range 100)]
      (post))])
-
-(defn crumb []
-  [:nav
- {:aria-label "breadcrumb"}
- [:ol
-  {:class "breadcrumb"}
-  [:li {:class "breadcrumb-item"} [:a {:href "#"} "Home"]]
-  [:li {:class "breadcrumb-item"} [:a {:href "#"} "Library"]]
-  [:li {:class "breadcrumb-item active", :aria-current "page"} "Data"]]])
 
 (defn pagination []
   [:nav {:aria-label "Page navigation example"}
@@ -57,14 +48,13 @@
             :aria-hidden true}]]]]]])
 
 (defn page [_req]
-  (l/html {:nav {:selection :review}}
+  (l/html {:nav {:selection :reviewlist}}
    [:div.container-md.px-3.px-sm-4.px-xl-5
     [:div.row
      [:div.py-3.py-sm-4
-      (crumb)
       [:h1.h3.lh-base.mb-1 "Reviews"]
       (pagination)
       (listing)]]]))
 
 (def routes
-  ["/reviews" {:get page}])
+  ["/reviewlist" {:get page}])

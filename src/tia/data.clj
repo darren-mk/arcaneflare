@@ -109,15 +109,21 @@
    :ne {:label "Nebraska"}
    :nv {:label "Nevada"}
    :nh {:label "New Hampshire"}
-   :nj {:label "New Jersey"}
+   :nj {:label "New Jersey"
+        :regions #{:north-nj :central-nj :south-nj}}
    :nm {:label "New Mexico"}
-   :ny {:label "New York"}
+   :ny {:label "New York"
+        :regions #{:manhattan :queens :brooklyn
+                   :staten-island :westchester :ny-other-areas}}
    :nc {:label "North Carolina"}
    :nd {:label "North Dakota"}
    :oh {:label "Ohio"}
    :ok {:label "Oklahoma"}
    :or {:label "Oregon"}
-   :pa {:label "Pennsylvania"}
+   :pa {:label "Pennsylvania"
+        :regions #{:philadelphia :pittsburgh :Allentown-Bethlehem
+                   :Harrisburg-Carlisle :Scranton-Wilkes-Barre
+                   :Lancaster-York :PA-Other-Areas}}
    :ri {:label "Rhode Island"}
    :sc {:label "South Carolina"}
    :sd {:label "South Dakota"}
@@ -140,3 +146,22 @@
    :ab {:label "Alberta"}
    :nl {:label "Newfoundland and Labrador"}
    :nb {:label "New Brunswick"}})
+
+(def regions
+  {:north-nj {:label "North New Jersey"}
+   :central-nj {:label "Central New Jersey"}
+   :south-nj {:label "South New Jersey"}
+   :new-york-city {:label "New Yok City"}
+   :manhattan {:label "Manhattan"}
+   :queens {:label "Queens"}
+   :brooklyn {:label "Brooklyn"}
+   :staten-island {:label "Staten Island"}
+   :westchester {:label "Westchester"}
+   :ny-other-areas {:label "NY Other Areas"}
+   :philadelphia {:label "Philadelphia"}
+   :pittsburgh {:label "Pittsburgh"}
+   :Allentown-Bethlehem {:label "Allentown / Bethlehem"}
+   :Harrisburg-Carlisle {:label "Harrisburg / Carlisle"}
+   :Scranton-Wilkes-Barre {:label "Scranton / Wilkes-Barre"}
+   :Lancaster-York {:label "Lancaster / York"}
+   :PA-Other-Areas {:label "PA Other Areas"}})

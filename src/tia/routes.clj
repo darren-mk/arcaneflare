@@ -5,7 +5,8 @@
    [tia.pages.clublist :as clublist]
    [tia.pages.database :as database]
    [tia.pages.landing :as landing]
-   [tia.pages.review :as review]
+   [tia.pages.region :as region]
+   [tia.pages.reviewlist :as reviewlist]
    [tia.pages.storage :as storage]
    [tia.middleware :as middleware]
    [ring.util.response]))
@@ -18,5 +19,6 @@
    clublist/routes
    landing/routes
    database/routes
-   review/routes
+   region/routes
+   reviewlist/routes
    storage/routes])

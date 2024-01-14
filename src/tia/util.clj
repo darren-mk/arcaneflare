@@ -12,6 +12,10 @@
 (defn now []
   (java.util.Date.))
 
+(m/=> read-time-s
+      [:=> [:cat :string]
+       inst?])
+
 (defn read-time-s [s]
   (let [frm "yyyyMMddhhmmss"
         jdf (java.text.SimpleDateFormat. frm)]
@@ -22,7 +26,3 @@
         names (map #(.getName %) (file-seq obj))
         pred #(= ".edn" (cstr/join (take-last 4 %)))]
     (filter pred names)))
-
-(m/=> read-time-s
-      [:=> [:cat :string]
-       inst?])

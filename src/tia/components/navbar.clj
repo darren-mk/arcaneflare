@@ -28,7 +28,7 @@
 (defn region []
   [:div.btn-group.me-2
    [:a.btn.btn-secondary.d-flex.align-items-center
-    {:target "_blank" :rel "noreferrer"}
+    {:href "/region"}
     [:i.fa-solid.fa-map]]
    [:a.btn.btn-secondary.flex-grow-1.text-nowrap
     {:area-hidden true} "Everywhere"]])
@@ -42,7 +42,7 @@
 (defn counter []
   [:div.btn-group.me-2
    [:a.btn.btn-secondary.d-flex.align-items-center
-    {:target "_blank" :rel "noreferrer"}
+    {:target :_blank :rel :noreferrer}
     [:i.fa-solid.fa-heart]]
    [:a.btn.btn-secondary.flex-grow-1.text-nowrap
     {:area-hidden true} 3980]])
@@ -62,15 +62,15 @@
      [:ul.navbar-nav.me-auto.mb-2.mb-lg-0
       (path {:label "Club" :active? (= :club selection)
              :href "/clublist/us-northeast"})
-      (path {:label "Dancer" :active? false
-             :href "/dancerlist"})
-      (path {:label "Review" :active? false
-             :href "/reviewlist"})
-      (path {:label "Discuss" :active? false
-             :href "/discusslist"})
-      (path {:label "Article" :active? false
-             :href "/articlelist"})
-      (path {:label "Gallery" :active? false
-             :href "/gallery"})]
+      (path {:label "Dancer" :href "/dancerlist"
+             :active? (#{:dancer :dancerlist} selection)})
+      (path {:label "Review" :href "/reviewlist"
+             :active? (#{:review :reviewlist} selection)})
+      (path {:label "Discuss" :href "/discusslist"
+             :active? (#{:discuss :discusslist} selection)})
+      (path {:label "Article" :href "/articlelist"
+             :active? (#{:article :articlelist} selection)})
+      (path {:label "Gallery" :href "/gallery"
+             :active? (#{:gallery} selection)})]
      [:div.d-flex.align-items-center.justify-content-center
       (region) search (counter) (in)]]]])

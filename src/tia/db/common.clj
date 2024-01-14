@@ -3,7 +3,6 @@
    [clojure.tools.logging :as log]
    [tia.db.core :as dbcr :refer [db]]
    [tia.calc :as c]
-   [tia.util :as u]
    [malli.core :as m]
    [xtdb.api :as xt]))
 
@@ -12,6 +11,10 @@
    (xt/q (xt/db db) ql))
   ([ql var]
    (xt/q (xt/db db) ql var)))
+
+(defn put! [m]
+  (xt/submit-tx
+   db [[::xt/put m]]))
 
 (defn record! [data]
   (let [ns-s (c/nsmap->ns data)
@@ -51,8 +54,17 @@
         m (merge ex-m data)]
     (record! m)))
 
+(defn update! [data]
+  (let [ns-s (c/nsmap->ns data)
+        idk (c/ns->idk ns-s)
+        idv (get data idk)
+        ex-m (pull-by-id idv)
+        m (merge ex-m data)]
+    (put! m)))
+
 (defn delete! [id]
   (xt/submit-tx db [[::xt/delete id]]))
 
 (comment
-  (count-all))
+  (count-all)
+  (delete! :id))

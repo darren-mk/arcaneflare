@@ -1,0 +1,38 @@
+{:johnny-as-hitching-post
+ [#:club{:website "http://johnnyashitchingpost.com/"
+         :address.id #uuid "c1cb1901-d48d-46dc-9ea5-2deb66b4da5c"
+         :label "Johnny A’s Hitching Post"
+         :nudity :bikini
+         :twitterx "https://twitter.com/hitchingpostnj"
+         :instagram "https://www.instagram.com/Hitching_Post_/"
+         :phone "1-973-684-7678"
+         :handle :johnny-as-hitching-post
+         :facebook "https://www.facebook.com/JohnnyAsHitchingPost"
+         :status :open
+         :id #uuid "23f58509-1cbe-4f11-a1d8-6a1fde6a85e4"}
+  #:address{:id #uuid "c1cb1901-d48d-46dc-9ea5-2deb66b4da5c"
+            :street "95 Barclay St"
+            :city "Paterson"
+            :region :north-nj
+            :state :nj
+            :zip "07503"
+            :country :usa}]
+ :ricks-cabaret-nyc
+ [#:club{:website "https://www.ricksnewyork.com/"
+        :address.id #uuid "ad0f4de2-19d0-421b-a3be-e154ce240b5d"
+        :label "Rick's Cabaret New York"
+        :nudity :topless
+        :twitterx "https://twitter.com/RicksCabaretNYC"
+        :instagram "https://www.instagram.com/rickscabaretnyc/"
+        :phone "1-212-372-0850"
+        :handle :ricks-cabaret-nyc
+        :facebook "https://www.facebook.com/rickscabaretnyc"
+        :status :open
+        :id #uuid "24d3a3db-b5ff-4455-b5e4-d8b7df80595f"}
+ #:address{:id #uuid "ad0f4de2-19d0-421b-a3be-e154ce240b5d"
+           :street "50 West 33rd Street"
+           :city "New York"
+           :region :manhattan
+           :state :ny
+           :zip "10001"
+           :country :usa}]}

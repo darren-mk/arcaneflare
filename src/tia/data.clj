@@ -42,6 +42,12 @@
    {:src "https://kit.fontawesome.com/4c71c3e02a.js"
     :crossorigin :anonymous}])
 
+(def htmx
+  [:script
+   {:src "https://unpkg.com/htmx.org@1.9.10",
+    :integrity "sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC"
+    :crossorigin :anonymous}])
+
 (def divisions
   {:us-northeast
    {:label "US Northeast"

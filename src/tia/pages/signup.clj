@@ -11,11 +11,13 @@
       {:for k} label]
      [:div.col-sm-9
       [:input.form-control
-       {:name k
-        :type k
-        :id k
+       {:name k :type k :id k
         :required true
-        :placeholder label}]]]))
+        :placeholder label
+        :hx-get "/signup/check-input"
+        :hx-trigger "keyup changed delay:500ms"
+        :hx-target "#search-results"}]
+      [:div {:id "search-results"}]]]))
 
 (defn role [k]
   [:div.form-check
@@ -71,14 +73,19 @@
      (form)]]))
 
 (defn result [{:keys [params]}]
-  (prn "@@@@ params" params)
-  (let [{:keys [email password]} params]
+  (let [{:keys [email]} params]
     (layout/html {:nav nil}
                  [:div
                   (if (= "abc@def.com" email)
                     [:p "success"]
                     [:p "fail"])])))
 
+(defn check-input [req]
+  (prn "@@@@" (-> req :params)))
+;; "@@@@" {:email "eee"}
+;; "@@@@" {:password "ppp"}
+
 (def routes
-  ["/signup" {:get page
-              :post result}])
+  ["/signup"
+   ["" {:get page :post result}]
+   ["/check-input" {:get check-input}]])

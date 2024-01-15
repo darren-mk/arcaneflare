@@ -25,10 +25,9 @@
 
 (defn html [prop data]
   (let [head [:head
-              d/ui-style
+              d/htmx d/ui-style
               d/theme-style
-              d/css-link
-              d/icons]
+              d/css-link d/icons]
         body [:body.d-flex.flex-column.min-vh-100
               (navbar (-> prop :nav :selection))
               data d/ui-action]

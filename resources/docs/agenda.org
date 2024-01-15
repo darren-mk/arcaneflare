@@ -47,10 +47,9 @@ in namecheap,
 ***** DONE structure navbar menu
 ***** DONE draft club list layout
 ***** DONE draft login and signup layout
-***** TODO create login flow and session
-***** TODO create post flow
-***** TODO adopt htmx
-***** TODO adopt open props
+***** DONE create login flow and session
+***** DONE create post flow
+***** DONE adopt htmx
 ***** TODO design logo
 ***** TODO create joining workflow
 1. join -> ask nickname and email

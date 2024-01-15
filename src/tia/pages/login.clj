@@ -1,34 +1,37 @@
 (ns tia.pages.login
   (:require
+   [clojure.string :as cstr]
    [tia.layout :as layout]))
 
+(defn input [k]
+  (let [label (-> k name
+                  cstr/capitalize)]
+    [:div.mb-3
+     [:label.form-label
+      {:for :username}
+      label]
+     [:input.form-control
+      {:name k :type k
+       :required true
+       :placeholder label}]]))
+
+(def sign-in
+  [:div.mb-3.pb-3.border-bottom
+   [:button.btn.btn-primary.w-100
+    {:type :submit} "Sign in"]])
+
+(def no-account
+  [:div.text-center.text-body-secondary
+   "Don't have an account?"
+   [:a {:href "/signup"} "Sign up"]])
+
 (defn form []
-  [:form
-   [:div.mb-3
-    [:label.form-label
-     {:for :username}
-     "Username"]
-    [:input.form-control
-     {:type "text"
-      :id "username"
-      :required ""
-      :placeholder "Username"}]]
-   [:div.mb-3
-    [:label.form-label
-     {:for :password}
-     "Password"]
-    [:input
-     {:type "password"
-      :class "form-control"
-      :id "password"
-      :required ""
-      :placeholder "Password"}]]
-   [:div.mb-3.pb-3.border-bottom
-    [:button.btn.btn-primary.w-100
-     {:type :submit} "Sign in"]]
-   [:div.text-center.text-body-secondary
-    "Don't have an account?"
-    [:a {:href "/signup"} "Sign up"]]])
+  [:form {:action "/login"
+          :method :post}
+   (input :email)
+   (input :password)
+   sign-in
+   no-account])
 
 (defn page [_]
   (layout/html
@@ -37,5 +40,14 @@
     [:div.d-flex.justify-content-center
      (form)]]))
 
+(defn result [{:keys [params]}]
+  (let [{:keys [email password]} params]
+    (layout/html {:nav nil}
+                 [:div
+                  (if (= "abc@def.com" email)
+                    [:p "success"]
+                    [:p "fail"])])))
+
 (def routes
-  ["/login" {:get page}])
+  ["/login" {:get page
+             :post result}])

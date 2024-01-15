@@ -14,7 +14,7 @@
    [ring.util.response]))
 
 (defn routes []
-  ["" {:middleware [middleware/wrap-csrf
+  ["" {:middleware [#_middleware/wrap-csrf
                     middleware/wrap-formats]}
    ["/css" {:get style/core}]
    club/routes

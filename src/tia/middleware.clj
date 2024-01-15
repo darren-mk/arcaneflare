@@ -4,9 +4,9 @@
    [clojure.tools.logging :as log]
    [tia.layout :refer [error-page]]
    [ring.middleware.anti-forgery :refer [wrap-anti-forgery]]
-   [tia.middleware.formats :as formats]
    [muuntaja.middleware :refer [wrap-format wrap-params]]
-   [tia.config :refer [env]]
+   [luminus-transit.time :as time]
+   [muuntaja.core :as m]
    [ring.middleware.flash :refer [wrap-flash]]
    [ring.adapter.undertow.middleware.session :refer [wrap-session]]
    [ring.middleware.defaults :refer [site-defaults wrap-defaults]]))
@@ -34,12 +34,22 @@
      {:status 403
       :title "Invalid anti-forgery token"})}))
 
+(def instance
+  (m/create
+   (-> m/default-options
+       (update-in
+        [:formats "application/transit+json" :decoder-opts]
+        (partial merge time/time-deserialization-handlers))
+       (update-in
+        [:formats "application/transit+json" :encoder-opts]
+        (partial merge time/time-serialization-handlers)))))
+
 (defn wrap-formats [handler]
-  (let [wrapped (-> handler wrap-params (wrap-format formats/instance))]
+  (let [wrapped (-> handler wrap-params (wrap-format instance))]
     (fn
       ([request]
-         ;; disable wrap-formats for websockets
-         ;; since they're not compatible with this middleware
+       ;; disable wrap-formats for websockets
+       ;; since they're not compatible with this middleware
        ((if (:websocket? request) handler wrapped) request))
       ([request respond raise]
        ((if (:websocket? request) handler wrapped) request respond raise)))))
@@ -53,5 +63,3 @@
            (assoc-in [:security :anti-forgery] false)
            (dissoc :session)))
       wrap-internal-error))
-
-

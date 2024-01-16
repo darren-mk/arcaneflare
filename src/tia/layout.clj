@@ -3,9 +3,7 @@
    [clojure.java.io]
    [hiccup2.core :as h]
    [selmer.parser :as parser]
-   [ring.util.http-response :refer [content-type ok]]
    [ring.util.anti-forgery :refer [anti-forgery-field]]
-   [ring.middleware.anti-forgery :refer [*anti-forgery-token*]]
    [ring.util.response]
    [tia.data :as d]
    [tia.components.navbar :refer [navbar]]))
@@ -23,6 +21,11 @@
    :headers (:plain d/content-type)
    :body text})
 
+(defn frag [data]
+  {:status 200
+   :headers (:html d/content-type)
+   :body (-> data h/html str)})
+
 (defn html [prop data]
   (let [head [:head
               d/htmx d/ui-style
@@ -35,7 +38,7 @@
               head body]]
     {:status 200
      :headers (:html d/content-type)
-     :body (str (h/html html))}))
+     :body (-> html h/html str)}))
 
 (defn css [s]
   {:status 200

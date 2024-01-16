@@ -4,9 +4,10 @@
    [tia.calc :as src]))
 
 (t/deftest >s-test
-  (t/is
-   (= "abc def"
-      (src/>s :abc :def))))
+  (t/is (= "abc def"
+           (src/>s :abc :def)))
+  (t/is (= "keyup changed delay:500ms"
+           (src/>s :keyup :changed :delay:500ms))))
 
 (t/deftest nsmap->ns-test
   (t/is

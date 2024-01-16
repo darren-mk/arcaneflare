@@ -1,23 +1,27 @@
 (ns tia.pages.signup
   (:require
    [clojure.string :as cstr]
-   [tia.layout :as layout]))
+   [tia.db.person :as pdb]
+   [tia.layout :as l]
+   [tia.calc :refer [>s]]))
 
 (defn input [k]
-  (let [label (-> k name
-                  cstr/capitalize)]
+  (let [target (str (name k) "check-result")
+        label (-> k name
+                  cstr/capitalize)
+        checker {:hx-get (str "/signup/check-" (name k))
+                 :hx-trigger (>s :keyup :changed :delay:500ms)
+                 :hx-target (str "#" target)}]
     [:div.row.mb-3
      [:label.col-sm-3.col-form-label.mb-1.mb-sm-0
       {:for k} label]
      [:div.col-sm-9
       [:input.form-control
-       {:name k :type k :id k
-        :required true
-        :placeholder label
-        :hx-get "/signup/check-input"
-        :hx-trigger "keyup changed delay:500ms"
-        :hx-target "#search-results"}]
-      [:div {:id "search-results"}]]]))
+       (merge {:name k :type k :id k
+               :required true
+               :placeholder label}
+              checker)]
+      [:div {:id target}]]]))
 
 (defn role [k]
   [:div.form-check
@@ -66,7 +70,7 @@
    control])
 
 (defn page [_]
-  (layout/html
+  (l/html
    {:nav {:selection nil}}
    [:div.container-md.px-3.px-sm-4.px-xl-5
     [:div.d-flex.justify-content-center
@@ -74,18 +78,31 @@
 
 (defn result [{:keys [params]}]
   (let [{:keys [email]} params]
-    (layout/html {:nav nil}
+    (l/html {:nav nil}
                  [:div
                   (if (= "abc@def.com" email)
                     [:p "success"]
                     [:p "fail"])])))
 
-(defn check-input [req]
-  (prn "@@@@" (-> req :params)))
-;; "@@@@" {:email "eee"}
-;; "@@@@" {:password "ppp"}
+(defn check-nickname [{:keys [params]}]
+  (let [{:keys [nickname]} params
+        existent? (pdb/nickname-existent? nickname)
+        tags (if existent?
+               [:p "already exists."]
+               [:p "good to use"])]
+    (l/frag tags)))
+
+(defn check-email [{:keys [params]}]
+  (let [{:keys [email]} params]
+    (l/frag email)))
+
+(defn check-password [{:keys [params]}]
+  (let [{:keys [password]} params]
+    (l/frag password)))
 
 (def routes
   ["/signup"
    ["" {:get page :post result}]
-   ["/check-input" {:get check-input}]])
+   ["/check-nickname" {:get check-nickname}]
+   ["/check-email" {:get check-email}]
+   ["/check-password" {:get check-password}]])

@@ -43,6 +43,12 @@
             :where [['?e k]]}]
     (or (ffirst (query ql)) 0)))
 
+(defn count-all-having-kv [k v]
+  (let [ql {:find '[(count ?e)]
+            :in [['?v]]
+            :where [['?e k '?v]]}]
+    (or (ffirst (query ql [v])) 0)))
+
 (defn count-all []
   (count-all-having-key :xt/id))
 
@@ -67,4 +73,8 @@
 
 (comment
   (count-all)
-  (delete! :id))
+  (delete! :id)
+  (pull-all-having-key :xt/id)
+  (count-all-having-kv
+   :address/street "50 West 33rd Street")
+  :=> 1)

@@ -80,7 +80,8 @@
    [:person/nickname [:string {:min 1 :max 30}]]
    [:person/email [:string {:min 1 :max 30}]]
    [:person/password [:string {:min 5 :max 25}]]
-   [:person/role [:enum :customer :dancer :staff]]])
+   [:person/role [:enum :customer :dancer :staff]]
+   [:person/preferences :map]])
 
 (def post
   [:map {:closed true}

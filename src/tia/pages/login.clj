@@ -34,7 +34,7 @@
    no-account])
 
 (defn page [_]
-  (layout/html
+  (layout/frame
    {:nav {:selection nil}}
    [:div.container-md.px-3.px-sm-4.px-xl-5
     [:div.d-flex.justify-content-center
@@ -42,7 +42,7 @@
 
 (defn result [{:keys [params]}]
   (let [{:keys [email password]} params]
-    (layout/html {:nav nil}
+    (layout/frame {:nav nil}
                  [:div
                   (if (= "abc@def.com" email)
                     [:p "success"]

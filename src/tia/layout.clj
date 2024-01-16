@@ -26,7 +26,7 @@
    :headers (:html d/content-type)
    :body (-> data h/html str)})
 
-(defn html [prop data]
+(defn frame [prop data]
   (let [head [:head
               d/htmx d/ui-style
               d/theme-style

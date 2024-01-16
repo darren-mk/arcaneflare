@@ -62,7 +62,7 @@
                      :handle keyword)
           {:keys [club]}
           (db-club/find-club-by-handle handle)]
-      (layout/html
+      (layout/frame
        {:nav {:selection :club}}
        [:div.container-md.px-3.px-sm-4.px-xl-5
         [:div.row

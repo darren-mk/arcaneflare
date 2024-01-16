@@ -78,7 +78,7 @@
 
 (defn page [selection]
   (fn [_]
-    (layout/html {:nav {:selection :club}}
+    (layout/frame {:nav {:selection :club}}
      [:div.container-md.px-3.px-sm-4.px-xl-5
       [:div.row
        [:div.py-3.py-sm-4

@@ -74,7 +74,9 @@
   (vec (cons :enum (keys d/states))))
 
 (def nickname
-  [:re #"^[a-zA-Z0-9]+$"])
+  [:and
+   [:string {:min 4 :max 15}]
+   [:re #"^[a-zA-Z0-9]+$"]])
 
 (def person
   [:map {:closed true}

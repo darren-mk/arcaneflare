@@ -92,11 +92,14 @@
         valid? (m/validate md/nickname nickname)
         msg (cond
               (and avail? valid?)
-              [:p "This nickname is available to use."]
+              [:p.text-primary
+               "This nickname is available to use."]
               (and (not avail?) valid?)
-              [:p "This nickname has already been taken."]
+              [:p.text-danger
+               "This nickname has already been taken."]
               :else
-              [:p "A nickname cannot have a space or special charaters."])]
+              [:p.text-danger
+               "A nickname cannot have a space or special charaters."])]
     (l/frag [:div msg])))
 
 (defn check-email [{:keys [params]}]

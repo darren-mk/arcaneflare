@@ -12,4 +12,5 @@
     (t/testing "invalid cases"
       (t/are [s] (not (f s))
         "abc 123" "abc@123" "!abc123"
-        "a b c 1 2 3" "Abc1@3"))))
+        "a b c 1 2 3" "Abc1@3"
+        "abc" "abcdefghijk123456789"))))

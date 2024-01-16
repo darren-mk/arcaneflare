@@ -78,12 +78,17 @@
    [:string {:min 4 :max 15}]
    [:re #"^[a-zA-Z0-9]+$"]])
 
+(def email
+  [:and
+   [:string {:min 5 :max 15}]
+   [:re #"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"]])
+
 (def person
   [:map {:closed true}
    [:xt/id {:optional true} :uuid]
    [:person/id :uuid]
    [:person/nickname nickname]
-   [:person/email [:string {:min 1 :max 30}]]
+   [:person/email email]
    [:person/password [:string {:min 5 :max 25}]]
    [:person/role [:enum :customer :dancer :staff]]
    [:person/preferences :map]])

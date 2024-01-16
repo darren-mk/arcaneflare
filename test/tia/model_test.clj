@@ -24,3 +24,11 @@
       (t/are [s] (not (f s))
         "abc@123" "abc@d ef.com"))))
 
+(t/deftest password-test
+  (let [f #(m/validate model/password %)]
+    (t/testing "valid cases"
+      (t/are [s] (f s)
+        "Abc123xyz"))
+    (t/testing "invalid cases"
+      (t/are [s] (not (f s))
+        "abc12345678" "123" "abc"))))

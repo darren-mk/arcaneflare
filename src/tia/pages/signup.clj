@@ -119,8 +119,17 @@
     (l/frag [:div msg])))
 
 (defn check-password [{:keys [params]}]
-  (let [{:keys [password]} params]
-    (l/frag password)))
+  (let [{:keys [password]} params
+        valid? (m/validate md/password password)
+        msg (if valid?
+                [:p.text-primary
+                 "Password looks good."]
+                [:p.text-danger
+                 (str "At least one digit [0-9]"
+                      "At least one lowercase character [a-z]"
+                      "At least one uppercase character [A-Z]"
+                      "At least 8 characters in length, but no more than 32.")])]
+    (l/frag [:div msg])))
 
 (def routes
   ["/signup"

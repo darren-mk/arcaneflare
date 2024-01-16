@@ -83,13 +83,16 @@
    [:string {:min 5 :max 15}]
    [:re #"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"]])
 
+(def password
+  [:re #"^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,32}$"])
+
 (def person
   [:map {:closed true}
    [:xt/id {:optional true} :uuid]
    [:person/id :uuid]
    [:person/nickname nickname]
    [:person/email email]
-   [:person/password [:string {:min 5 :max 25}]]
+   [:person/password password]
    [:person/role [:enum :customer :dancer :staff]]
    [:person/preferences :map]])
 

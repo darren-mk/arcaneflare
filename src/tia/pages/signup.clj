@@ -1,8 +1,10 @@
 (ns tia.pages.signup
   (:require
    [clojure.string :as cstr]
+   [malli.core :as m]
    [tia.db.person :as pdb]
    [tia.layout :as l]
+   [tia.model :as md]
    [tia.calc :refer [>s]]))
 
 (defn input [k]
@@ -86,11 +88,16 @@
 
 (defn check-nickname [{:keys [params]}]
   (let [{:keys [nickname]} params
-        existent? (pdb/nickname-existent? nickname)
-        tags (if existent?
-               [:p "already exists."]
-               [:p "good to use"])]
-    (l/frag tags)))
+        avail? (not (pdb/nickname-existent? nickname))
+        valid? (m/validate md/nickname nickname)
+        msg (cond
+              (and avail? valid?)
+              [:p "This nickname is available to use."]
+              (and (not avail?) valid?)
+              [:p "This nickname has already been taken."]
+              :else
+              [:p "A nickname cannot have a space or special charaters."])]
+    (l/frag [:div msg])))
 
 (defn check-email [{:keys [params]}]
   (let [{:keys [email]} params]

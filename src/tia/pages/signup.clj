@@ -5,14 +5,59 @@
    [tia.db.person :as pdb]
    [tia.layout :as l]
    [tia.model :as md]
-   [tia.calc :refer [>s]]))
+   [tia.calc :refer [>s]]
+   [tia.util :as u]))
+
+(defn fail [k]
+  (let [msg (-> k name (cstr/replace #"-" " "))]
+    [:div [:h3.text-bg-danger msg]]))
+
+(comment
+  (fail :abc-def)
+  :=> [:div [:h3.text-bg-danger "abc def"]])
+
+(def back
+  [:a {:href "/signup"}
+   "Go back to sign up"])
+
+(defn success []
+  [:div [:h3.text-bg-primary
+         "Sign up successful. You can now log in."]])
+
+(defn result [{:keys [params] :as _req}]
+  (let [{:keys [nickname email password
+                role agreed?]} params
+        msgs (hash-set
+              (when (pdb/nickname-existent? nickname)
+                :nickname-already-exists)
+              (when (pdb/email-existent? email)
+                :email-already-exists)
+              (when (not= "on" agreed?)
+                :term-is-not-agreed)
+              (when (not (m/validate md/nickname nickname))
+                :nickname-is-not-in-format)
+              (when (not (m/validate md/email email))
+                :email-is-not-in-format))
+        errors (remove nil? msgs)
+        tags (if (empty? errors)
+               (if (:xtdb.api/tx-id
+                    (pdb/create! {:person/id (u/uuid)
+                                  :person/nickname nickname
+                                  :person/email email
+                                  :person/password password
+                                  :person/role (keyword role)
+                                  :person/agreed? (= "on" agreed?)}))
+                 (success)
+                 (fail :error-recording-in-db))
+               (into [:div back] (map fail errors)))]
+    (l/frame {} tags)))
 
 (defn input [k]
   (let [target (str (name k) "check-result")
-        label (-> k name
-                  cstr/capitalize)
-        checker {:hx-get (str "/signup/check-" (name k))
-                 :hx-trigger (>s :keyup :changed :delay:500ms)
+        label (-> k name cstr/capitalize)
+        checker {:hx-post (str "/signup/check-" (name k))
+                 :hx-trigger (>s :input :changed)
+                 :hx-indicator :.htmx-indicator
                  :hx-target (str "#" target)}]
     [:div.row.mb-3
      [:label.col-sm-3.col-form-label.mb-1.mb-sm-0
@@ -28,10 +73,8 @@
 (defn role [k]
   [:div.form-check
    [:input.form-check-input
-    {:name :role
-     :type :radio
-     :required true
-     :value k}]
+    {:name :role :type :radio
+     :required true :value k}]
    [:label.form-check-label
     (-> k name cstr/capitalize)]])
 
@@ -40,8 +83,10 @@
    [:div.col-sm-9.ms-auto
     [:div.form-check
      [:input.form-check-input
-      {:type :checkbox
-       :required true}]
+      {:type :checkbox 
+       :required true
+       :value false
+       :name :agreed?}]
      [:label.form-check-label
       {:for "agree-to-terms-2"}
       "I agree to the"
@@ -56,8 +101,8 @@
     {:type :submit} "Sign up"]])
 
 (defn form []
-  [:form {:action "/signup"
-          :method :post}
+  [:form {:action "/signup/result"
+          :method "POST"}
    (input :nickname)
    (input :email)
    (input :password)
@@ -68,8 +113,7 @@
      (role :customer)
      (role :dancer)
      (role :staff)]]
-   agreement
-   control])
+   agreement control])
 
 (defn page [_]
   (l/frame
@@ -78,21 +122,13 @@
     [:div.d-flex.justify-content-center
      (form)]]))
 
-(defn result [{:keys [params]}]
-  (let [{:keys [email]} params]
-    (l/frame {:nav nil}
-                 [:div
-                  (if (= "abc@def.com" email)
-                    [:p "success"]
-                    [:p "fail"])])))
-
 (defn check-nickname [{:keys [params]}]
   (let [{:keys [nickname]} params
         avail? (not (pdb/nickname-existent? nickname))
         valid? (m/validate md/nickname nickname)
         msg (cond
               (and avail? valid?)
-              [:p.text-primary
+               [:p.text-primary
                "This nickname is available to use."]
               (and (not avail?) valid?)
               [:p.text-danger
@@ -122,18 +158,20 @@
   (let [{:keys [password]} params
         valid? (m/validate md/password password)
         msg (if valid?
-                [:p.text-primary
-                 "Password looks good."]
-                [:p.text-danger
-                 (str "At least one digit [0-9]"
-                      "At least one lowercase character [a-z]"
-                      "At least one uppercase character [A-Z]"
-                      "At least 8 characters in length, but no more than 32.")])]
+              [:p.text-primary
+               "Password looks good."]
+              [:div
+               [:p.text-danger "Password must contain one digit from 1 to 9,"]
+               [:p.text-danger "one lowercase letter,"]
+               [:p.text-danger "one uppercase letter,"]
+               [:p.text-danger "one special character, no space,"]
+               [:p.text-danger "and it must be 8-16 characters long."]])]
     (l/frag [:div msg])))
 
 (def routes
   ["/signup"
-   ["" {:get page :post result}]
-   ["/check-nickname" {:get check-nickname}]
-   ["/check-email" {:get check-email}]
-   ["/check-password" {:get check-password}]])
+   ["" {:get page}]
+   ["/check-nickname" {:post check-nickname}]
+   ["/check-email" {:post check-email}]
+   ["/check-password" {:post check-password}]
+   ["/result" {:post result}]])

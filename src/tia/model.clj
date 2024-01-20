@@ -81,10 +81,10 @@
 (def email
   [:and
    [:string {:min 5 :max 15}]
-   [:re #"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"]])
+   [:re #"^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$"]])
 
 (def password
-  [:re #"^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,32}$"])
+  [:re #"^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.* ).{8,16}$"])
 
 (def person
   [:map {:closed true}
@@ -94,7 +94,8 @@
    [:person/email email]
    [:person/password password]
    [:person/role [:enum :customer :dancer :staff]]
-   [:person/preferences :map]])
+   [:person/agreed? :boolean]
+   [:person/preferences {:optional true} :map]])
 
 (def post
   [:map {:closed true}

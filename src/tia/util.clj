@@ -2,8 +2,7 @@
   "utility functions that involve side effects
   or that are not regarding domain logic."
   (:require
-   [clojure.java.io :as io]
-   [clojure.string :as cstr]
+   [java-time.api :as jt]
    [malli.core :as m]))
 
 (defn uuid []
@@ -12,17 +11,14 @@
 (defn now []
   (java.util.Date.))
 
-(m/=> read-time-s
-      [:=> [:cat :string]
-       inst?])
+(m/=> after-days
+      [:=> [:cat :int] inst?])
 
-(defn read-time-s [s]
-  (let [frm "yyyyMMddhhmmss"
-        jdf (java.text.SimpleDateFormat. frm)]
-    (.parse jdf s)))
+(defn after-days [n]
+  (-> (jt/instant)
+      (jt/plus (jt/days n))
+      jt/java-date))
 
-(defn file-names! [dir]
-  (let [obj (io/file dir)
-        names (map #(.getName %) (file-seq obj))
-        pred #(= ".edn" (cstr/join (take-last 4 %)))]
-    (filter pred names)))
+(comment
+  (after-days 30)
+  :=> #inst "2024-02-20T12:12:52.819-00:00")

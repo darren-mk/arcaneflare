@@ -38,7 +38,7 @@
   (count-persons)
   :=> 2)
 
-(defn find-person-by-email [email]
+(defn find-by-email [email]
   (ffirst
    (com/query
     '{:find [(pull ?person [*])]
@@ -47,7 +47,7 @@
     [email])))
 
 (comment
-  (find-person-by-email "kokonut@abc.com")
+  (find-by-email "kokonut@abc.com")
   :=> {:person/id #uuid "a3a9e552-773e-4b3b-9594-4c0fa5e6c79e",
        :person/nickname "kokonut",
        :person/email "kokonut@abc.com",

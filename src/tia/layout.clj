@@ -2,10 +2,12 @@
   (:require
    [clojure.java.io]
    [hiccup2.core :as h]
+   [malli.core :as m]
    [selmer.parser :as parser]
    [ring.util.anti-forgery :refer [anti-forgery-field]]
    [ring.util.response]
    [tia.data :as d]
+   [tia.util :as u]
    [tia.components.navbar :refer [navbar]]))
 
 (parser/set-resource-path!
@@ -26,18 +28,44 @@
    :headers (:html d/content-type)
    :body (-> data h/html str)})
 
+(m/=> headerize
+      [:=> [:cat [:maybe :uuid]] :map])
+
+(defn headerize [session-id]
+  (merge
+   (:html d/content-type)
+   (when session-id
+     {"Set-Cookie" (str "session-id="
+                        session-id
+                        ";path=/")})))
+
+(comment
+  (headerize (u/uuid))
+  :=> {"Content-Type" "text/html",
+       "Set-Cookie" "session-id=2dfdb261-85e6-4aa3-b57c-5d46c0ff796d;path=/"}
+  (headerize nil)
+  :=> {"Content-Type" "text/html"})
+
+(defn bodify [prop data]
+  [:body.d-flex.flex-column.min-vh-100
+   (navbar (-> prop :nav :selection))
+   data d/ui-action])
+
+(defn headify []
+  [:head
+   d/htmx d/ui-style
+   d/theme-style
+   d/css-link d/icons])
+
 (defn frame [prop data]
-  (let [head [:head
-              d/htmx d/ui-style
-              d/theme-style
-              d/css-link d/icons]
-        body [:body.d-flex.flex-column.min-vh-100
-              (navbar (-> prop :nav :selection))
-              data d/ui-action]
+  (let [session-id (-> prop :session :id)
+        headers (headerize session-id)
+        head (headify)
+        body (bodify prop data)
         html [:html d/html-prop
               head body]]
     {:status 200
-     :headers (:html d/content-type)
+     :headers headers
      :body (-> html h/html str)}))
 
 (defn css [s]

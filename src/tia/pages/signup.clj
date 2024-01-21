@@ -100,20 +100,21 @@
    [:button.btn.btn-primary
     {:type :submit} "Sign up"]])
 
+(def have-account
+  [:div.text-center.text-body-secondary
+   "Already have account?"
+   [:a {:href "/login"} "Log In"]])
+
 (defn form []
   [:form {:action "/signup/result"
           :method "POST"}
-   (input :nickname)
-   (input :email)
-   (input :password)
+   (input :nickname) (input :email) (input :password)
    [:fieldset.row.mb-3
     [:legend.col-form-label.mb-1.mb-sm-0.col-sm-3.pt-0
      "Role"]
     [:div.col-sm-9
-     (role :customer)
-     (role :dancer)
-     (role :staff)]]
-   agreement control])
+     (role :customer) (role :dancer) (role :staff)]]
+   agreement control have-account])
 
 (defn page [_]
   (l/frame

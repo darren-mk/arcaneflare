@@ -1,5 +1,29 @@
 (ns tia.components.navbar)
 
+(def hrefs
+  {:club "/clublist/us-northeast"
+   :dancer "/dancerlist"
+   :dancerlist "/dancerlist"
+   :review "/reviewlist"
+   :reviewlist "/reviewlist"
+   :discuss "/discusslist"
+   :discusslist "/discusslist"
+   :article "/articlelist"
+   :articlelist "/articlelist"
+   :gallery "/gallery"})
+
+(def labels
+  {:club "Club"
+   :dancer "Dancer"
+   :dancerlist "Dancer"
+   :review "Review"
+   :reviewlist "Review"
+   :discuss "Discuss"
+   :discusslist "Discuss"
+   :article "Article"
+   :articlelist "Article"
+   :gallery "Gallery"})
+
 (def logo
   [:a.navbar-brand.d-flex.align-items-center
    {:href "#"}
@@ -17,13 +41,15 @@
     :aria-label "Toggle navigation"}
    [:span.navbar-toggler-icon]])
 
-(defn path
-  [{:keys [label href active?]}]
-  [:li.nav-item
-   [:a.nav-link
-    {:class (when active? "active")
-     :href href}
-    label]])
+(defn path [idents selection]
+  (let [active? (contains? idents selection)
+        cls (when active? "active")
+        href (get hrefs (first idents))
+        label (get labels (first idents))]
+    [:li.nav-item
+     [:a.nav-link
+      {:class cls :href href}
+      label]]))
 
 (defn region []
   [:div.btn-group.me-2
@@ -47,29 +73,29 @@
    [:a.btn.btn-secondary.flex-grow-1.text-nowrap
     {:area-hidden true} 3980]])
 
+(defn avatar [session])
+
 (defn in []
   [:a.btn.btn-primary.text-nowrap
    {:href "/login"} "Log In"])
 
-(defn navbar [selection]
-  [:nav.navbar.navbar-expand-md.border-bottom.border-secondary.border-opacity-25
-   {:style {:background-color "var(--bs-content-bg)"
-            :border-bottom "var(--bs-border-width) solid var(--bs-content-border-color)"}}
-   [:div.container-fluid.px-3.px-sm-4.px-xl-5.py-1.justify-content-start
-    logo toggler
-    [:div.collapse.navbar-collapse {:id "navbar-collapse-1"}
-     [:ul.navbar-nav.me-auto.mb-2.mb-lg-0
-      (path {:label "Club" :active? (= :club selection)
-             :href "/clublist/us-northeast"})
-      (path {:label "Dancer" :href "/dancerlist"
-             :active? (#{:dancer :dancerlist} selection)})
-      (path {:label "Review" :href "/reviewlist"
-             :active? (#{:review :reviewlist} selection)})
-      (path {:label "Discuss" :href "/discusslist"
-             :active? (#{:discuss :discusslist} selection)})
-      (path {:label "Article" :href "/articlelist"
-             :active? (#{:article :articlelist} selection)})
-      (path {:label "Gallery" :href "/gallery"
-             :active? (#{:gallery} selection)})]
-     [:div.d-flex.align-items-center.justify-content-center
-      (region) search (counter) (in)]]]])
+(defn navbar [{:keys [session nav]}]
+  (let [selection (:selection nav)]
+    [:nav.navbar.navbar-expand-md.border-bottom.border-secondary.border-opacity-25
+     {:style {:background-color "var(--bs-content-bg)"
+              :border-bottom "var(--bs-border-width) solid var(--bs-content-border-color)"}}
+     [:div.container-fluid.px-3.px-sm-4.px-xl-5.py-1.justify-content-start
+      logo toggler
+      [:div.collapse.navbar-collapse {:id "navbar-collapse-1"}
+       [:ul.navbar-nav.me-auto.mb-2.mb-lg-0
+        (path #{:club} selection)
+        (path #{:dancerlist} selection)
+        (path #{:review :reviewlist} selection)
+        (path #{:discuss :discusslist} selection)
+        (path #{:article :articlelist} selection)
+        (path #{:gallery} selection)]
+       [:div.d-flex.align-items-center.justify-content-center
+        (region) search (counter)
+        (if session
+          [:h1 (-> session :person/nickname)]
+          (in))]]]])) 

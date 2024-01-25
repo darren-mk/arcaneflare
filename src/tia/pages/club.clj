@@ -57,13 +57,14 @@
          vec)))
 
 (defn page [selection]
-  (fn [req]
+  (fn [{:keys [session] :as req}]
     (let [handle (-> req :path-params
                      :handle keyword)
           {:keys [club]}
           (db-club/find-club-by-handle handle)]
       (layout/frame
-       {:nav {:selection :club}}
+       {:nav {:selection :club}
+        :session session}
        [:div.container-md.px-3.px-sm-4.px-xl-5
         [:div.row
          [:div.py-3.py-sm-4

@@ -2,8 +2,8 @@
   "utility functions that involve side effects
   or that are not regarding domain logic."
   (:require
-   [java-time.api :as jt]
-   [malli.core :as m]))
+   [malli.core :as m]
+   [tick.core :as t]))
 
 (defn uuid []
   (java.util.UUID/randomUUID))
@@ -15,10 +15,20 @@
       [:=> [:cat :int] inst?])
 
 (defn after-days [n]
-  (-> (jt/instant)
-      (jt/plus (jt/days n))
-      jt/java-date))
+  (t/inst
+   (t/>> (t/instant)
+         (t/new-duration n :days))))
 
 (comment
   (after-days 30)
-  :=> #inst "2024-02-20T12:12:52.819-00:00")
+  :=> #inst "2024-02-21T15:43:47.621-00:00")
+
+(defn past? [d]
+  (t/< (t/instant d)
+       (t/instant)))
+
+(comment
+  (past? #inst "2001-02-21T15:43:47.621-00:00")
+  :=> true
+  (past? #inst "2099-02-21T15:43:47.621-00:00")
+  :=> false)

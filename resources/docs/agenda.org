@@ -50,6 +50,7 @@ in namecheap,
 ***** DONE create login flow and session
 ***** DONE create post flow
 ***** DONE adopt htmx
+***** DONE implement session with cookie
 ***** TODO design logo
 ***** TODO create joining workflow
 1. join -> ask nickname and email

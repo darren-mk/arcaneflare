@@ -10,12 +10,13 @@
    [tia.pages.reviewlist :as reviewlist]
    [tia.pages.signup :as signup]
    [tia.pages.storage :as storage]
-   [tia.middleware :as middleware]
+   [tia.middleware :as mw]
    [ring.util.response]))
 
 (defn routes []
   ["" {:middleware [#_middleware/wrap-csrf
-                    middleware/wrap-formats]}
+                    mw/wrap-formats
+                    mw/sessionize]}
    ["/css" {:get style/core}]
    club/routes
    clublist/routes

@@ -21,3 +21,6 @@
 (def ns->schema
   #(->> % (str "tia.model/")
         symbol eval))
+
+(defn session-str [id]
+  (str "session-id=" id ";path=/"))

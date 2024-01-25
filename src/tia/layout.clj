@@ -6,6 +6,7 @@
    [selmer.parser :as parser]
    [ring.util.anti-forgery :refer [anti-forgery-field]]
    [ring.util.response]
+   [tia.calc :as calc]
    [tia.data :as d]
    [tia.util :as u]
    [tia.components.navbar :refer [navbar]]))
@@ -35,9 +36,8 @@
   (merge
    (:html d/content-type)
    (when session-id
-     {"Set-Cookie" (str "session-id="
-                        session-id
-                        ";path=/")})))
+     {d/set-cookie
+      (calc/session-str session-id)})))
 
 (comment
   (headerize (u/uuid))
@@ -48,7 +48,7 @@
 
 (defn bodify [prop data]
   [:body.d-flex.flex-column.min-vh-100
-   (navbar (-> prop :nav :selection))
+   (navbar prop)
    data d/ui-action])
 
 (defn headify []
@@ -58,6 +58,7 @@
    d/css-link d/icons])
 
 (defn frame [prop data]
+  (prn "@@@@ prop" prop)
   (let [session-id (-> prop :session :id)
         headers (headerize session-id)
         head (headify)

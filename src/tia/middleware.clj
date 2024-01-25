@@ -1,15 +1,19 @@
 (ns tia.middleware
   (:require
    [tia.env :refer [defaults]]
+   [tia.db.session :as session-db]
    [clojure.tools.logging :as log]
+   [tia.calc :as calc]
    [tia.layout :refer [error-page]]
+   [tia.util :as u]
    [ring.middleware.anti-forgery :refer [wrap-anti-forgery]]
    [muuntaja.middleware :refer [wrap-format wrap-params]]
    [luminus-transit.time :as time]
    [muuntaja.core :as m]
    [ring.middleware.flash :refer [wrap-flash]]
    [ring.adapter.undertow.middleware.session :refer [wrap-session]]
-   [ring.middleware.defaults :refer [site-defaults wrap-defaults]]))
+   [ring.middleware.defaults :refer [site-defaults wrap-defaults]]
+   [tia.data :as d]))
 
 (defn wrap-internal-error [handler]
   (let [error-result (fn [^Throwable t]
@@ -63,3 +67,22 @@
            (assoc-in [:security :anti-forgery] false)
            (dissoc :session)))
       wrap-internal-error))
+
+(defn sessionize [handler]
+  (fn [req]
+    (let [sid (-> req :cookies (get "session-id") :value)
+          {:keys [session/renewal
+                  session/expiration] :as session}
+          (when sid (-> sid parse-uuid session-db/find-by-id))
+          person-id (get session :session/person.id)
+          expired? (boolean (and expiration (u/past? expiration)))
+          renewing? (boolean (and renewal (u/past? renewal)))
+          req' (if expired? req
+                   (assoc req :session session))
+          resp (handler req')]
+      (if (and (not expired?) renewing?)
+        (let [{:keys [session/id]} (session-db/login! person-id)
+              path [:headers d/set-cookie]
+              session-str (calc/session-str id)]
+          (assoc-in resp path session-str))
+        resp))))

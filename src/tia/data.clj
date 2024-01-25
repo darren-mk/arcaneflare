@@ -1,5 +1,8 @@
 (ns tia.data)
 
+(def set-cookie
+  "Set-Cookie")
+
 (def ui-style
   [:link
    {:rel :stylesheet

@@ -102,6 +102,7 @@
    [:xt/id {:optional true} :uuid]
    [:session/id :uuid]
    [:session/person.id :uuid]
+   [:session/renewal inst?]
    [:session/expiration inst?]])
 
 (def post

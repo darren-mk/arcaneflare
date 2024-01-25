@@ -5,8 +5,8 @@
    [tia.db.session :as session-db]))
 
 (defn result [{:keys [params]}]
-  (let [m (select-keys params [:email :password])
-        session (session-db/login! m)
+  (let [{:keys [email password]} params
+        session (session-db/login! email password)
         prop (if session
                {:session {:id (:session/id session)}}
                {})

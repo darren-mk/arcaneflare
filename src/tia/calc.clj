@@ -52,10 +52,6 @@
     (cstr/join "-" $)
     (keyword $)))
 
-(m/=> schedulify
-      [:=> [:cat vector?]
-       model/schedules])
-
 (def day->num
   {:mon 0
    :tue 1
@@ -74,12 +70,6 @@
          (filter #(= (day->num day)
                      (-> % :open :day)))
          first)))
-
-(defn schedulify [google-periods]
-  (let [gps google-periods]
-    (as-> [:mon :tue :wed :thu :fri :sat :sun] $
-         (group-by identity $)
-         (update-vals $ #((find-period-f (first %)) gps)))))
 
 (defn mask-gplace [fields]
   (->> fields

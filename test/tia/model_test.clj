@@ -4,21 +4,6 @@
    [malli.core :as m]
    [tia.model :as model]))
 
-(def sample-juncture-1
-  {:day 0 :hour 18 :minute 0})
-
-(def sample-juncture-2
-  {:day 1 :hour 3 :minute 0})
-
-(def sample-schedule
-  {:open sample-juncture-1
-   :close sample-juncture-2})
-
-(def sample-schedules
-  (->> [:wed :thu :fri :sat :sun]
-       (map (fn [day] {day sample-schedule}))
-       (apply merge)))
-
 (t/deftest tick-test
   (t/is
    (m/validate
@@ -51,24 +36,6 @@
      :address/zip "07503"
      :address/country :usa})))
 
-(t/deftest juncture-test
-  (t/are [data]
-      (m/validate model/juncture data)
-    sample-juncture-1
-    sample-juncture-2))
-
-(t/deftest schedule-test
-  (t/is
-   (m/validate
-    model/schedule
-    sample-schedule)))
-
-(t/deftest schedules-test
-  (t/is
-   (m/validate
-    model/schedules
-    sample-schedules)))
-
 (t/deftest place-test
   (t/is
    (m/validate
@@ -86,7 +53,7 @@
      :place/twitterx "https://twitter.com/hitchingpostnj"
      :place/instagram "https://www.instagram.com/Hitching_Post_/"
      :place/phone "1-973-684-7678"
-     :place/schedules sample-schedules
+     :place/schedules ["mon 4pm - 10pm" "tue 4pm - 11pm"]
      :place/address-id #uuid "c1cb1901-d48d-46dc-9ea5-2deb66b4da5c"})))
 
 (t/deftest nickname-test

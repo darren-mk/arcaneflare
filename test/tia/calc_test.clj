@@ -27,7 +27,7 @@
        {:abc/x 1 :abc/y 2}))))
 
 (t/deftest ns->schema-test
-  (t/is (vector? (src/ns->schema "club"))))
+  (t/is (vector? (src/ns->schema "address"))))
 
 (t/deftest session-stringify-test
   (t/is

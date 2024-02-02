@@ -76,7 +76,7 @@
               :sk :ab :nl :nb}}})
 
 (def countries
-  {:usa {:label "United States"
+  {:us {:label "United States"
          :states #{:al :ak :az :ar :ca :co :ct :de :dc :fl
                    :ga :hi :id :il :in :ia :ks :ky :la :me
                    :md :ma :mi :mn :ms :mo :mt :ne :nv :nh
@@ -174,3 +174,24 @@
    :Scranton-Wilkes-Barre {:label "Scranton / Wilkes-Barre"}
    :Lancaster-York {:label "Lancaster / York"}
    :PA-Other-Areas {:label "PA Other Areas"}})
+
+(def gplace-uri
+  "https://places.googleapis.com/v1/places:searchText")
+
+(def gplace-fields
+  #{:googleMapsUri :internationalPhoneNumber :websiteUri
+    :paymentOptions :displayName :regularOpeningHours
+    :businessStatus :id :location :addressComponents})
+
+(def address-comp-types
+  {:country :keyword
+   :state :keyword
+   :zip :string
+   :county :string
+   :city :string
+   :street :string
+   :number :string})
+
+(def industries
+  {:club {:label "strip club"}
+   :parlor {:label "massage parlor"}})

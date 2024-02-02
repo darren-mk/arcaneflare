@@ -83,6 +83,6 @@
       (if (and (not expired?) renewing?)
         (let [{:keys [session/id]} (session-db/login! person-id)
               path [:headers d/set-cookie]
-              session-str (calc/session-str id)]
+              session-str (calc/session-stringify id)]
           (assoc-in resp path session-str))
         resp))))

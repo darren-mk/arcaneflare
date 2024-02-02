@@ -37,7 +37,8 @@
    (:html d/content-type)
    (when session-id
      {d/set-cookie
-      (calc/session-str session-id)})))
+      (calc/session-stringify
+       session-id)})))
 
 (comment
   (headerize (u/uuid))

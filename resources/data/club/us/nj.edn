@@ -1,0 +1,638 @@
+[#:place{:phone "+1 201-440-3332",
+         :address-id #uuid "7b4be920-055d-45ad-9d8c-ab502d3ac54a",
+         :schedules
+         ["Monday: Closed"
+          "Tuesday: 6:00 PM – 2:00 AM"
+          "Wednesday: 6:00 PM – 2:00 AM"
+          "Thursday: 6:00 PM – 2:00 AM"
+          "Friday: 6:00 PM – 3:00 AM"
+          "Saturday: 6:00 PM – 3:00 AM"
+          "Sunday: 6:00 PM – 2:00 AM"],
+         :language :en,
+         :status :operational,
+         :id #uuid "12201d95-09af-42e3-9d0b-569ce5332a23",
+         :website "http://www.clubflamingonj.com/",
+         :paymethods #{:debit},
+         :label "Flamingo Gentlemen's Club",
+         :industry :club,
+         :handle :flamingo-gentlemens-club}
+ #:address{:id #uuid "7b4be920-055d-45ad-9d8c-ab502d3ac54a",
+           :state :nj,
+           :coordinate
+           {:latitude 40.8562353, :longitude -74.0482225},
+           :googleid "ChIJu9yz8sb5wokR9vbOf1Zccks",
+           :language :en,
+           :zip "07606",
+           :country :us,
+           :googleuri
+           "https://maps.google.com/?cid=5436509226770822902",
+           :number "430",
+           :street "US-46",
+           :city "South Hackensack",
+           :county "Bergen County"}
+ #:place{:phone "+1 201-880-7667",
+         :address-id #uuid "081c4d0d-e5cb-4d8f-b828-186ef37f9601",
+         :schedules
+         ["Monday: 2:00 PM – 2:00 AM"
+          "Tuesday: 2:00 PM – 2:00 AM"
+          "Wednesday: 2:00 PM – 2:00 AM"
+          "Thursday: 2:00 PM – 2:00 AM"
+          "Friday: 2:00 PM – 3:00 AM"
+          "Saturday: 2:00 PM – 3:00 AM"
+          "Sunday: 2:00 PM – 3:00 AM"],
+         :language :en,
+         :status :operational,
+         :id #uuid "2fe8b7bf-8325-4320-9807-f08eaaffe213",
+         :website "http://www.blushgc.com/",
+         :paymethods #{},
+         :label "Blush Gentlemen's Club",
+         :industry :club,
+         :handle :blush-gentlemens-club}
+ #:address{:id #uuid "081c4d0d-e5cb-4d8f-b828-186ef37f9601",
+           :state :nj,
+           :coordinate {:latitude 40.863019, :longitude -74.095847},
+           :googleid "ChIJjUYyXxb5wokRAqBOw3eTv90",
+           :language :en,
+           :zip "07606",
+           :country :us,
+           :googleuri
+           "https://maps.google.com/?cid=15978652145520910338",
+           :number "125",
+           :street "Saddle River Ave",
+           :city "South Hackensack",
+           :county "Bergen County"}
+ #:place{:phone "+1 973-365-0373",
+         :address-id #uuid "9c1893d3-ef36-4c76-9218-38ddcd1abd62",
+         :schedules
+         ["Monday: 12:00 PM – 3:00 AM"
+          "Tuesday: 12:00 PM – 3:00 AM"
+          "Wednesday: 12:00 PM – 3:00 AM"
+          "Thursday: 12:00 PM – 3:00 AM"
+          "Friday: 12:00 PM – 3:00 AM"
+          "Saturday: 5:00 PM – 3:00 AM"
+          "Sunday: 5:00 PM – 3:00 AM"],
+         :language :en,
+         :status :operational,
+         :id #uuid "cea208d1-a987-42c5-8367-a40320165b36",
+         :website "http://www.silkgentlemensclub.com/",
+         :paymethods #{:debit :cash},
+         :label "Silk Gentlemens Club",
+         :industry :club,
+         :handle :silk-gentlemens-club}
+ #:address{:id #uuid "9c1893d3-ef36-4c76-9218-38ddcd1abd62",
+           :state :nj,
+           :coordinate
+           {:latitude 40.8568856, :longitude -74.1441358},
+           :googleid "ChIJvcuTEGX_wokRvIcUpUVO52s",
+           :language :en,
+           :zip "07055",
+           :country :us,
+           :googleuri
+           "https://maps.google.com/?cid=7775269342707746748",
+           :number "40",
+           :street "Brighton Ave",
+           :city "Passaic",
+           :county "Passaic County"}
+ #:place{:phone "+1 973-779-7455",
+         :address-id #uuid "a3779688-ffdb-4b5f-9775-621935cb544a",
+         :schedules
+         ["Monday: 12:00 PM – 3:00 AM"
+          "Tuesday: 12:00 PM – 3:00 AM"
+          "Wednesday: 12:00 PM – 3:00 AM"
+          "Thursday: 12:00 PM – 3:00 AM"
+          "Friday: 12:00 PM – 3:00 AM"
+          "Saturday: 5:00 PM – 3:00 AM"
+          "Sunday: 5:00 PM – 3:00 AM"],
+         :language :en,
+         :status :operational,
+         :id #uuid "563003db-ed19-4b85-a0e2-f541553e8f6b",
+         :website "http://instagram.com/platinumdollzpassaicnj",
+         :paymethods #{},
+         :label "Platinum Dollz Gentlemens Lounge",
+         :industry :club,
+         :handle :platinum-dollz-gentlemens-lounge}
+ #:address{:id #uuid "a3779688-ffdb-4b5f-9775-621935cb544a",
+           :state :nj,
+           :coordinate
+           {:latitude 40.8539175, :longitude -74.1404719},
+           :googleid "ChIJ0XE9giD_wokREL4wlGyI9cg",
+           :language :en,
+           :zip "07055",
+           :country :us,
+           :googleuri
+           "https://maps.google.com/?cid=14480630176803765776",
+           :number "426",
+           :street "Van Houten Ave",
+           :city "Passaic",
+           :county "Passaic County"}
+ #:place{:phone "+1 973-279-1200",
+         :address-id #uuid "76ae5c19-7ba5-4d85-9975-5b11baf582b2",
+         :schedules
+         ["Monday: 12:00 PM – 3:00 AM"
+          "Tuesday: 12:00 PM – 3:00 AM"
+          "Wednesday: 12:00 PM – 3:00 AM"
+          "Thursday: 12:00 PM – 3:00 AM"
+          "Friday: 12:00 PM – 3:00 AM"
+          "Saturday: 12:00 PM – 3:00 AM"
+          "Sunday: 12:00 PM – 3:00 AM"],
+         :language :en,
+         :status :operational,
+         :id #uuid "54975600-4a4d-4893-bb5d-8632bb01c956",
+         :website "http://www.sunrisegogo.com/",
+         :paymethods #{},
+         :label "Sunrise Sports Go Go Strip Club",
+         :industry :club,
+         :handle :sunrise-sports-go-go-strip-club}
+ #:address{:id #uuid "76ae5c19-7ba5-4d85-9975-5b11baf582b2",
+           :state :nj,
+           :coordinate
+           {:latitude 40.905175199999995, :longitude -74.1665014},
+           :googleid "ChIJ6wBWQCz8wokREZcRLQ0wMIM",
+           :language :en,
+           :zip "07503",
+           :country :us,
+           :googleuri
+           "https://maps.google.com/?cid=9453108450999506705",
+           :number "556",
+           :street "Straight St",
+           :city "Paterson",
+           :county "Passaic County"}
+ #:place{:phone "+1 973-677-4171",
+         :address-id #uuid "6ea896f7-8ad6-490d-aaaf-6622f120ae01",
+         :schedules
+         ["Monday: 3:00 PM – 1:30 AM"
+          "Tuesday: 3:00 PM – 1:30 AM"
+          "Wednesday: 3:00 PM – 1:30 AM"
+          "Thursday: 3:00 PM – 1:30 AM"
+          "Friday: 3:00 PM – 1:30 AM"
+          "Saturday: 3:00 PM – 1:30 AM"
+          "Sunday: 3:00 PM – 1:30 AM"],
+         :language :en,
+         :status :operational,
+         :id #uuid "6c650872-0628-47d5-8850-e45200598890",
+         :website nil,
+         :paymethods #{},
+         :label "VIP's Gentlemen's Club",
+         :industry :club,
+         :handle :vips-gentlemens-club}
+ #:address{:id #uuid "6ea896f7-8ad6-490d-aaaf-6622f120ae01",
+           :state :nj,
+           :coordinate
+           {:latitude 40.7758156, :longitude -74.2381462},
+           :googleid "ChIJa3Cegz6rw4kRvE9COD_kQLc",
+           :language :en,
+           :zip "07050",
+           :country :us,
+           :googleuri
+           "https://maps.google.com/?cid=13204805067628236732",
+           :number "558",
+           :street "Main St",
+           :city "City of Orange",
+           :county "Essex County"}
+ #:place{:phone "+1 201-226-9300",
+         :address-id #uuid "e581fcec-eb6f-4463-a18b-8f9053b7d033",
+         :schedules
+         ["Monday: 6:00 PM – 2:00 AM"
+          "Tuesday: 6:00 PM – 2:00 AM"
+          "Wednesday: 6:00 PM – 2:00 AM"
+          "Thursday: 6:00 PM – 2:00 AM"
+          "Friday: 6:00 PM – 4:00 AM"
+          "Saturday: 6:00 PM – 4:00 AM"
+          "Sunday: 6:00 PM – 2:00 AM"],
+         :language :en,
+         :status :operational,
+         :id #uuid "83d361e2-3c4e-46f2-b85b-82ea3e6b989f",
+         :website "http://facebook.com/theharemcabaretnj",
+         :paymethods #{},
+         :label "The Harem Cabaret",
+         :industry :club,
+         :handle :the-harem-cabaret}
+ #:address{:id #uuid "e581fcec-eb6f-4463-a18b-8f9053b7d033",
+           :state :nj,
+           :coordinate
+           {:latitude 40.885138399999995, :longitude -74.0682336},
+           :googleid "ChIJD5suWO75wokRLKBVoAdwVIo",
+           :language :en,
+           :zip "07644",
+           :country :us,
+           :googleuri
+           "https://maps.google.com/?cid=9967715053334798380",
+           :number "100",
+           :street "NJ-17",
+           :city "Lodi",
+           :county "Bergen County"}
+ #:place{:phone "+1 973-256-3302",
+         :address-id #uuid "bd15516f-2fc8-4244-a803-def0b363cc68",
+         :schedules
+         ["Monday: 6:00 PM – 3:00 AM"
+          "Tuesday: 6:00 PM – 3:00 AM"
+          "Wednesday: 6:00 PM – 3:00 AM"
+          "Thursday: 6:00 PM – 3:00 AM"
+          "Friday: 6:00 PM – 3:00 AM"
+          "Saturday: 6:00 PM – 3:00 AM"
+          "Sunday: 6:00 PM – 3:00 AM"],
+         :language :en,
+         :status :operational,
+         :id #uuid "ce411ac1-17fa-4fb5-b884-a4caca685f6a",
+         :website "http://www.lacewaynenj.com/",
+         :paymethods #{},
+         :label "Lace",
+         :industry :club,
+         :handle :lace}
+ #:address{:id #uuid "bd15516f-2fc8-4244-a803-def0b363cc68",
+           :state :nj,
+           :coordinate
+           {:latitude 40.8966841, :longitude -74.2440769},
+           :googleid "ChIJNcw5nZMBw4kRQJg994TcOys",
+           :language :en,
+           :zip "07470",
+           :country :us,
+           :googleuri
+           "https://maps.google.com/?cid=3115326030898632768",
+           :number "24",
+           :street "Galesi Dr",
+           :city "Wayne",
+           :county "Passaic County"}
+ #:place{:phone "+1 201-909-8983",
+         :address-id #uuid "2b57deff-f417-4c26-a7ef-b099162a6029",
+         :schedules
+         ["Monday: 11:00 AM – 2:00 AM"
+          "Tuesday: 11:00 AM – 2:00 AM"
+          "Wednesday: 11:00 AM – 2:00 AM"
+          "Thursday: 11:00 AM – 2:00 AM"
+          "Friday: 11:00 AM – 3:00 AM"
+          "Saturday: 11:00 AM – 3:00 AM"
+          "Sunday: 11:00 AM – 2:00 AM"],
+         :language :en,
+         :status :operational,
+         :id #uuid "facbbcc3-8fc1-4044-84c5-4ba3d1a4d0ae",
+         :website nil,
+         :paymethods #{},
+         :label "Satin Dolls",
+         :industry :club,
+         :handle :satin-dolls}
+ #:address{:id #uuid "2b57deff-f417-4c26-a7ef-b099162a6029",
+           :state :nj,
+           :coordinate
+           {:latitude 40.882103099999995, :longitude -74.066893},
+           :googleid "ChIJAW4yR4b5wokRneXzd9Zoo_Y",
+           :language :en,
+           :zip "07644",
+           :country :us,
+           :googleuri
+           "https://maps.google.com/?cid=17772163824878871965",
+           :number "230",
+           :street "NJ-17",
+           :city "Lodi",
+           :county "Bergen County"}
+ #:place{:phone "+1 973-684-9589",
+         :address-id #uuid "6a3d37f4-1107-4ecd-9c06-6aeb12c61a85",
+         :schedules
+         ["Monday: 2:00 – 11:30 PM"
+          "Tuesday: 3:00 PM – 12:00 AM"
+          "Wednesday: 3:00 PM – 12:00 AM"
+          "Thursday: 3:00 PM – 12:00 AM"
+          "Friday: 2:00 PM – 12:00 AM"
+          "Saturday: 5:00 PM – 12:00 AM"
+          "Sunday: Closed"],
+         :language :en,
+         :status :operational,
+         :id #uuid "a8d8afab-1438-49c2-960e-cbe9f0e5a38d",
+         :website nil,
+         :paymethods #{},
+         :label "Ragtime Gentlemen's Club",
+         :industry :club,
+         :handle :ragtime-gentlemens-club}
+ #:address{:id #uuid "6a3d37f4-1107-4ecd-9c06-6aeb12c61a85",
+           :state :nj,
+           :coordinate
+           {:latitude 40.8977407, :longitude -74.2001057},
+           :googleid "ChIJh1yNIwz-wokRWcncUcfHFj4",
+           :language :en,
+           :zip "07424",
+           :country :us,
+           :googleuri
+           "https://maps.google.com/?cid=4473982938725009753",
+           :number "821",
+           :street "McBride Ave",
+           :city "Woodland Park",
+           :county "Passaic County"}
+ #:place{:phone "+1 973-678-3834",
+         :address-id #uuid "9c35c81e-dbf8-47e6-bf23-8c99db90281f",
+         :schedules
+         ["Monday: 8:00 PM – 2:00 AM"
+          "Tuesday: 8:00 PM – 2:00 AM"
+          "Wednesday: 8:00 PM – 2:00 AM"
+          "Thursday: 8:00 PM – 2:00 AM"
+          "Friday: 8:00 PM – 2:00 AM"
+          "Saturday: 8:00 PM – 3:00 AM"
+          "Sunday: 8:00 PM – 2:00 AM"],
+         :language :en,
+         :status :operational,
+         :id #uuid "9e1db0cb-ffdb-4a3b-a497-11a79ba2b475",
+         :website nil,
+         :paymethods #{},
+         :label "Exit 11 Gentlemens Club",
+         :industry :club,
+         :handle :exit-11-gentlemens-club}
+ #:address{:id #uuid "9c35c81e-dbf8-47e6-bf23-8c99db90281f",
+           :state :nj,
+           :coordinate
+           {:latitude 40.770880299999995, :longitude -74.2309322},
+           :googleid "ChIJm530iKSrw4kRQVgw57p8O3g",
+           :language :en,
+           :zip "07050",
+           :country :us,
+           :googleuri
+           "https://maps.google.com/?cid=8663655450361747521",
+           :number "51",
+           :street "S Day St",
+           :city "City of Orange",
+           :county "Essex County"}
+ #:place{:phone "+1 908-351-1396",
+         :address-id #uuid "9f96aed6-13d7-4aac-98de-3ea2b093c76a",
+         :schedules
+         ["Monday: 12:00 PM – 2:00 AM"
+          "Tuesday: 12:00 PM – 2:00 AM"
+          "Wednesday: 12:00 PM – 2:00 AM"
+          "Thursday: 12:00 PM – 3:00 AM"
+          "Friday: 12:00 PM – 3:00 AM"
+          "Saturday: 12:00 PM – 3:00 AM"
+          "Sunday: 12:00 PM – 2:00 AM"],
+         :language :en,
+         :status :operational,
+         :id #uuid "1bf65ebc-621e-498c-9feb-b8722cfe5897",
+         :website nil,
+         :paymethods #{:credit},
+         :label "Lookers Gentleman's Club",
+         :industry :club,
+         :handle :lookers-gentlemans-club}
+ #:address{:id #uuid "9f96aed6-13d7-4aac-98de-3ea2b093c76a",
+           :state :nj,
+           :coordinate
+           {:latitude 40.6744165, :longitude -74.19050840000001},
+           :googleid "ChIJW_8It5lSwokRrVj_pBsNTHc",
+           :language :en,
+           :zip "07201",
+           :country :us,
+           :googleuri
+           "https://maps.google.com/?cid=8596260201126910125",
+           :number "789",
+           :street "Dowd Ave",
+           :city "Elizabeth",
+           :county "Union County"}
+ #:place{:phone "+1 732-727-3550",
+         :address-id #uuid "9cd54769-1d32-4c97-b0af-4f862a97a241",
+         :schedules
+         ["Monday: 6:00 PM – 3:00 AM"
+          "Tuesday: 6:00 PM – 4:00 AM"
+          "Wednesday: 6:00 PM – 3:00 AM"
+          "Thursday: 6:00 PM – 5:00 AM"
+          "Friday: 6:00 PM – 6:00 AM"
+          "Saturday: 6:00 PM – 6:00 AM"
+          "Sunday: 6:00 PM – 5:00 AM"],
+         :language :en,
+         :status :operational,
+         :id #uuid "b8884897-a3e5-45e2-821a-f5626dc2d1b7",
+         :website "http://www.xxxvclub.com/",
+         :paymethods #{},
+         :label "XXXV Gentleman's Club",
+         :industry :club,
+         :handle :xxxv-gentlemans-club}
+ #:address{:id #uuid "9cd54769-1d32-4c97-b0af-4f862a97a241",
+           :state :nj,
+           :coordinate {:latitude 40.493269, :longitude -74.296919},
+           :googleid "ChIJfWGVGrbLw4kRYzFXHDvZB7M",
+           :language :en,
+           :zip "08879",
+           :country :us,
+           :googleuri
+           "https://maps.google.com/?cid=12900518505527849315",
+           :number "7090",
+           :street "NJ-35",
+           :city "Sayreville",
+           :county "Middlesex County"}
+ #:place{:phone "+1 973-345-0305",
+         :address-id #uuid "c2733ba9-c319-434e-8913-0a151283d4dc",
+         :schedules
+         ["Monday: 7:00 PM – 3:00 AM"
+          "Tuesday: 7:00 PM – 3:00 AM"
+          "Wednesday: 7:00 PM – 3:00 AM"
+          "Thursday: 7:00 PM – 3:00 AM"
+          "Friday: 7:00 PM – 3:00 AM"
+          "Saturday: 7:00 PM – 3:00 AM"
+          "Sunday: 7:00 PM – 3:00 AM"],
+         :language :en,
+         :status :operational,
+         :id #uuid "f58d7490-5f45-402f-82f5-f48b4640ca91",
+         :website nil,
+         :paymethods #{:credit},
+         :label "Doctor's Cave Gentlemen's Club",
+         :industry :club,
+         :handle :doctors-cave-gentlemens-club}
+ #:address{:id #uuid "c2733ba9-c319-434e-8913-0a151283d4dc",
+           :state :nj,
+           :coordinate {:latitude 40.9106506, :longitude -74.177779},
+           :googleid "ChIJjbd-5NH9wokRN2-WgefOT3g",
+           :language :en,
+           :zip "07501",
+           :country :us,
+           :googleuri
+           "https://maps.google.com/?cid=8669375301418381111",
+           :number "247",
+           :street "Grand St",
+           :city "Paterson",
+           :county "Passaic County"}
+ #:place{:phone "+1 973-279-6999",
+         :address-id #uuid "b212696b-0185-4a74-8a28-8bdecbba147e",
+         :schedules
+         ["Monday: 12:00 PM – 3:00 AM"
+          "Tuesday: 12:00 PM – 3:00 AM"
+          "Wednesday: 12:00 PM – 3:00 AM"
+          "Thursday: 12:00 PM – 3:00 AM"
+          "Friday: 12:00 PM – 3:00 AM"
+          "Saturday: 12:00 PM – 3:00 AM"
+          "Sunday: 7:00 PM – 3:00 AM"],
+         :language :en,
+         :status :operational,
+         :id #uuid "e6b44348-d26f-484c-8064-0365d15b5c21",
+         :website nil,
+         :paymethods #{},
+         :label "Roxxies Night Club",
+         :industry :club,
+         :handle :roxxies-night-club}
+ #:address{:id #uuid "b212696b-0185-4a74-8a28-8bdecbba147e",
+           :state :nj,
+           :coordinate
+           {:latitude 40.891387900000005, :longitude -74.1501617},
+           :googleid "ChIJbTaKwJ7-wokRwP41aiaY41U",
+           :language :en,
+           :zip "07503",
+           :country :us,
+           :googleuri
+           "https://maps.google.com/?cid=6188957603695296192",
+           :number "324",
+           :street "E Railway Ave",
+           :city "Paterson",
+           :county "Passaic County"}
+ #:place{:phone "+1 732-525-0533",
+         :address-id #uuid "d668cff6-35ee-49eb-8d74-addd0f8a3631",
+         :schedules
+         ["Monday: 12:00 PM – 2:00 AM"
+          "Tuesday: 12:00 PM – 2:00 AM"
+          "Wednesday: 12:00 PM – 2:00 AM"
+          "Thursday: 12:00 PM – 2:00 AM"
+          "Friday: 12:00 PM – 2:00 AM"
+          "Saturday: 12:00 PM – 2:00 AM"
+          "Sunday: 3:00 PM – 2:00 AM"],
+         :language :en,
+         :status :operational,
+         :id #uuid "1b66845e-e0ee-477d-b398-b272fadf148a",
+         :website "http://www.bourbonnj.com/",
+         :paymethods #{},
+         :label "Bourbon Street Gentlemen's Club",
+         :industry :club,
+         :handle :bourbon-street-gentlemens-club}
+ #:address{:id #uuid "d668cff6-35ee-49eb-8d74-addd0f8a3631",
+           :state :nj,
+           :coordinate
+           {:latitude 40.462176199999995, :longitude -74.2964908},
+           :googleid "ChIJqedxf8PLw4kRzgS7SblG4GU",
+           :language :en,
+           :zip "08859",
+           :country :us,
+           :googleuri
+           "https://maps.google.com/?cid=7340945154233795790",
+           :number "972",
+           :street "US-9",
+           :city "Sayreville",
+           :county "Middlesex County"}
+ #:place{:phone "+1 201-531-0493",
+         :address-id #uuid "4f5ba411-90e8-43b5-80d4-8c435afabf01",
+         :schedules
+         ["Monday: 6:00 PM – 2:00 AM"
+          "Tuesday: 6:00 PM – 2:00 AM"
+          "Wednesday: 6:00 PM – 2:00 AM"
+          "Thursday: 6:00 PM – 2:00 AM"
+          "Friday: 6:00 PM – 4:00 AM"
+          "Saturday: 6:00 PM – 4:00 AM"
+          "Sunday: 6:00 PM – 2:00 AM"],
+         :language :en,
+         :status :operational,
+         :id #uuid "17b22641-f174-403e-b218-a0e523444303",
+         :website "http://www.stilettojersey.com/",
+         :paymethods #{},
+         :label "Stiletto",
+         :industry :club,
+         :handle :stiletto}
+ #:address{:id #uuid "4f5ba411-90e8-43b5-80d4-8c435afabf01",
+           :state :nj,
+           :coordinate
+           {:latitude 40.8287197, :longitude -74.0806747},
+           :googleid "ChIJJ8wNqGb4wokRqP3boOHn2-M",
+           :language :en,
+           :zip "07073",
+           :country :us,
+           :googleuri
+           "https://maps.google.com/?cid=16418971822761704872",
+           :number "325",
+           :street "Paterson Plank Rd",
+           :city "East Rutherford",
+           :county "Bergen County"}
+ #:place{:phone "+1 732-727-1900",
+         :address-id #uuid "e507e00b-b6a0-4ec1-9c2f-30f897d6ac0c",
+         :schedules
+         ["Monday: Closed"
+          "Tuesday: Closed"
+          "Wednesday: 6:00 PM – 2:00 AM"
+          "Thursday: 6:00 PM – 2:00 AM"
+          "Friday: 6:00 PM – 5:00 AM"
+          "Saturday: 6:00 PM – 5:00 AM"
+          "Sunday: 6:00 PM – 2:00 AM"],
+         :language :en,
+         :status :operational,
+         :id #uuid "015b7328-0bf0-4de5-8c86-49de7ca3de09",
+         :website "http://www.thedennewjersey.com/",
+         :paymethods #{:cash},
+         :label
+         "The Den Gentleman's Club, formally Lust Gentleman Club",
+         :industry :club,
+         :handle
+         :the-den-gentlemans-club-formally-lust-gentleman-club}
+ #:address{:id #uuid "e507e00b-b6a0-4ec1-9c2f-30f897d6ac0c",
+           :state :nj,
+           :coordinate
+           {:latitude 40.497900099999995, :longitude -74.2972904},
+           :googleid "ChIJPWcL7uLLw4kR2Itf3mK8DR0",
+           :language :en,
+           :zip "08879",
+           :country :us,
+           :googleuri
+           "https://maps.google.com/?cid=2093536534620769240",
+           :number "31",
+           :street "Victory Plaza",
+           :city "South Amboy",
+           :county "Middlesex County"}
+ #:place{:phone "+1 732-574-3825",
+         :address-id #uuid "7b81972c-6fe0-4d88-b5dc-733a7c3008a8",
+         :schedules
+         ["Monday: 12:00 PM – 3:00 AM"
+          "Tuesday: 12:00 PM – 3:00 AM"
+          "Wednesday: 12:00 PM – 3:00 AM"
+          "Thursday: 12:00 PM – 3:00 AM"
+          "Friday: 12:00 PM – 3:00 AM"
+          "Saturday: 12:00 PM – 4:00 AM"
+          "Sunday: 12:00 PM – 3:00 AM"],
+         :language :en,
+         :status :operational,
+         :id #uuid "b541556d-66bb-4bfc-b67f-133d89112446",
+         :website "http://www.breathlessmensclub.com/",
+         :paymethods #{},
+         :label "Breathless Mens Club",
+         :industry :club,
+         :handle :breathless-mens-club}
+ #:address{:id #uuid "7b81972c-6fe0-4d88-b5dc-733a7c3008a8",
+           :state :nj,
+           :coordinate {:latitude 40.602111, :longitude -74.2611838},
+           :googleid "ChIJcVazJHmzw4kRml8PH3qMH3c",
+           :language :en,
+           :zip "07065",
+           :country :us,
+           :googleuri
+           "https://maps.google.com/?cid=8583733870926454682",
+           :number "876",
+           :street "Hart St",
+           :city "Rahway",
+           :county "Union County"}
+ #:place{:phone "+1 908-486-8060",
+         :address-id #uuid "638f34c8-42eb-474d-b607-0f1b3ba9f2f0",
+         :schedules
+         ["Monday: Closed"
+          "Tuesday: 4:00 PM – 1:00 AM"
+          "Wednesday: 4:00 PM – 2:00 AM"
+          "Thursday: 4:00 PM – 2:00 AM"
+          "Friday: 4:00 PM – 3:00 AM"
+          "Saturday: 7:00 PM – 3:00 AM"
+          "Sunday: Closed"],
+         :language :en,
+         :status :operational,
+         :id #uuid "25136aad-16b1-47dc-8b0d-33e6a15fe5dc",
+         :website nil,
+         :paymethods #{},
+         :label "XO A Gentleman's Club",
+         :industry :club,
+         :handle :xo-a-gentlemans-club}
+ #:address{:id #uuid "638f34c8-42eb-474d-b607-0f1b3ba9f2f0",
+           :state :nj,
+           :coordinate
+           {:latitude 40.6482988, :longitude -74.22878870000001},
+           :googleid "ChIJ8bbki8iyw4kR80V4bVYxcXU",
+           :language :en,
+           :zip "07036",
+           :country :us,
+           :googleuri
+           "https://maps.google.com/?cid=8462599422079419891",
+           :number "2000",
+           :street "E Linden Ave",
+           :city "Linden",
+           :county "Union County"}]

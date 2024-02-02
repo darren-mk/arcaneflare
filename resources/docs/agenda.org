@@ -51,6 +51,9 @@ in namecheap,
 ***** DONE create post flow
 ***** DONE adopt htmx
 ***** DONE implement session with cookie
+***** DONE download club data from gmap
+***** TODO create email verification
+***** TODO replace clj time with tick
 ***** TODO design logo
 ***** TODO create joining workflow
 1. join -> ask nickname and email

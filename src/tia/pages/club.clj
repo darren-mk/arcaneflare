@@ -68,7 +68,7 @@
        [:div.container-md.px-3.px-sm-4.px-xl-5
         [:div.row
          [:div.py-3.py-sm-4
-          [:h1.h3.lh-base.mb-1 (get club :club/label)]
+          [:h1.h3.lh-base.mb-1 (get club :place/label)]
           (tabs selection handle)
           (content selection handle)]]]))))
 

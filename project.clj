@@ -3,6 +3,7 @@
                  [ch.qos.logback/logback-classic "1.4.4"]
                  [cheshire "5.11.0"]
                  [clojure.java-time "1.4.2"]
+                 [clj-http "3.12.3"]
                  [com.xtdb/xtdb-core "1.24.3"]
                  [com.xtdb/xtdb-rocksdb "1.24.3"]
                  [com.xtdb/xtdb-jdbc "1.24.3"]

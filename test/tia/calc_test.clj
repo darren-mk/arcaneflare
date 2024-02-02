@@ -28,3 +28,18 @@
 
 (t/deftest ns->schema-test
   (t/is (vector? (src/ns->schema "club"))))
+
+(t/deftest session-stringify-test
+  (t/is
+   (= "session-id=abc123;path=/"
+      (src/session-stringify "abc123"))))
+
+(t/deftest handlify-test
+  (t/are [label handle]
+         (= handle (src/handlify label))
+    "Platinum Dollz Gentlemens Lounge"
+    :platinum-dollz-gentlemens-lounge
+    "Johnny A’s Hitching@ Post!"
+    :johnny-as-hitching-post
+    "   My     Club    "
+    :my-club))

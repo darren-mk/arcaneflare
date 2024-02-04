@@ -38,19 +38,27 @@
                     (white-space? %)) s)
        (apply str)))
 
+(def trim-low
+  (comp cstr/trim cstr/lower-case))
+
 (m/=> handlify
-      [:=> [:cat :string]
+      [:=> [:cat :map :string]
        :keyword])
 
-(defn handlify [s]
-  (as-> s $
-    (cstr/trim $)
-    (cstr/lower-case $)
-    (remove-special-chars $)
-    (cstr/split $ #" ")
-    (remove #(cstr/blank? %) $)
-    (cstr/join "-" $)
-    (keyword $)))
+(defn handlify
+  [{:keys [address/state address/city]} label]
+  (let [named (as-> label $
+                (trim-low $)
+                (remove-special-chars $)
+                (cstr/split $ #" ")
+                (remove #(cstr/blank? %) $)
+                (cstr/join "-" $))
+        expanded (if (< (count named) 12)
+                   (cstr/join "-" [(trim-low state)
+                                   (trim-low city)
+                                   named])
+                   named)]
+    (keyword expanded)))
 
 (def day->num
   {:mon 0
@@ -75,3 +83,36 @@
   (->> fields
        (map #(str "places." (name %)))
        (cstr/join ",")))
+
+(m/=> parse-address
+      [:=> [:cat :uuid :string]
+       model/address])
+
+(defn parse-address [id s]
+  (let [lst (as-> s $
+              (cstr/split $ #",")
+              (mapv cstr/trim $))
+        rev (vec (reverse lst))
+        country (first rev)
+        unit? (< 4 (count lst))
+        [state zip] (as-> rev $
+                      (get $ 1)
+                      (cstr/split $ #" ")
+                      (mapv cstr/trim $))
+        city (get rev 2)
+        street (if unit?
+                 (->> (take 2 lst)
+                      (cstr/join ", "))
+                 (first lst))]
+    #:address{:id id :street street
+              :city city :state state
+              :zip zip :country country}))
+
+(m/=> idify
+      [:=> [:cat :string] :string])
+
+(defn idify [s]
+  (->> s
+       (remove (fn [c] (= c \ )))
+       (apply str)
+       cstr/lower-case))

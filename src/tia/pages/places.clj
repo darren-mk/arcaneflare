@@ -1,59 +1,72 @@
-(ns tia.pages.clublist
+(ns tia.pages.places
   (:require
    [clojure.string :as cstr]
+   [tia.calc :as calc]
    [tia.data :as data]
-   [tia.db.club :as club]
+   [tia.db.place :as db-place]
    [tia.layout :as layout]
    [tia.model :as model]
+   [tia.pages.place :as place]
    [malli.core :as m]))
 
-(defn item [{:keys [handle label]}]
-  (let [href (cstr/join
-              "/" ["/club" (name handle) "info"])]
-    [:a {:href href}
-     label]))
+(def uri
+  "/places")
 
-(m/=> section
-      [:=> [:cat model/state]
-       :any])
+(defn item [{:keys [place/label place/handle]}]
+  (let [path [place/uri (name handle) "info"]
+        href (cstr/join "/" path)]
+    [:li [:a {:href href} label]]))
+
+(defn paragraph [city]
+  (let [city-id (calc/idify city)
+        places (db-place/find-places-in-city city)]
+    [:div
+     [:button.btn.btn-link
+      {:type :button
+       :data-bs-toggle :collapse
+       :data-bs-target (str "#" city-id)
+       :aria-expanded false
+       :aria-controls city-id}
+      city
+      [:i.fa-light.fa-angle-down]]
+     [:div.collapse {:id city-id}
+      [:div.ps-4.mt-2
+       (into [:ul.list-unstyled.mb-0]
+             (mapv item places))]]]))
 
 (defn section [state]
-  (let [clubs (club/find-clubs-by-state state)]
+  (let [cities (db-place/find-cities-in-state
+                state)]
     [:div.accordion-item
      [:h2.accordion-header
       [:button.accordion-button.collapsed
-       {:type "button",
-        :data-bs-toggle "collapse",
+       {:type :button
+        :data-bs-toggle :collapse
         :data-bs-target (str "#" (name state))
-        :aria-expanded "false",
+        :aria-expanded false
         :aria-controls (name state)}
-       (-> data/states state :label)]]
+       state]]
      [:div.accordion-collapse.collapse
       {:id (name state)
        :data-bs-parent "#accordion-example-1"}
-      [:div.accordion-body
-       (into
-        [:div.d-flex.justify-content-start.flex-wrap.me-auto]
-        (mapv item clubs))]]]))
+      (into [:div.accordion-body]
+            (mapv paragraph cities))]]))
 
 (m/=> accordion
       [:=> [:cat model/division]
        :any])
 
 (defn accordion [division]
-  (vec (concat
-        [:div.accordion
-         {:id "accordion-example-1"}]
-        (map section (-> data/divisions division :states)))))
-
-(m/=> tab
-      [:=> [:cat model/division model/division]
-       :any])
+  (let [sections (-> data/divisions
+                     division :states)]
+    (vec (concat
+          [:div#accordion.accordion]
+          (map section sections)))))
 
 (defn tab [division selection]
   [:li.nav-item
    [:a.nav-link
-    (merge {:href (str "/clublist/"
+    (merge {:href (str uri "/"
                        (name division))}
            (when (= division selection)
              {:class "active"
@@ -88,7 +101,8 @@
         (accordion selection)]]])))
 
 (def routes
-  ["/clublist"
+  [uri
+   ["" {:get (page :us-northeast)}]
    ["/us-northeast" {:get (page :us-northeast)}]
    ["/us-midwest" {:get (page :us-midwest)}]
    ["/us-south" {:get (page :us-south)}]

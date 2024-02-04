@@ -1,8 +1,8 @@
 (ns tia.routes
   (:require
    [tia.style :as style]
-   [tia.pages.club :as club]
-   [tia.pages.clublist :as clublist]
+   [tia.pages.place :as place]
+   [tia.pages.places :as places]
    [tia.pages.database :as database]
    [tia.pages.landing :as landing]
    [tia.pages.login :as login]
@@ -18,10 +18,10 @@
                     mw/wrap-formats
                     mw/sessionize]}
    ["/css" {:get style/core}]
-   club/routes
-   clublist/routes
    landing/routes
-   login/routes
+   places/routes
+   place/routes
+   #_#_#_#_#_#_  login/routes
    database/routes
    region/routes
    reviewlist/routes

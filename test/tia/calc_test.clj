@@ -34,12 +34,44 @@
    (= "session-id=abc123;path=/"
       (src/session-stringify "abc123"))))
 
+(t/deftest trim-low-test
+  (t/is
+   (= "hello"
+      (src/trim-low " hElLo  "))))
+
 (t/deftest handlify-test
-  (t/are [label handle]
-         (= handle (src/handlify label))
-    "Platinum Dollz Gentlemens Lounge"
-    :platinum-dollz-gentlemens-lounge
-    "Johnny A’s Hitching@ Post!"
-    :johnny-as-hitching-post
-    "   My     Club    "
-    :my-club))
+  (t/are [address label handle]
+      (= handle (src/handlify address label))
+      {:address/state "Yokohama"
+       :address/city "Kikuno"}
+      "Platinum Dollz Gentlemens Lounge"
+      :platinum-dollz-gentlemens-lounge
+      {:address/state "Any"
+       :address/city "Thing"}
+      "Johnny A’s Hitching@ Post!"
+      :johnny-as-hitching-post
+      {:address/state "Ichibang"
+       :address/city "Kokamachi"}
+      "   My     Club    "
+      :ichibang-kokamachi-my-club))
+
+(t/deftest parse-address-test
+  (t/testing "address without unit"
+    (t/is
+     (= #:address{:id #uuid "77d50617-ff07-4342-b7e3-c52bfcae707d"
+                  :street "7 Chome-14 Roppongi" :city "Minato City"
+                  :state "Tokyo" :zip "106-0032" :country "Japan"}
+        (src/parse-address #uuid "77d50617-ff07-4342-b7e3-c52bfcae707d"
+                           "7 Chome-14 Roppongi, Minato City, Tokyo 106-0032, Japan"))))
+  (t/testing "address with unit"
+    (t/is
+     (= #:address{:id #uuid "77d50617-ff07-4342-b7e3-c52bfcae707d"
+                  :street "Unit 103, 7 Chome-14 Roppongi" :city "Minato City"
+                  :state "Tokyo" :zip "106-0032" :country "Japan"}
+        (src/parse-address #uuid "77d50617-ff07-4342-b7e3-c52bfcae707d"
+                           "Unit 103, 7 Chome-14 Roppongi, Minato City, Tokyo 106-0032, Japan")))))
+
+(t/deftest idify-test
+  (t/is
+   (= "abcdefg"
+      (src/idify "A b  Cd ef g"))))

@@ -2,7 +2,7 @@
   (:require
    [clojure.string :as cstr]
    [tia.data :as data]
-   [tia.db.club :as club]
+   [tia.db.place :as db-place]
    [tia.layout :as layout]
    [tia.model :as model]
    [malli.core :as m]))
@@ -18,7 +18,7 @@
        :any])
 
 (defn section [state]
-  (let [clubs (club/find-clubs-by-state state)]
+  (let [clubs (db-place/find-places-by-state state)]
     [:div.accordion-item
      [:h2.accordion-header
       [:button.accordion-button.collapsed

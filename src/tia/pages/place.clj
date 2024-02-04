@@ -1,9 +1,12 @@
-(ns tia.pages.club
+(ns tia.pages.place
   (:require
    [clojure.string :as cstr]
-   [tia.db.club :as db-club]
+   [tia.db.place :as db-place]
    [tia.layout :as layout]
    [malli.core :as m]))
+
+(def uri
+  "/place")
 
 (def attributes
   [:info :event :menu
@@ -19,7 +22,7 @@
 
 (defn content [selection handle]
   (case selection
-    :info [:p (str (db-club/find-club-by-handle handle))]
+    :info [:p (str (db-place/find-place-by-handle handle))]
     :event [:h1 "event will be here."]
     :menu [:h1 "menu will be here."]
     :dancer [:h1 "dancer will be here."]
@@ -61,7 +64,7 @@
     (let [handle (-> req :path-params
                      :handle keyword)
           {:keys [club]}
-          (db-club/find-club-by-handle handle)]
+          (db-place/find-place-by-handle handle)]
       (layout/frame
        {:nav {:selection :club}
         :session session}
@@ -73,7 +76,7 @@
           (content selection handle)]]]))))
 
 (def routes
-  ["/club/:handle"
+  [(str uri "/:handle")
    ["/info" {:get (page :info)}]
    ["/event" {:get (page :event)}]
    ["/menu" {:get (page :menu)}]

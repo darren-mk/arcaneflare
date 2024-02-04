@@ -12,7 +12,7 @@
   ([ql var]
    (xt/q (xt/db db) ql var)))
 
-(defn put! [m]
+(defn- put! [m]
   (xt/submit-tx
    db [[::xt/put m]]))
 
@@ -23,7 +23,7 @@
         idv (get data idk)
         m (assoc data :xt/id idv)]
     (if (m/validate schema m)
-      (xt/submit-tx db [[::xt/put m]])
+      (put! m)
       (log/error "data not validated:"
                  (m/explain schema m)))))
 
@@ -52,21 +52,24 @@
 (defn count-all []
   (count-all-having-key :xt/id))
 
-(defn merge! [data]
-  (let [ns-s (c/nsmap->ns data)
-        idk (c/ns->idk ns-s)
+(defn upsert!
+  "record data only when the existing
+  data is not identical to the new one"
+  [data]
+  (let [ns (c/nsmap->ns data)
+        idk (c/ns->idk ns)
         idv (get data idk)
-        ex-m (pull-by-id idv)
-        m (merge ex-m data)]
-    (record! m)))
+        ex (pull-by-id idv)]
+    (when (not= ex data)
+      (record! data))))
 
-(defn update! [data]
-  (let [ns-s (c/nsmap->ns data)
-        idk (c/ns->idk ns-s)
-        idv (get data idk)
-        ex-m (pull-by-id idv)
-        m (merge ex-m data)]
-    (put! m)))
+(comment
+  (upsert!
+   (let [id #uuid "d9fb6bf4-4009-421a-a1fd-046d05b72772"
+         ts #inst "2024-02-03T03:39:45.580-00:00"]
+     {:xt/id id
+      :tick/id id
+      :tick/timestamp ts})))
 
 (defn delete! [id]
   (xt/submit-tx db [[::xt/delete id]]))

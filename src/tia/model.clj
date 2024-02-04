@@ -17,9 +17,6 @@
    [:latitude float?]
    [:longitude float?]])
 
-(def country
-  (vec (cons :enum (keys d/countries))))
-
 (def state
   (vec (cons :enum (keys d/states))))
 
@@ -27,20 +24,14 @@
   [:map {:closed true}
    [:xt/id {:optional true} :uuid]
    [:address/id :uuid]
-   [:address/language language]
-   [:address/googleid [:string {:min 1 :max 50}]]
-   [:address/googleuri [:string {:min 1 :max 50}]]
-   [:address/coordinate coordinate]
-   [:address/number [:string {:min 1 :max 12}]]
-   [:address/street [:string {:min 1 :max 30}]]
-   [:address/city [:string {:min 1 :max 30}]]
-   [:address/county [:string {:min 1 :max 30}]]
-   [:address/state state]
+   [:address/street [:string {:min 2 :max 30}]]
+   [:address/city [:string {:min 2 :max 30}]]
+   [:address/state [:string {:min 2 :max 15}]]
    [:address/zip [:string {:min 3 :max 10}]]
-   [:address/country country]])
+   [:address/country [:string {:min 2 :max 20}]]])
 
 (def industry
-  [:enum :club :parlor])
+  [:enum :strip-club :parlor])
 
 (def place
   [:map {:closed true}
@@ -52,13 +43,13 @@
    [:place/handle :keyword]
    [:place/nudity {:optional true} [:enum :full :top :none :unknown]]
    [:place/status [:enum :operational :closed :temp-closed]]
-   [:place/website {:optional true} [:maybe [:string {:min 1 :max 120}]]]
-   [:place/facebook {:optional true} [:maybe [:string {:min 1 :max 100}]]]
-   [:place/twitterx {:optional true} [:maybe [:string {:min 1 :max 100}]]]
-   [:place/instagram {:optional true} [:maybe [:string {:min 1 :max 100}]]]
-   [:place/phone [:string {:min 1 :max 25}]]
-   [:place/paymethods [:set [:enum :cash :credit :debit]]]
-   [:place/schedules vector?]
+   [:place/website {:optional true} [:string {:min 1 :max 120}]]
+   [:place/facebook {:optional true} [:string {:min 1 :max 100}]]
+   [:place/twitterx {:optional true} [:string {:min 1 :max 100}]]
+   [:place/instagram {:optional true} [:string {:min 1 :max 100}]]
+   [:place/phone {:optional true} [:string {:min 1 :max 30}]]
+   [:place/google-id [:string {:min 1 :max 60}]]
+   [:place/google-uri [:string {:min 1 :max 60}]]
    [:place/address-id :uuid]])
 
 (def division

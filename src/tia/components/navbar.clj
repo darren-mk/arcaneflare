@@ -1,7 +1,7 @@
 (ns tia.components.navbar)
 
 (def hrefs
-  {:club "/clublist/us-northeast"
+  {:places "/places"
    :dancer "/dancerlist"
    :dancerlist "/dancerlist"
    :review "/reviewlist"
@@ -13,7 +13,8 @@
    :gallery "/gallery"})
 
 (def labels
-  {:club "Club"
+  {:places "Places"
+   :club "Club"
    :dancer "Dancer"
    :dancerlist "Dancer"
    :review "Review"
@@ -33,8 +34,8 @@
 
 (def toggler
   [:button.navbar-toggler
-   {:type "button"
-    :data-bs-toggle "collapse"
+   {:type :button
+    :data-bs-toggle :collapse
     :data-bs-target "#navbar-collapse-1"
     :aria-controls "navbar-collapse-1"
     :aria-expanded "false"
@@ -73,8 +74,6 @@
    [:a.btn.btn-secondary.flex-grow-1.text-nowrap
     {:area-hidden true} 3980]])
 
-(defn avatar [session])
-
 (defn in []
   [:a.btn.btn-primary.text-nowrap
    {:href "/login"} "Log In"])
@@ -88,7 +87,7 @@
       logo toggler
       [:div.collapse.navbar-collapse {:id "navbar-collapse-1"}
        [:ul.navbar-nav.me-auto.mb-2.mb-lg-0
-        (path #{:club} selection)
+        (path #{:places} selection)
         (path #{:dancerlist} selection)
         (path #{:review :reviewlist} selection)
         (path #{:discuss :discusslist} selection)

@@ -43,7 +43,7 @@
 (comment
   (headerize (u/uuid))
   :=> {"Content-Type" "text/html",
-       "Set-Cookie" "session-id=2dfdb261-85e6-4aa3-b57c-5d46c0ff796d;path=/"}
+       "Set-Cookie" "session-id=2dfd...;path=/"}
   (headerize nil)
   :=> {"Content-Type" "text/html"})
 
@@ -59,7 +59,6 @@
    d/css-link d/icons])
 
 (defn frame [prop data]
-  (prn "@@@@ prop" prop)
   (let [session-id (-> prop :session :id)
         headers (headerize session-id)
         head (headify)

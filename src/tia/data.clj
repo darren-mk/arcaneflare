@@ -54,8 +54,7 @@
 (def divisions
   {:us-northeast
    {:label "US Northeast"
-    :states #{:ct :me :ma :nh :ri :vt
-              :ny :nj :pa}}
+    :states #{"NJ"}}
    :us-midwest
    {:label "US Midwest"
     :states #{:il :in :mi :oh :wi :ia
@@ -179,9 +178,9 @@
   "https://places.googleapis.com/v1/places:searchText")
 
 (def gplace-fields
-  #{:googleMapsUri :internationalPhoneNumber :websiteUri
-    :paymentOptions :displayName :regularOpeningHours
-    :businessStatus :id :location :addressComponents})
+  #{:googleMapsUri :internationalPhoneNumber
+    :displayName :websiteUri :businessStatus
+    :id :formattedAddress})
 
 (def address-comp-types
   {:country :keyword

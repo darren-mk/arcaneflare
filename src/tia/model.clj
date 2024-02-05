@@ -12,14 +12,6 @@
   "following iso 639 language codes"
   [:enum :en :es :fr])
 
-(def coordinate
-  [:map
-   [:latitude float?]
-   [:longitude float?]])
-
-(def state
-  (vec (cons :enum (keys d/states))))
-
 (def address
   [:map {:closed true}
    [:xt/id {:optional true} :uuid]
@@ -48,8 +40,8 @@
    [:place/twitterx {:optional true} [:string {:min 1 :max 100}]]
    [:place/instagram {:optional true} [:string {:min 1 :max 100}]]
    [:place/phone {:optional true} [:string {:min 1 :max 30}]]
-   [:place/google-id [:string {:min 1 :max 60}]]
-   [:place/google-uri [:string {:min 1 :max 60}]]
+   [:place/google-id {:optional true} [:string {:min 1 :max 60}]]
+   [:place/google-uri {:optional true} [:string {:min 1 :max 60}]]
    [:place/address-id :uuid]])
 
 (def division
@@ -68,6 +60,10 @@
 (def password
   [:re #"^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.* ).{8,16}$"])
 
+(def roles
+  [:enum :customer :dancer
+   :provider :owner :staff])
+
 (def person
   [:map {:closed true}
    [:xt/id {:optional true} :uuid]
@@ -75,9 +71,28 @@
    [:person/nickname nickname]
    [:person/email email]
    [:person/password password]
-   [:person/role [:enum :customer :dancer :staff]]
+   [:person/role roles]
    [:person/agreed? :boolean]
    [:person/preferences {:optional true} :map]])
+
+(def media
+  [:map {:closed true}
+   [:xt/id {:optional true} :uuid]
+   [:media/id :uuid]
+   [:media/kind [:enum :photo :video]]
+   [:media/person-id {:optional true} :uuid]
+   [:media/profile-id {:optional true} :uuid]
+   [:media/place-id {:optional true} :uuid]
+   [:media/objk [:string {:min 1 :max 60}]]
+   [:media/filename [:string {:min 1 :max 60}]]])
+
+(def profile
+  [:map {:closed true}
+   [:xt/id {:optional true} :uuid]
+   [:profile/id :uuid]
+   [:profile/person-id :uuid]
+   [:profile/phrase :string]
+   [:profile/place-ids [:set :uuid]]])
 
 (def session
   [:map {:closed true}

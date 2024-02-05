@@ -13,10 +13,6 @@
     [:a {:href href}
      label]))
 
-(m/=> section
-      [:=> [:cat model/state]
-       :any])
-
 (defn section [state]
   (let [clubs (db-place/find-places-by-state state)]
     [:div.accordion-item

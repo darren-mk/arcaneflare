@@ -54,7 +54,8 @@
 (def divisions
   {:us-northeast
    {:label "US Northeast"
-    :states #{"NJ"}}
+    :states #{:ct :me :ma :nh :ri :vt
+              :ny :nj :pa}}
    :us-midwest
    {:label "US Midwest"
     :states #{:il :in :mi :oh :wi :ia

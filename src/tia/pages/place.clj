@@ -8,63 +8,58 @@
 (def uri
   "/place")
 
-(def attributes
+(def selections
   [:info :event :menu
    :dancer :review :gallery])
 
-(def attributes-enum
-  (into [:enum] attributes))
+(def selections-enum
+  (into [:enum] selections))
 
-(m/=> content
-      [:=> [:cat attributes-enum
-            :keyword]
-       :any])
+(defn info [{:place/keys [label nudity]}
+            {:address/keys [street city state country]}]
+  [:div
+   [:p label]
+   [:p (cstr/join " " ["Nudity: " nudity])]
+   [:p (cstr/join " " ["Address: " street city state country])]])
 
 (defn content [selection handle]
-  (case selection
-    :info [:p (str (db-place/find-place-by-handle handle))]
-    :event [:h1 "event will be here."]
-    :menu [:h1 "menu will be here."]
-    :dancer [:h1 "dancer will be here."]
-    :review [:h1 "review will be here."]
-    :gallery [:h1 "gallery will be here."]))
-
-(m/=> tab
-      [:=> [:cat attributes-enum
-            attributes-enum :keyword]
-       :any])
+  (let [{:keys [place address]}
+        (db-place/find-place-and-address handle)]
+    (case selection
+      :info (info place address)
+      :event [:h1 "event will be here."]
+      :menu [:h1 "menu will be here."]
+      :dancer [:h1 "dancer will be here."]
+      :review [:h1 "review will be here."]
+      :gallery [:h1 "gallery will be here."])))
 
 (defn tab [ident selection handle]
-  (let [elems ["/club" (name handle) (name ident)]
+  (let [elems ["/place" (name handle) (name ident)]
         href (cstr/join "/" elems)
         label (-> ident name cstr/capitalize)
-        add? (= ident selection)
-        adder {:class "active"
-               :aria-current "true"}]
+        selected? (= ident selection)]
     [:li.nav-item
-     [:a.nav-link
-      (merge {:href href}
-             (when add? adder))
+     [:a.nav-link {:href href
+                   :class (if selected? "active" nil)
+                   :aria-current selected?}
       label]]))
-
-(m/=> tabs
-      [:=> [:cat attributes-enum
-            :keyword]
-       :any])
 
 (defn tabs [selection handle]
   (let [f #(tab % selection handle)
-        elems (map f attributes)]
-    (->> elems
-         (cons :ul.nav.nav-pills.ms-auto)
-         vec)))
+        elems (mapv f selections)]
+    (into [:ul.nav.nav-tabs]
+          elems)))
+
+(m/=> page
+      [:=> [:cat selections-enum]
+       :any])
 
 (defn page [selection]
   (fn [{:keys [session] :as req}]
     (let [handle (-> req :path-params
                      :handle keyword)
           {:keys [club]}
-          (db-place/find-place-by-handle handle)]
+          (db-place/find-place-and-address handle)]
       (layout/frame
        {:nav {:selection :club}
         :session session}

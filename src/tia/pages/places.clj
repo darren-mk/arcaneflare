@@ -35,8 +35,11 @@
              (mapv item places))]]]))
 
 (defn section [state]
-  (let [cities (db-place/find-cities-in-state
-                state)]
+  (let [state-arg (if (keyword? state)
+                    (-> state name cstr/upper-case)
+                    state)
+        cities (db-place/find-cities-in-state
+                state-arg)]
     [:div.accordion-item
      [:h2.accordion-header
       [:button.accordion-button.collapsed
@@ -45,7 +48,7 @@
         :data-bs-target (str "#" (name state))
         :aria-expanded false
         :aria-controls (name state)}
-       state]]
+       (-> state data/states :label)]]
      [:div.accordion-collapse.collapse
       {:id (name state)
        :data-bs-parent "#accordion-example-1"}

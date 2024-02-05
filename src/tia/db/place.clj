@@ -58,7 +58,7 @@
         {:handle :ragtime-gentlemens-club,
          :label "Ragtime Gentlemen's Club"}})
 
-(defn find-place-by-handle [handle]
+(defn find-place-and-address [handle]
   (let [ql '{:find [(pull ?place [*])
                     (pull ?address [*])]
              :keys [place address]
@@ -71,7 +71,7 @@
 
 
 (comment
-  (find-place-by-handle :johnny-as-hitching-post)
+  (find-place-and-address :johnny-as-hitching-post)
   :=> {:club
        {:place/website "http://johnnyashitchingpost.com/",
         :place/address.id #uuid "c1cb1901-d48d-46dc-9ea5-2deb66b4da5c",

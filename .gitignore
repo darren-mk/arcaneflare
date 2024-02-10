@@ -10,13 +10,16 @@ test-config.edn
 profiles.clj
 .nrepl-port
 /.clj-kondo/.cache/
+/.clj-kondo/hiccup/
+/.clj-kondo/metosin/
+/.clj-kondo/rewrite-clj/
+/.clj-kondo/com.github.seancorfield
 /.lsp/.cache/
 /.calva/output-window/
 .idea
 .vscode
 /node_modules
 /log
-.clj-kondo/
 .DS_Store
 .env
 dev-config.edn

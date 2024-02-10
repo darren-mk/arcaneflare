@@ -62,17 +62,15 @@
   (let [ql '{:find [(pull ?place [*])
                     (pull ?address [*])]
              :keys [place address]
-             :in [[handle]]
+             :in [[?handle]]
              :where [[?place :place/address-id ?address-id]
+                     [?place :place/handle ?handle]
                      [?address :address/id ?address-id]]}]
     (first (common/query ql [handle]))))
 
-
-
-
 (comment
   (find-place-and-address :johnny-as-hitching-post)
-  :=> {:club
+  :=> {:place
        {:place/website "http://johnnyashitchingpost.com/",
         :place/address.id #uuid "c1cb1901-d48d-46dc-9ea5-2deb66b4da5c",
         :place/label "Johnny A’s Hitching Post",
@@ -93,3 +91,13 @@
         :address/zip "07503",
         :address/country :usa,
         :xt/id #uuid "c1cb1901-d48d-46dc-9ea5-2deb66b4da5c"}})
+
+(defn place-handle->id [handle]
+  (let [ql '{:find [?place]
+             :in [[?handle]]
+             :where [[?place :place/handle ?handle]]}]
+    (ffirst (common/query ql [handle]))))
+
+(comment
+  (place-handle->id :flamingo-gentlemens-club)
+  :=> #uuid "deae0e86-5a02-4d1b-8894-f59734aa009b")

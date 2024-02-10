@@ -44,7 +44,7 @@
    [:place/google-uri {:optional true} [:string {:min 1 :max 60}]]
    [:place/address-id :uuid]])
 
-(def division
+ (def division
   (vec (cons :enum (keys d/divisions))))
 
 (def nickname
@@ -75,16 +75,16 @@
    [:person/agreed? :boolean]
    [:person/preferences {:optional true} :map]])
 
-(def media
+(def image
   [:map {:closed true}
    [:xt/id {:optional true} :uuid]
-   [:media/id :uuid]
-   [:media/kind [:enum :photo :video]]
-   [:media/person-id {:optional true} :uuid]
-   [:media/profile-id {:optional true} :uuid]
-   [:media/place-id {:optional true} :uuid]
-   [:media/objk [:string {:min 1 :max 60}]]
-   [:media/filename [:string {:min 1 :max 60}]]])
+   [:image/id :uuid]
+   [:image/person-id {:optional true} :uuid]
+   [:image/profile-id {:optional true} :uuid]
+   [:image/place-id {:optional true} :uuid]
+   [:image/objk [:string {:min 5 :max 40}]]
+   [:image/filename [:string {:min 1 :max 60}]]
+   [:image/size :int]])
 
 (def profile
   [:map {:closed true}

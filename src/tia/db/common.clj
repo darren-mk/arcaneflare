@@ -36,7 +36,13 @@
 (defn pull-all-having-key [k]
   (let [ql {:find '[(pull ?e [*])]
             :where [['?e k]]}]
-    (query ql)))
+    (map first (query ql))))
+
+(defn pull-all-having-kv [k v]
+  (let [ql {:find '[(pull ?e [*])]
+            :in [['v]]
+            :where [['?e k 'v]]}]
+    (map first (query ql [v]))))
 
 (defn count-all-having-key [k]
   (let [ql {:find '[(count ?e)]
@@ -81,3 +87,6 @@
   (count-all-having-kv
    :address/street "50 West 33rd Street")
   :=> 1)
+
+(comment
+  (pull-all-having-kv [:place/industry :strip-club]))

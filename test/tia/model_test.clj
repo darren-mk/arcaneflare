@@ -41,13 +41,14 @@
            :role :dancer
            :agreed? true})
 
-(def sample-media
-  #:media{:id #uuid "61a1da52-557c-45ea-a772-98e4700caabd"
-          :kind :photo
+(def sample-image
+  #:image{:id #uuid "61a1da52-557c-45ea-a772-98e4700caabd"
+          :person-id #uuid "b55f31fc-71cd-4996-81e0-6dad720e825b"
           :profile-id #uuid "74b4afdc-891e-46ab-8885-d44b4ed8ca78"
           :place-id #uuid "c1cb1901-d48d-46dc-9ea5-2deb66b4da5c"
-          :objk "zxcv1234qw"
-          :filename "zicos-profile-photo"})
+          :objk "f9cec5bc-143c-431c-8796-494d22d36a69"
+          :filename "zicos-profile-photo"
+          :size 12345})
 
 (def sample-profile
   #:profile{:id #uuid "74b4afdc-891e-46ab-8885-d44b4ed8ca78"
@@ -108,11 +109,11 @@
     model/person
     sample-person)))
 
-(t/deftest media-test
+(t/deftest image-test
   (t/is
    (m/validate
-    model/media
-    sample-media)))
+    model/image
+    sample-image)))
 
 (t/deftest profile-test
   (t/is

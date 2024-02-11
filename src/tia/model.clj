@@ -98,7 +98,7 @@
   [:map {:closed true}
    [:xt/id {:optional true} :uuid]
    [:session/id :uuid]
-   [:session/person.id :uuid]
+   [:session/person-id :uuid]
    [:session/renewal inst?]
    [:session/expiration inst?]])
 
@@ -107,10 +107,11 @@
    [:xt/id {:optional true} :uuid]
    [:post/id :uuid]
    [:post/title {:optional true} [:string {:min 1 :max 60}]]
+   [:post/kind [:enum :review :article :event]]
    [:post/content :string]
    [:post/created inst?]
    [:post/updated inst?]
-   [:post/person.id :uuid]])
+   [:post/person-id :uuid]])
 
 (def commentary
   [:map {:closed true}
@@ -119,5 +120,5 @@
    [:commentary/content :string]
    [:commentary/created inst?]
    [:commentary/updated inst?]
-   [:commentary/post.id :uuid]
-   [:commentary/person.id :uuid]])
+   [:commentary/post-id {:optional true} :uuid]
+   [:commentary/person-id :uuid]])

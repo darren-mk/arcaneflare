@@ -76,7 +76,7 @@
                         session-db/get-session-and-person))
           {:keys [session/renewal
                   session/expiration]} (:session session+person)
-          person-id (-> session+person :person :session/person.id)
+          person-id (-> session+person :person :session/person-id)
           expired? (boolean (and expiration (u/past? expiration)))
           renewing? (boolean (and renewal (u/past? renewal)))
           req' (if expired? req

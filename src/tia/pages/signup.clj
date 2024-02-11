@@ -141,18 +141,15 @@
 
 (defn check-email [{:keys [params]}]
   (let [{:keys [email]} params
-        avail? (not (pdb/email-existent? email))
-        valid? (m/validate md/email email)
+        unavailable? (pdb/email-existent? email)
+        invalid? (not (m/validate md/email email))
         msg (cond
-              (and avail? valid?)
-              [:p.text-primary
-               "This email is available to use."]
-              (and (not avail?) valid?)
-              [:p.text-danger
-               "This email has already been taken."]
+              unavailable?
+              [:p.text-danger "This email has already been taken."]
+              invalid?
+              [:p.text-danger "Must be in valid email format."]
               :else
-              [:p.text-danger
-               "Must be in valid email format."])]
+              [:p.text-primary "This email is available to use."])]
     (l/frag [:div msg])))
 
 (defn check-password [{:keys [params]}]

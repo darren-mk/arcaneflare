@@ -49,16 +49,14 @@
       [:button
        "upload image"]]]))
 
-(defn content [selection handle]
-  (let [{:keys [place address]}
-        (db-place/find-place-and-address handle)]
-    (case selection
-      :info (info place address)
-      :event [:h1 "event will be here."]
-      :menu [:h1 "menu will be here."]
-      :dancer [:h1 "dancer will be here."]
-      :review [:h1 "review will be here."]
-      :gallery (gallery place))))
+(defn content [selection place address]
+  (case selection
+    :info (info place address)
+    :event [:h1 "event will be here."]
+    :menu [:h1 "menu will be here."]
+    :dancer [:h1 "dancer will be here."]
+    :review [:h1 "review will be here."]
+    :gallery (gallery place)))
 
 (defn tab [ident selection handle]
   (let [elems ["/place" (name handle) (name ident)]
@@ -85,7 +83,7 @@
   (fn [{:keys [session] :as req}]
     (let [handle (-> req :path-params
                      :handle keyword)
-          {:keys [place]}
+          {:keys [place address]}
           (db-place/find-place-and-address handle)]
       (layout/frame
        {:nav {:selection :club}
@@ -95,17 +93,18 @@
          [:div.py-3.py-sm-4
           [:h1.h3.lh-base.mb-1 (get place :place/label)]
           (tabs selection handle)
-          (content selection handle)]]]))))
+          (content selection place address)]]]))))
 
-(defn upload [req]
-  (let [handle (-> req :path-params
-                   :handle keyword)
+(defn upload [{:keys [person path-params] :as req}]
+  (let [person-id (:person/id person)
+        handle (-> path-params :handle keyword)
         place-id (db-place/place-handle->id handle)
         {:keys [filename tempfile size]}
         (-> req :params :file)
         image #:image{:id (u/uuid)
                       :objk (str (u/uuid))
                       :place-id place-id
+                      :person-id person-id
                       :filename filename
                       :size size}]
     (storage/upload-image

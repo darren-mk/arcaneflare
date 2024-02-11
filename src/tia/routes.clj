@@ -21,9 +21,9 @@
    landing/routes
    places/routes
    place/routes
-   #_#_#_#_#_#_  login/routes
-   database/routes
-   region/routes
-   reviewlist/routes
    signup/routes
-   storage/routes])
+   login/routes
+   #_database/routes
+   #_region/routes
+   #_reviewlist/routes
+   #_storage/routes])

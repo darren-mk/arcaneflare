@@ -53,9 +53,9 @@
    [:re #"^[a-zA-Z0-9]+$"]])
 
 (def email
+  "consider adding regex validation"
   [:and
-   [:string {:min 5 :max 15}]
-   [:re #"^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$"]])
+   [:string {:min 5 :max 40}]])
 
 (def password
   [:re #"^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.* ).{8,16}$"])

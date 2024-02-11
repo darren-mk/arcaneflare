@@ -6,32 +6,38 @@
    [tia.db.person :as pdb]
    [tia.util :as u]))
 
-(m/=> find-by-id
+(m/=> get-session-and-person
       [:=> [:cat uuid?] :any])
 
-(defn find-by-id [id]
-  (let [qr (com/query
-            '{:find [(pull ?session [*])
-                     (pull ?person [*])]
-              :in [[?id]]
-              :where [[?session :session/id ?id]
-                      [?session :session/person.id ?pid]
-                      [?person :person/id ?pid]]}
-            [id])
-        merged (->> qr first (apply merge))]
-    (dissoc merged :xt/id)))
+(defn get-session-and-person [id]
+  (first
+   (com/query
+    '{:find [(pull ?session [*])
+             (pull ?person [*])]
+      :keys [session person]
+      :in [[?id]]
+      :where [[?session :session/id ?id]
+              [?session :session/person.id ?pid]
+              [?person :person/id ?pid]]}
+    [id])))
 
 (comment
-  (find-by-id #uuid "4b02e9b1-2b40-40a9-a57c-878ddcddba93")
-  :=> {:person/role :customer,
-       :session/person.id #uuid "c864fd4b-ec4b-4310-8d69-e1be290cd57e",
-       :person/agreed? true,
-       :person/nickname "jackiemema",
-       :person/password "Abc123!@#",
-       :person/email "jackie@abc.com",
-       :session/id #uuid "4b02e9b1-2b40-40a9-a57c-878ddcddba93",
-       :session/expiration #inst "2024-01-20T21:21:38.248-00:00",
-       :person/id #uuid "c864fd4b-ec4b-4310-8d69-e1be290cd57e"})
+  (get-session-and-person
+   #uuid "be350684-2dd4-4875-be28-f923532540ed")
+  :=> {:session
+       {:session/id #uuid "be350684-2dd4-4875-be28-f923532540ed",
+        :session/person.id #uuid "11381509-5e3b-448b-958d-6a23b242ce61",
+        :session/renewal #inst "2024-03-08T16:59:18.357-00:00",
+        :session/expiration #inst "2024-03-11T16:59:18.357-00:00",
+        :xt/id #uuid "be350684-2dd4-4875-be28-f923532540ed"},
+       :person
+       {:person/id #uuid "11381509-5e3b-448b-958d-6a23b242ce61",
+        :person/nickname "kokonut",
+        :person/email "kokonut@koko.nut",
+        :person/password "Abc123!@#",
+        :person/role :customer,
+        :person/agreed? true,
+        :xt/id #uuid "11381509-5e3b-448b-958d-6a23b242ce61"}})
 
 (defn find-all-by-email [email]
   (mapv first

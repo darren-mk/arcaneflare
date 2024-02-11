@@ -89,10 +89,7 @@
   (let [f #(m/validate model/email %)]
     (t/testing "valid cases"
       (t/are [s] (f s)
-        "abc@def.com"))
-    (t/testing "invalid cases"
-      (t/are [s] (not (f s))
-        "abc@123" "abc@d ef.com"))))
+        "abc@def.com"))))
 
 (t/deftest password-test
   (let [f #(m/validate model/password %)]

@@ -1,4 +1,4 @@
-(ns tia.pages.reviewlist
+(ns tia.pages.reviews
   (:require
    [tia.calc :refer [>s]]
    [tia.layout :as l]))

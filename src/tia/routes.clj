@@ -7,7 +7,7 @@
    [tia.pages.landing :as landing]
    [tia.pages.login :as login]
    [tia.pages.region :as region]
-   [tia.pages.reviewlist :as reviewlist]
+   [tia.pages.reviews :as reviews]
    [tia.pages.signup :as signup]
    [tia.pages.storage :as storage]
    [tia.middleware :as mw]
@@ -25,5 +25,5 @@
    login/routes
    #_database/routes
    #_region/routes
-   #_reviewlist/routes
+   reviews/routes
    #_storage/routes])

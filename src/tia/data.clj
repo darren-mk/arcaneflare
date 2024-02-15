@@ -3,6 +3,11 @@
 (def set-cookie
   "Set-Cookie")
 
+(def uri
+  {:places "/places"
+   :review "/reviews"
+   :post "/post"})
+
 (def ui-style
   [:link
    {:rel :stylesheet

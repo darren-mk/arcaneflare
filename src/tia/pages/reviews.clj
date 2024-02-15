@@ -3,6 +3,9 @@
    [tia.calc :refer [>s]]
    [tia.layout :as l]))
 
+(def uri
+  "/reviews")
+
 (defn post []
   [:a {:href "#",
        :class (>s :list-group-item :list-group-item-action :d-flex
@@ -57,4 +60,4 @@
       (listing)]]]))
 
 (def routes
-  ["/reviewlist" {:get page}])
+  [uri {:get page}])

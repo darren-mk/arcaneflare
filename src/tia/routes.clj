@@ -10,6 +10,7 @@
    [tia.pages.reviews :as reviews]
    [tia.pages.signup :as signup]
    [tia.pages.storage :as storage]
+   [tia.pages.post :as post]
    [tia.middleware :as mw]
    [ring.util.response]))
 
@@ -26,4 +27,5 @@
    #_database/routes
    #_region/routes
    reviews/routes
-   #_storage/routes])
+   #_storage/routes
+   post/routes])

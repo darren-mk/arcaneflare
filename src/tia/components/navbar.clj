@@ -1,10 +1,12 @@
-(ns tia.components.navbar)
+(ns tia.components.navbar
+  (:require
+   [tia.data :as d]))
 
 (def hrefs
-  {:places "/places"
+  {:places (:places d/uri)
    :dancer "/dancerlist"
    :dancerlist "/dancerlist"
-   :review "/reviewlist"
+   :review (:review d/uri)
    :reviewlist "/reviewlist"
    :discuss "/discusslist"
    :discusslist "/discusslist"

@@ -55,7 +55,6 @@
 (defn headify []
   [:head
    d/htmx d/ui-style
-   d/theme-style
    d/css-link d/icons])
 
 (defn frame [prop data]

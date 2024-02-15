@@ -12,15 +12,8 @@
   [:link
    {:rel :stylesheet
     :crossorigin :anonymous
-    :integrity "sha256-SsJizWSIG9JT9Qxbiy8xnYJfjCAkhEQ0hihxRn7jt2M="
-    :href "https://cdn.jsdelivr.net/npm/halfmoon@2.0.1/css/halfmoon.min.css"}])
-
-(def theme-style
-  [:link
-   {:rel :stylesheet
-    :crossorigin :anonymous
-    :integrity "sha256-DD6elX+jPmbFYPsGvzodUv2+9FHkxHlVtQi0/RJVULs="
-    :href "https://cdn.jsdelivr.net/npm/halfmoon@2.0.1/css/cores/halfmoon.modern.css"}])
+    :integrity "sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+    :href "https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"}])
 
 (def ui-action
   [:script

@@ -1,7 +1,5 @@
 (ns tia.db.place
   (:require
-   [malli.core :as m]
-   [tia.model :as model]
    [tia.db.common :as common]))
 
 (defn find-places-in-city [city]

@@ -108,7 +108,10 @@
    [:post/id :uuid]
    [:post/title {:optional true} [:string {:min 1 :max 60}]]
    [:post/kind [:enum :review :article :event]]
-   [:post/content :string]
+   [:post/detail :string]
+   [:post/place-id {:optional true} :uuid]
+   [:post/region {:optional true} :map]
+   [:post/image-ids {:optional true} [:set :uuid]]
    [:post/created inst?]
    [:post/updated inst?]
    [:post/person-id :uuid]])

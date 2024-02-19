@@ -1,6 +1,4 @@
-(ns tia.components.post
-  (:require
-   [tia.db.place :as db-place]))
+(ns tia.components.write)
 
 (defn industry-selection [given]
   (when-not given

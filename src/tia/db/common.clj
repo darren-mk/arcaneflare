@@ -87,6 +87,3 @@
   (count-all-having-kv
    :address/street "50 West 33rd Street")
   :=> 1)
-
-(comment
-  (pull-all-having-kv [:place/industry :strip-club]))

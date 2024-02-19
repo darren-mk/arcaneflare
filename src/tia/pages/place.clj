@@ -4,9 +4,10 @@
    [clojure.string :as cstr]
    [malli.core :as m]
    [tia.calc :refer [>s]]
-   [tia.components.post :as cpost]
+   [tia.components.write :as comp-write]
    [tia.db.place :as db-place]
    [tia.db.post :as db-post]
+   [tia.db.commentary :as db-commentary]
    [tia.db.common :as dbc]
    [tia.layout :as l]
    [tia.storage :as storage]
@@ -76,7 +77,7 @@
 (defn write [{:keys [path-params]}]
   (let [handle (-> path-params :handle keyword)]
     (l/frag
-     (cpost/root {:industry :strip-club
+     (comp-write/root {:industry :strip-club
                   :handle handle}))))
 
 (defn book [{:keys [params person path-params]}]
@@ -92,8 +93,12 @@
                     :updated (u/now)
                     :person-id (get person :person/id)}]
     (dbc/record! post)
-    (l/frame {}
-             [:p "yoloyolo"])))
+    (l/frame
+     {}
+     [:div
+      [:p "Your review has been posted."]
+      [:a {:href (cstr/join "/" [uri (name handle) "review"])}
+       "Move back to review section!"]])))
 
 (defn review [{:keys [_place handle]}]
   (let [path (cstr/join "/" [uri handle "review" "write"])
@@ -108,13 +113,83 @@
      (listing {:handle handle
                :posts review-posts})]))
 
-(defn reading [{:keys [path-params]}]
-  (let [postid (-> path-params :postid parse-uuid)
-        {:post/keys [detail]} (dbc/pull-by-id postid)]
+(defn single-review-page [{:keys [path-params] :as _req}]
+  (let [handle (-> path-params :handle)
+        post-id (-> path-params :postid parse-uuid)
+        {:post/keys [title detail person-id]} (dbc/pull-by-id post-id)
+        {:person/keys [nickname]} (dbc/pull-by-id person-id)
+        commentaries (db-commentary/get-by-post-id post-id)]
     (l/frame
      {}
-     [:div
-      [:p detail]])))
+     [:div.container.mt-5.px-5
+      [:div.card {:style "width: 18rem;"}
+       [:div.card-body
+        [:h5.card-title title]
+        [:h6.card-subtitle.mb-2.text-body-secondary
+         (str "by " nickname)]
+        [:p.card-text
+         {:style {:white-space :pre-line}}
+         detail]]]
+      [:div
+       (for [commentary commentaries]
+         [:p (:commentary/content commentary)])]
+      [:button.btn.btn-primary
+       {:id :write-commentary-button
+        :hx-get (cstr/join "/" [uri (name handle) "review" "item"
+                                (str post-id) "write-commentary"])
+        :hx-target "#write-commentary-button"
+        :hx-trigger "click"
+        :hx-swap "outerHTML"}
+       "Comment"]])))
+
+(defn record-commentary-then-single-review-page
+  [{:keys [path-params params person] :as _req}]
+  (let [commentary-content (:content params)
+        commentary-author-id (:person/id person)
+        handle (-> path-params :handle keyword)
+        post-id (-> path-params :postid parse-uuid)
+        commentary-id (u/uuid)
+        commentary #:commentary{:id commentary-id
+                                :content commentary-content
+                                :created (u/now)
+                                :updated (u/now)
+                                :post-id post-id
+                                :person-id commentary-author-id}]
+    (dbc/record! commentary)
+    (if (u/retry {:interval 50
+                  :max 10
+                  :f dbc/pull-by-id
+                  :arg commentary-id})
+      {:status 301
+       :headers {"Location" (cstr/join "/" [uri (name handle) "review" "item" post-id])}}
+      {})))
+
+(defn write-commentary [{:keys [path-params]}]
+  (let [handle (-> path-params :handle keyword)
+        post-id (-> path-params :postid parse-uuid)]
+    (l/frag
+     [:form.container.mt-5.px-5
+      {:action (cstr/join "/" [uri (name handle) "review" "item"
+                               (str post-id)])
+       :method "post"}
+      [:div.input-group.my-3
+       [:span.input-group-text
+        {:name :content}
+        "Comment"]
+       [:textarea.form-control
+        {:type :text :name :content
+         :placeholder "type here"
+         :rows 10}]]
+      [:button.btn.btn-warning
+       "Cancel"]
+      [:button.btn.btn-primary
+       {:type :submit}
+       "Submit"]])))
+
+(defn submit-commentary [_req]
+  (println "do something!")
+  (l/frag
+   [:p 123]))
 
 (defn content
   [{:keys [selection place address handle]}]
@@ -192,6 +267,11 @@
     [["" {:get (page :review)
           :post book}]
      ["/write" {:get write}]
-     ["/item/:postid" {:get reading}]]]
+     ["/item/:postid"
+      [["" {:get single-review-page
+            :post record-commentary-then-single-review-page}]
+       ["/write-commentary" {:get write-commentary}]
+       ["/submit-commentary" {:post submit-commentary}]
+       ]]]]
    ["/gallery" {:get (page :gallery)
                 :post upload}]])

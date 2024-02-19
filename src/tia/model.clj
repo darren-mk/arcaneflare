@@ -123,5 +123,5 @@
    [:commentary/content :string]
    [:commentary/created inst?]
    [:commentary/updated inst?]
-   [:commentary/post-id {:optional true} :uuid]
+   [:commentary/post-id :uuid]
    [:commentary/person-id :uuid]])

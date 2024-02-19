@@ -158,8 +158,7 @@
     (dbc/record! commentary)
     (if (u/retry {:interval 50
                   :max 10
-                  :f dbc/pull-by-id
-                  :arg commentary-id})
+                  :f #(dbc/pull-by-id commentary-id)})
       {:status 301
        :headers {"Location" (cstr/join "/" [uri (name handle) "review" "item" post-id])}}
       {})))

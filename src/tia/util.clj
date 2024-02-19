@@ -45,11 +45,11 @@
 (defn obj->str [obj]
  (.toString obj))
 
-(defn retry [{:keys [interval max f arg]}]
-  (let [result (f arg)]
+(defn retry [{:keys [interval max f]}]
+  (let [result (f)]
     (if (and (nil? result) (< 1 max))
       (do (Thread/sleep interval)
           (retry {:interval interval
                   :max (dec max)
-                  :f f :arg arg}))
+                  :f f}))
       result)))

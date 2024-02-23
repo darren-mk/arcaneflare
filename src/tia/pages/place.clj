@@ -1,10 +1,11 @@
 (ns tia.pages.place
   (:require
-   [clojure.java.io :as io]
    [clojure.string :as cstr]
    [malli.core :as m]
    [tia.calc :refer [>s]]
-   [tia.components.write :as comp-write]
+   [tia.components.inputs :as comp-input]
+   [tia.components.cards :as cards]
+   [tia.db.person :as db-person]
    [tia.db.place :as db-place]
    [tia.db.post :as db-post]
    [tia.db.commentary :as db-commentary]
@@ -77,8 +78,8 @@
 (defn write [{:keys [path-params]}]
   (let [handle (-> path-params :handle keyword)]
     (l/frag
-     (comp-write/root {:industry :strip-club
-                  :handle handle}))))
+     (comp-input/root {:industry :strip-club
+                       :handle handle}))))
 
 (defn book [{:keys [params person path-params]}]
   (let [{:keys [title detail]} params
@@ -113,12 +114,74 @@
      (listing {:handle handle
                :posts review-posts})]))
 
+#_(defn commentary-delete-modal
+  [handle post-id commentary-id]
+  [:div.modal.fade
+   {:id "exampleModal",
+    :tabindex "-1",
+    :aria-labelledby "exampleModalLabel",
+    :aria-hidden "true"}
+   [:div.modal-dialog
+    [:div.modal-content
+     [:div.modal-header
+      [:h1.modal-title.fs-5
+       {:id "exampleModalLabel"}
+       "Modal title"]
+      [:button.btn-close
+       {:type "button",
+        :data-bs-dismiss "modal",
+        :aria-label "Close"}]]
+     [:div.modal-body "..."]
+     [:div.modal-footer
+      [:button.btn.btn-secondary
+       {:data-bs-dismiss "modal"}
+       "Close"]
+      [:form {:method :post
+              :action (cstr/join "/" [uri (name handle) "review" "item"
+                                      (str post-id) "delete-commentary" commentary-id])}
+       [:button.btn.btn-warning
+        {:type :submit
+         :data-bs-dismiss "modal"}
+        "Delete"]]]]]])
+
+(defn confirm-delete-commentary [{:keys [path-params]}]
+  (let [handle (-> path-params :handle)
+        post-id (-> path-params :postid parse-uuid)
+        commentary-id (-> path-params :id parse-uuid)]
+    (l/frag
+     [:form
+      {:method :post
+       :action (cstr/join "/" [uri (name handle) "review" "item"
+                               (str post-id) "delete-commentary" commentary-id])}
+      [:p "Are you sure to delete?"]
+      [:button "Cancel"]
+      [:button "Yes, Delete"]])))
+
+(defn commentary-card
+  [handle post-id {:commentary/keys [id updated person-id content]}]
+  (let [{:person/keys [nickname]} (dbc/pull-by-id person-id)
+        header (str "By " nickname " at " updated)]
+    [:div.card
+     [:div.card-header header]
+     [:div.card-body
+      [:blockquote.blockquote.mb-0
+       [:p content]]]
+     [:div.card-footer
+      [:button.btn.btn-link "Edit"]
+      [:button.btn.btn-link
+       {:id :write-commentary-button
+        :hx-get (cstr/join "/" [uri (name handle) "review" "item"
+                                (str post-id) "confirm-delete-commentary" id])
+        :hx-trigger "click"
+        :hx-swap "outerHTML"}
+       "Delete"]]]))
+
 (defn single-review-page [{:keys [path-params] :as _req}]
   (let [handle (-> path-params :handle)
         post-id (-> path-params :postid parse-uuid)
         {:post/keys [title detail person-id]} (dbc/pull-by-id post-id)
         {:person/keys [nickname]} (dbc/pull-by-id person-id)
-        commentaries (db-commentary/get-by-post-id post-id)]
+        commentaries (db-commentary/get-commentaries-by-post-id post-id)]
     (l/frame
      {}
      [:div.container.mt-5.px-5
@@ -132,12 +195,11 @@
          detail]]]
       [:div
        (for [commentary commentaries]
-         [:p (:commentary/content commentary)])]
+         (commentary-card handle post-id commentary))]
       [:button.btn.btn-primary
        {:id :write-commentary-button
         :hx-get (cstr/join "/" [uri (name handle) "review" "item"
                                 (str post-id) "write-commentary"])
-        :hx-target "#write-commentary-button"
         :hx-trigger "click"
         :hx-swap "outerHTML"}
        "Comment"]])))
@@ -156,9 +218,9 @@
                                 :post-id post-id
                                 :person-id commentary-author-id}]
     (dbc/record! commentary)
-    (if (u/retry {:interval 50
-                  :max 10
-                  :f #(dbc/pull-by-id commentary-id)})
+    (if (u/retry-check-existence
+         {:interval 80 :max 10
+          :f #(dbc/pull-by-id commentary-id)})
       {:status 301
        :headers {"Location" (cstr/join "/" [uri (name handle) "review" "item" post-id])}}
       {})))
@@ -184,6 +246,17 @@
       [:button.btn.btn-primary
        {:type :submit}
        "Submit"]])))
+
+(defn delete-commentary [{:keys [path-params]}]
+  (let [handle (-> path-params :handle keyword)
+        post-id (-> path-params :postid parse-uuid)
+        commentary-id (-> path-params :id parse-uuid)]
+    (dbc/delete! commentary-id)
+    (u/retry-check-deletion
+     {:interval 50 :max 10 :check some?
+      :f #(dbc/pull-by-id commentary-id)})
+    {:status 301
+     :headers {"Location" (cstr/join "/" [uri (name handle) "review" "item" post-id])}}))
 
 (defn submit-commentary [_req]
   (println "do something!")
@@ -271,6 +344,8 @@
             :post record-commentary-then-single-review-page}]
        ["/write-commentary" {:get write-commentary}]
        ["/submit-commentary" {:post submit-commentary}]
+       ["/confirm-delete-commentary/:id" {:get confirm-delete-commentary}]
+       ["/delete-commentary/:id" {:post delete-commentary}]
        ]]]]
    ["/gallery" {:get (page :gallery)
                 :post upload}]])

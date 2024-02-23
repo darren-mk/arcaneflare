@@ -1,4 +1,4 @@
-(ns tia.components.write)
+(ns tia.components.inputs)
 
 (defn industry-selection [given]
   (when-not given

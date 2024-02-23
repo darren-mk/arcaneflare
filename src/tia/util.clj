@@ -45,11 +45,21 @@
 (defn obj->str [obj]
  (.toString obj))
 
-(defn retry [{:keys [interval max f]}]
+(defn retry-check-existence [{:keys [interval max f]}]
   (let [result (f)]
     (if (and (nil? result) (< 1 max))
       (do (Thread/sleep interval)
-          (retry {:interval interval
+          (retry-check-existence {:interval interval
                   :max (dec max)
                   :f f}))
       result)))
+
+(defn retry-check-deletion
+  [{:keys [interval max f]}]
+  (let [read (f)]
+    (when (and (some? read) (< 1 max))
+      (Thread/sleep interval)
+      (retry-check-existence
+       {:interval interval
+        :max (dec max)
+        :f f}))))

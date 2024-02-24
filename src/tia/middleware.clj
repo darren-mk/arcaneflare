@@ -4,6 +4,7 @@
    [tia.db.session :as session-db]
    [clojure.tools.logging :as log]
    [tia.calc :as calc]
+   [tia.db.place :as db-place]
    [tia.layout :refer [error-page]]
    [tia.util :as u]
    [ring.middleware.anti-forgery :refer [wrap-anti-forgery]]
@@ -88,3 +89,11 @@
               session-str (calc/session-stringify id)]
           (assoc-in resp path session-str))
         resp))))
+
+(defn handle->place+address [handler]
+  (fn [{:keys [path-params] :as req}]
+    (let [handle (-> path-params :handle keyword)
+          {:keys [place address]}
+          (db-place/find-place-and-address handle)
+          req' (assoc req :place place :address address)]
+      (handler req'))))

@@ -53,6 +53,7 @@ in namecheap,
 ***** DONE implement session with cookie
 ***** DONE download club data from gmap
 ***** DONE enable to upload image
+***** DONE set place middleware
 ***** TODO enable to upload video
 ***** TODO create email verification
 ***** TODO replace clj time with tick

@@ -56,6 +56,28 @@
         {:handle :ragtime-gentlemens-club,
          :label "Ragtime Gentlemen's Club"}})
 
+(defn find-place-by-handle [handle]
+  (let [ql '{:find [(pull ?place [*])]
+             :in [[?handle]]
+             :where [[?place :place/handle ?handle]]}]
+    (ffirst (common/query ql [handle]))))
+
+(comment
+  (find-place-by-handle :platinum-dollz-gentlemens-lounge)
+  :=> {:place/phone "+1 973-779-7455",
+       :place/address-id #uuid "1378f7f9-7460-4dc8-b2c4-608db8b2b13c",
+       :place/google-uri
+       "https://maps.google.com/?cid=14480630176803765776",
+       :place/language :en,
+       :place/status :operational,
+       :place/id #uuid "0deec79e-12b9-4c10-88b6-95e5e3cae65c",
+       :place/google-id "ChIJ0XE9giD_wokREL4wlGyI9cg",
+       :place/website "http://instagram.com/platinumdollzpassaicnj",
+       :xt/id #uuid "0deec79e-12b9-4c10-88b6-95e5e3cae65c",
+       :place/label "Platinum Dollz Gentlemens Lounge",
+       :place/industry :strip-club,
+       :place/handle :platinum-dollz-gentlemens-lounge})
+
 (defn find-place-and-address [handle]
   (let [ql '{:find [(pull ?place [*])
                     (pull ?address [*])]

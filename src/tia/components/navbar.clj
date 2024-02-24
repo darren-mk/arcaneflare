@@ -31,7 +31,7 @@
   [:a.navbar-brand.d-flex.align-items-center
    {:href "#"}
    [:img.d-inline-block.align-text-top
-    {:src "/images/logo.jpg"
+    {;;:src "/images/logo.jpg"
      :alt "Logo" :width 30 :height 30}]])
 
 (def toggler

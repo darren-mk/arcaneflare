@@ -116,3 +116,8 @@
        (remove (fn [c] (= c \ )))
        (apply str)
        cstr/lower-case))
+
+(defn path [& elems]
+  (->> elems
+       (map #(if (keyword? %) (name %) %))
+       (cstr/join "/")))

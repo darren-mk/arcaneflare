@@ -2,7 +2,7 @@
   (:require
    [clojure.string :as cstr]
    [malli.core :as m]
-   [tia.calc :refer [>s]]
+   [tia.calc :refer [>s] :as c]
    [tia.components.inputs :as comp-input]
    [tia.db.place :as db-place]
    [tia.db.post :as db-post]
@@ -56,8 +56,9 @@
 
 (defn render-post [{:keys [handle post]}]
   (let [{:post/keys [id title person-id]} post
-        {:person/keys [nickname]} (db-common/pull-by-id person-id)]
-    [:a {:href (cstr/join "/" [uri (name handle) "review" "item" (str id)])
+        {:person/keys [nickname]} (db-common/pull-by-id person-id)
+        path (c/path uri handle :review :item id)]
+    [:a {:href path
          :class (>s :list-group-item :list-group-item-action
                     :d-flex :justify-content-between
                     :align-items-center :py-3)}
@@ -91,17 +92,18 @@
                     :place-id place-id
                     :created (u/now)
                     :updated (u/now)
-                    :person-id (get person :person/id)}]
+                    :person-id (get person :person/id)}
+        path (c/path uri handle :review)]
     (db-common/record! post)
     (l/frame
      {}
      [:div
       [:p "Your review has been posted."]
-      [:a {:href (cstr/join "/" [uri (name handle) "review"])}
+      [:a {:href path}
        "Move back to review section!"]])))
 
 (defn review [{:place/keys [handle] :as _place}]
-  (let [path (cstr/join "/" [uri (name handle) "review" "write"])
+  (let [path (c/path uri handle :review :write)
         review-posts (db-post/get-by-handle handle)]
     [:div#reviewparent
      [:button.btn.btn-primary
@@ -116,12 +118,13 @@
 (defn confirm-delete-commentary [{:keys [place path-params]}]
   (let [handle (:place/handle place)
         post-id (-> path-params :postid parse-uuid)
-        commentary-id (-> path-params :id parse-uuid)]
+        commentary-id (-> path-params :id parse-uuid)
+        path (c/path uri handle :review :item post-id
+                     :delete-commentary commentary-id)]
     (l/frag
      [:form
       {:method :post
-       :action (cstr/join "/" [uri (name handle) "review" "item"
-                               (str post-id) "delete-commentary" commentary-id])}
+       :action path}
       [:p "Are you sure to delete?"]
       [:button "Cancel"]
       [:button "Yes, Delete"]])))
@@ -129,7 +132,9 @@
 (defn commentary-card
   [handle post-id {:commentary/keys [id updated person-id content]}]
   (let [{:person/keys [nickname]} (db-common/pull-by-id person-id)
-        header (str "By " nickname " at " updated)]
+        header (str "By " nickname " at " updated)
+        path (c/path uri handle :review :item post-id
+                     :confirm-delete-commentary id)]
     [:div.card
      [:div.card-header header]
      [:div.card-body
@@ -139,8 +144,7 @@
       [:button.btn.btn-link "Edit"]
       [:button.btn.btn-link
        {:id :write-commentary-button
-        :hx-get (cstr/join "/" [uri (name handle) "review" "item"
-                                (str post-id) "confirm-delete-commentary" id])
+        :hx-get path
         :hx-trigger "click"
         :hx-swap "outerHTML"}
        "Delete"]]]))
@@ -150,7 +154,9 @@
         post-id (-> path-params :postid parse-uuid)
         {:post/keys [title detail person-id]} (db-common/pull-by-id post-id)
         {:person/keys [nickname]} (db-common/pull-by-id person-id)
-        commentaries (db-commentary/get-commentaries-by-post-id post-id)]
+        commentaries (db-commentary/get-commentaries-by-post-id post-id)
+        path (c/path uri handle :review :item
+                     post-id :write-commentary)]
     (l/frame
      {}
      [:div.container.mt-5.px-5
@@ -167,10 +173,9 @@
          (commentary-card handle post-id commentary))]
       [:button.btn.btn-primary
        {:id :write-commentary-button
-        :hx-get (cstr/join "/" [uri (name handle) "review" "item"
-                                (str post-id) "write-commentary"])
-        :hx-trigger "click"
-        :hx-swap "outerHTML"}
+        :hx-get path
+        :hx-trigger :click
+        :hx-swap :outerHTML}
        "Comment"]])))
 
 (defn record-commentary-then-single-review-page
@@ -185,23 +190,22 @@
                                 :created (u/now)
                                 :updated (u/now)
                                 :post-id post-id
-                                :person-id commentary-author-id}]
+                                :person-id commentary-author-id}
+        path (c/path uri handle :review :item post-id)]
     (db-common/record! commentary)
-    (if (u/retry-check-existence
+    (when (u/retry-check-existence
          {:interval 80 :max 10
           :f #(db-common/pull-by-id commentary-id)})
       {:status 301
-       :headers {"Location" (cstr/join "/" [uri (name handle) "review" "item" post-id])}}
-      {})))
+       :headers {"Location" path}})))
 
 (defn write-commentary [{:keys [place path-params]}]
   (let [handle (:place/handle place)
-        post-id (-> path-params :postid parse-uuid)]
+        post-id (-> path-params :postid parse-uuid)
+        path (c/path uri handle :review :item post-id)]
     (l/frag
      [:form.container.mt-5.px-5
-      {:action (cstr/join "/" [uri (name handle) "review" "item"
-                               (str post-id)])
-       :method "post"}
+      {:action path :method :post}
       [:div.input-group.my-3
        [:span.input-group-text
         {:name :content}
@@ -225,7 +229,7 @@
      {:interval 100 :max 10 :check some?
       :f #(db-common/pull-by-id commentary-id)})
     {:status 301
-     :headers {"Location" (cstr/join "/" [uri (name handle) "review" "item" post-id])}}))
+     :headers {"Location" (c/path uri handle :review :item post-id)}}))
 
 (defn submit-commentary [_req]
   (println "do something!")
@@ -244,8 +248,7 @@
 
 (defn tab [ident selection place]
   (let [handle (:place/handle place)
-        elems ["/place" (name handle) (name ident)]
-        href (cstr/join "/" elems)
+        href (c/path uri handle ident)
         label (-> ident name cstr/capitalize)
         selected? (= ident selection)]
     [:li.nav-item

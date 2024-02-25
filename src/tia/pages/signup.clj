@@ -50,7 +50,7 @@
                  (success)
                  (fail :error-recording-in-db))
                (into [:div back] (map fail errors)))]
-    (l/frame {} tags)))
+    (l/page {} tags)))
 
 (defn input [k]
   (let [target (str (name k) "check-result")
@@ -117,7 +117,7 @@
    agreement control have-account])
 
 (defn page [_]
-  (l/frame
+  (l/page
    {:nav {:selection nil}}
    [:div.container-md.px-3.px-sm-4.px-xl-5
     [:div.d-flex.justify-content-center
@@ -137,7 +137,7 @@
               :else
               [:p.text-danger
                "A nickname cannot have a space or special charaters."])]
-    (l/frag [:div msg])))
+    (l/comp [:div msg])))
 
 (defn check-email [{:keys [params]}]
   (let [{:keys [email]} params
@@ -150,7 +150,7 @@
               [:p.text-danger "Must be in valid email format."]
               :else
               [:p.text-primary "This email is available to use."])]
-    (l/frag [:div msg])))
+    (l/comp [:div msg])))
 
 (defn check-password [{:keys [params]}]
   (let [{:keys [password]} params
@@ -164,7 +164,7 @@
                [:p.text-danger "one uppercase letter,"]
                [:p.text-danger "one special character, no space,"]
                [:p.text-danger "and it must be 8-16 characters long."]])]
-    (l/frag [:div msg])))
+    (l/comp [:div msg])))
 
 (def routes
   ["/signup"

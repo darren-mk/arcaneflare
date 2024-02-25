@@ -51,7 +51,7 @@
             :aria-hidden true}]]]]]])
 
 (defn page [_req]
-  (l/frame {:nav {:selection :reviewlist}}
+  (l/page {:nav {:selection :reviewlist}}
    [:div.container-md.px-3.px-sm-4.px-xl-5
     [:div.row
      [:div.py-3.py-sm-4

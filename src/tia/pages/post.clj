@@ -5,7 +5,7 @@
    [tia.layout :as l]))
 
 (defn page [_req]
-  (l/frame
+  (l/page
    {:nav {:selection nil}}
    (comp-input/root {})))
 

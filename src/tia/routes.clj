@@ -1,7 +1,7 @@
 (ns tia.routes
   (:require
    [tia.style :as style]
-   [tia.pages.place :as place]
+   [tia.pages.place.core :as place]
    [tia.pages.places :as places]
    [tia.pages.database :as database]
    [tia.pages.landing :as landing]

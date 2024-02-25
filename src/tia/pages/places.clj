@@ -6,7 +6,7 @@
    [tia.db.place :as db-place]
    [tia.layout :as layout]
    [tia.model :as model]
-   [tia.pages.place :as place]
+   [tia.pages.place.core :as place]
    [malli.core :as m]))
 
 (def uri
@@ -94,7 +94,7 @@
 
 (defn page [selection]
   (fn [{:keys [session] :as _req}]
-    (layout/frame {:nav {:selection :club}
+    (layout/page {:nav {:selection :club}
                    :session session}
      [:div.container-md.px-3.px-sm-4.px-xl-5
       [:div.row

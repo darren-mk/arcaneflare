@@ -24,7 +24,7 @@
    :headers (:plain d/content-type)
    :body text})
 
-(defn frag [data]
+(defn comp [data]
   {:status 200
    :headers (:html d/content-type)
    :body (-> data h/html str)})
@@ -57,7 +57,7 @@
    d/htmx d/ui-style
    d/css-link d/icons])
 
-(defn frame [prop data]
+(defn page [prop data]
   (let [session-id (-> prop :session :id)
         headers (headerize session-id)
         head (headify)

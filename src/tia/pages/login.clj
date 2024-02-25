@@ -13,7 +13,7 @@
         tag (if session
               [:div [:p "logged in"]]
               [:div [:p "Failed to log in."]])]
-    (layout/frame prop tag)))
+    (layout/page prop tag)))
 
 (defn input [k]
   (let [label (-> k name
@@ -46,7 +46,7 @@
    no-account])
 
 (defn page [_]
-  (layout/frame
+  (layout/page
    {:nav {:selection nil}}
    [:div.container-md.px-3.px-sm-4.px-xl-5
     [:div.d-flex.justify-content-center

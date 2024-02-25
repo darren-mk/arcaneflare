@@ -78,8 +78,8 @@
 
 (t/deftest path-test
   (t/is
-   (= "abc/def/123"
+   (= "/abc/def/123"
       (src/path "abc" :def "123")))
   (t/is
-   (= "abc/016ab17d-4675-4078-a81b-194cd93dc1fc"
-      (src/path "abc" #uuid "016ab17d-4675-4078-a81b-194cd93dc1fc"))))
+   (= "/abc/016ab17d-4675-4078-a81b-194cd93dc1fc"
+      (src/path :abc #uuid "016ab17d-4675-4078-a81b-194cd93dc1fc"))))

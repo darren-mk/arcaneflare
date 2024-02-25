@@ -23,7 +23,7 @@
                     :created (u/now)
                     :updated (u/now)
                     :person-id (get person :person/id)}
-        path (c/path p-common/uri handle :review)]
+        path (c/path :place handle :reviews)]
     (db-common/record! post)
     (l/page
      {}
@@ -42,7 +42,7 @@
   [handle post-id {:commentary/keys [id updated person-id content]}]
   (let [{:person/keys [nickname]} (db-common/pull-by-id person-id)
         header (str "By " nickname " at " updated)
-        path (c/path p-common/uri handle :reviews post-id
+        path (c/path :place handle :reviews post-id
                      :confirm-delete-commentary id)]
     [:div.card
      [:div.card-header header]
@@ -65,7 +65,7 @@
         {:post/keys [title detail person-id]} (db-common/pull-by-id post-id)
         {:person/keys [nickname]} (db-common/pull-by-id person-id)
         commentaries (db-commentary/get-commentaries-by-post-id post-id)
-        path (c/path p-common/uri handle :reviews
+        path (c/path :place handle :reviews
                      post-id :write-commentary)]
     (l/page
      {}
@@ -101,7 +101,7 @@
                                 :updated (u/now)
                                 :post-id post-id
                                 :person-id commentary-author-id}
-        path (c/path p-common/uri handle :reviews post-id)]
+        path (c/path :place handle :reviews post-id)]
     (db-common/record! commentary)
     (when (u/retry-check-existence
            {:interval 80 :max 10
@@ -113,7 +113,7 @@
   [{:keys [place path-params]}]
   (let [handle (:place/handle place)
         post-id (-> path-params :postid parse-uuid)
-        path (c/path p-common/uri handle :reviews post-id)]
+        path (c/path :place handle :reviews post-id)]
     (l/comp
      [:form.container.mt-5.px-5
       {:action path :method :post}
@@ -141,13 +141,13 @@
      {:interval 100 :max 10 :check some?
       :f #(db-common/pull-by-id commentary-id)})
     {:status 301
-     :headers {"Location" (c/path p-common/uri handle :reviews post-id)}}))
+     :headers {"Location" (c/path :place handle :reviews post-id)}}))
 
 (defn confirm-delete-commentary-form [{:keys [place path-params]}]
   (let [handle (:place/handle place)
         post-id (-> path-params :postid parse-uuid)
         commentary-id (-> path-params :id parse-uuid)
-        path (c/path p-common/uri handle :reviews post-id
+        path (c/path :place handle :reviews post-id
                      :delete-commentary commentary-id)]
     (l/comp
      [:form
@@ -160,7 +160,7 @@
 (defn render-post [{:keys [handle post]}]
   (let [{:post/keys [id title person-id]} post
         {:person/keys [nickname]} (db-common/pull-by-id person-id)
-        path (c/path p-common/uri handle :reviews id)]
+        path (c/path :place handle :reviews id)]
     [:a {:href path
          :class (c/>s :list-group-item :list-group-item-action
                     :d-flex :justify-content-between
@@ -179,7 +179,7 @@
                    :post post}))])
 
 (defn review-page [{:place/keys [handle] :as _place}]
-  (let [path (c/path p-common/uri handle :reviews :components :write)
+  (let [path (c/path :place handle :reviews :components :write)
         review-posts (db-post/get-by-handle handle)]
     [:div#reviewparent
      [:button.btn.btn-primary
@@ -192,7 +192,7 @@
                :posts review-posts})]))
 
 (def routes
-  [p-common/review-uri
+  ["/reviews" 
    [["" {:get (p-common/paginate :reviews review-page)
          :post record-review-and-confirm-page}]
     ["/components/write" {:get write}]

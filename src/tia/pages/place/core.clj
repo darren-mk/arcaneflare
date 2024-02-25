@@ -63,7 +63,7 @@
 
 (defn tab [ident selection place]
   (let [handle (:place/handle place)
-        href (c/path uri handle ident)
+        href (c/path :place handle ident)
         label (-> ident name cstr/capitalize)
         selected? (= ident selection)]
     [:li.nav-item

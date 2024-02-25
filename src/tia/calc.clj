@@ -120,4 +120,5 @@
 (defn path [& elems]
   (->> elems
        (map #(if (keyword? %) (name %) %))
-       (cstr/join "/")))
+       (cstr/join "/")
+       (str "/")))

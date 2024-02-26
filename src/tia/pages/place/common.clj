@@ -25,8 +25,8 @@
     (into [:ul.nav.nav-tabs]
           elems)))
 
-(defn paginate [selection component]
-  (fn [{:keys [session place]}]
+(defn paginate [selection section]
+  (fn [{:keys [session place] :as req}]
     (l/page
      {:nav {:selection :club}
       :session session}
@@ -35,4 +35,4 @@
        [:div.py-3.py-sm-4
         [:h1.h3.lh-base.mb-1 (:place/label place)]
         (tabs selection place)
-        (component place)]]])))
+        (section req)]]])))

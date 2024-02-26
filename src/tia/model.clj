@@ -106,7 +106,7 @@
   [:map {:closed true}
    [:xt/id {:optional true} :uuid]
    [:post/id :uuid]
-   [:post/title {:optional true} [:string {:min 1 :max 60}]]
+   [:post/title {:optional true} [:string {:min 2 :max 60}]]
    [:post/kind [:enum :review :article :event]]
    [:post/detail :string]
    [:post/place-id {:optional true} :uuid]
@@ -120,7 +120,7 @@
   [:map {:closed true}
    [:xt/id {:optional true} :uuid]
    [:commentary/id :uuid]
-   [:commentary/content :string]
+   [:commentary/content [:string {:min 3}]]
    [:commentary/created inst?]
    [:commentary/updated inst?]
    [:commentary/post-id :uuid]

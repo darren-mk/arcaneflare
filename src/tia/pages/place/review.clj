@@ -1,6 +1,7 @@
 (ns tia.pages.place.review
   (:require
    [tia.calc :as c]
+   [tia.data :as d]
    [tia.db.place :as db-place]
    [tia.db.post :as db-post]
    [tia.db.commentary :as db-commentary]
@@ -12,6 +13,9 @@
 (defn uri [handle elems]
   (-> [c/path :place handle :reviews elems]
       flatten eval))
+
+(def make-page
+  (partial place-common/paginate :reviews))
 
 (defn write-review-section [{:keys [place] :as _req}]
   (let [handle (:place/handle place)
@@ -81,8 +85,10 @@
   [handle post-id {:commentary/keys [id updated person-id content]}]
   (let [{:person/keys [nickname]} (db-common/pull-by-id person-id)
         header (str "By " nickname " at " updated)
+        deletion-confirm-msg "Do you wish to delete this comment?"
         path (uri handle [post-id :commentaries id :delete])]
     [:form.card {:hx-get path
+                 :hx-confirm deletion-confirm-msg
                  :hx-trigger :submit
                  :hx-swap :outerHTML}
      [:div.card-header header]
@@ -92,26 +98,50 @@
      [:div.card-footer
       [:button.btn.btn-link "Edit"]
       [:button.btn.btn-link
-       {:type :submit}
-       "Delete"]]]))
+       {:type :submit} "Delete"]]]))
+
+(defn post-card [handle post-id]
+  (let [{:post/keys [title cover detail person-id]}
+        (db-common/pull-by-id post-id)
+        {:person/keys [nickname]}
+        (db-common/pull-by-id person-id)
+        detail' (case cover
+                  :removed "removed by user"
+                  :banned "content is banned"
+                  detail)]
+    [:div.card {:style "width: 18rem;"}
+     [:div.card-body
+      [:h5.card-title title]
+      [:h6.card-subtitle.mb-2.text-body-secondary
+       (str "by " nickname)]
+      [:div {:id :review-detail-and-controls}
+       [:p {:id :reviewdetail
+            :class (c/>s :card-text)
+            :style {:white-space :pre-line}}
+        detail']
+       [:button
+        {:hx-get (uri handle [post-id :edit-content])
+         :hx-confirm "Only the content of the review will be delete. Do you wish to?"
+         :hx-target :#review-detail-and-controls
+         :hx-trigger :click
+         :hx-swap :outerHTML}
+        "edit"]
+       [:button
+        {:hx-delete (uri handle [post-id :delete-content])
+         :hx-confirm "Only the content of the review will be delete. Do you wish to?"
+         :hx-target :#reviewdetail
+         :hx-trigger :click
+         :hx-swap :outerHTML}
+        "delete"]]]]))
 
 (defn review-section
-  [{:keys [place path-params] :as _req}]
+  [{:keys [place path-params]}]
   (let [handle (:place/handle place)
         post-id (-> path-params :post-id parse-uuid)
-        {:post/keys [title detail person-id]} (db-common/pull-by-id post-id)
-        {:person/keys [nickname]} (db-common/pull-by-id person-id)
         commentaries (db-commentary/get-commentaries-by-post-id post-id)
         post-path (uri handle [post-id :commentaries :create])]
     [:div.container.mt-5.px-5
-     [:div.card {:style "width: 18rem;"}
-      [:div.card-body
-       [:h5.card-title title]
-       [:h6.card-subtitle.mb-2.text-body-secondary
-        (str "by " nickname)]
-       [:p.card-text
-        {:style {:white-space :pre-line}}
-        detail]]]
+     (post-card handle post-id)
      [:div#commentaries
       (for [commentary commentaries]
         (commentary-card handle post-id commentary))]
@@ -137,20 +167,6 @@
   (let [commentary-id (-> path-params :commentary-id parse-uuid)]
     (db-common/delete! commentary-id)
     (l/comp nil)))
-
-(defn confirm-delete-commentary-form [{:keys [place path-params]}]
-  (let [handle (:place/handle place)
-        post-id (-> path-params :postid parse-uuid)
-        commentary-id (-> path-params :id parse-uuid)
-        path (c/path :place handle :reviews post-id
-                     :delete-commentary commentary-id)]
-    (l/comp
-     [:form
-      {:method :post
-       :action path}
-      [:p "Are you sure to delete?"]
-      [:button "Cancel"]
-      [:button "Yes, Delete"]])))
 
 (defn render-post [{:keys [handle post]}]
   (let [{:post/keys [id title person-id]} post
@@ -179,9 +195,6 @@
         (render-post {:handle handle
                       :post post}))]]))
 
-(def make-page
-  (partial place-common/paginate :reviews))
-
 (defn create-commentary-comp [{:keys [person params path-params]}]
   (let [post-id (-> path-params :post-id parse-uuid)
         nickname (:person/nickname person)
@@ -200,6 +213,47 @@
       (l/comp
        [:p "failed in creating comment. refresh page and try again."]))))
 
+(defn remove-detail-and-comp [{:keys [path-params]}]
+  (let [msg d/content-deletion-msg
+        post-id (-> path-params :post-id parse-uuid)
+        post (db-common/pull-by-id post-id)
+        post' (assoc post :post/cover :removed)]
+    (if (db-common/upsert! post')
+      (l/comp [:span msg])
+      (l/comp [:span
+               "Could not review detail content. Contact administrator."
+               (:post/detail post)]))))
+
+(defn edit-detail-form
+  [{:keys [path-params place]}]
+  (let [handle (:place/handle place)
+        post-id (-> path-params :post-id parse-uuid)
+        post (db-common/pull-by-id post-id)]
+    (l/comp
+     [:form {:id :review-detail-and-controls
+             :hx-patch (uri handle [post-id :edit-content])
+             :hx-target :#review-detail-and-controls
+             :hx-trigger :submit
+             :hx-swap :outerHTML}
+      [:textarea {:type :text
+                  :name :detail
+                  :rows 10}
+       (:post/detail post)]
+      [:a {:href (uri (:place/handle place)
+                      [post-id :read])}
+       "cancel"]
+      [:button {:type :submit}
+       "submit"]])))
+
+(defn patch-detail-comp
+  [{:keys [path-params params]}]
+  (let [post-id (-> path-params :post-id parse-uuid)
+        post (db-common/pull-by-id post-id)
+        new-detail (:detail params)
+        post' (assoc post :post/detail new-detail)]
+    (db-common/upsert! post')
+    (l/comp [:p new-detail])))
+
 (def routes
   ["/reviews"
    [["" {:get (make-page reviews-section)}]
@@ -209,6 +263,9 @@
       ["/redirect" {:get (make-page redirect-write-section)}]]]
     ["/:post-id"
      [["/read" {:get (make-page review-section)}]
+      ["/edit-content" {:get edit-detail-form
+                        :patch patch-detail-comp}]
+      ["/delete-content" {:delete remove-detail-and-comp}]
       ["/commentaries"
        [["/create" {:post create-commentary-comp}]
         ["/:commentary-id"

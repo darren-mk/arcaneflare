@@ -193,3 +193,6 @@
 (def industries
   {:club {:label "strip club"}
    :parlor {:label "massage parlor"}})
+
+(def content-deletion-msg
+  "... content deleted by user ...")

@@ -4,10 +4,12 @@
    [tia.data :as d]
    [tia.db.place :as db-place]
    [tia.db.post :as db-post]
+   [tia.db.image :as db-image]
    [tia.db.commentary :as db-commentary]
    [tia.db.common :as db-common]
    [tia.layout :as l]
    [tia.pages.place.common :as place-common]
+   [tia.storage :as storage]
    [tia.util :as u]))
 
 (defn uri [handle elems]
@@ -19,9 +21,10 @@
 
 (defn write-review-section [{:keys [place] :as _req}]
   (let [handle (:place/handle place)
-        path (uri handle [:create :confirm])]
+        path (uri handle [:create :submit])]
     [:form.container.mt-5.px-5
-     {:method :get :action path}
+     {:method :post :action path
+      :enctype "multipart/form-data"}
      [:div.input-group.my-3
       [:span.input-group-text "Title"]
       [:input.form-control
@@ -37,36 +40,46 @@
         :rows 10
         :aria-label "Description"
         :aria-describedby "add-on-2"}]]
+     [:input {:type :file :id :file
+              :name :file :multiple true
+              :accept ".jpg, .jpeg, .png"}]
      [:button.btn.btn-warning "Cancel"]
      [:button.btn.btn-primary {:type :submit} "Submit"]]))
 
-(defn confirm-write-section [{:keys [place params]}]
-  (let [{:keys [title detail]} params
-        handle (:place/handle place)
-        path (uri handle [:create :redirect])]
-     [:form.container.mt-5.px-5
-     {:method :get :action path}
-     [:div.input-group.my-3
-      [:span.input-group-text "Title"]
-      [:input.form-control
-       {:type :text :name :title :value title
-        :placeholder "Write title of your review"}]]
-     [:div.input-group.my-3
-      [:span.input-group-text {:id "add-on-2"} "Content"]
-      [:input.form-control
-       {:type :text :name :detail :value detail
-        :placeholder "Write content of your review"
-        :rows 10 :aria-label "Description"
-        :aria-describedby "add-on-2"}]]
-     [:button.btn.btn-warning "Cancel"]
-     [:button.btn.btn-primary {:type :submit} "Submit"]]))
 
-(defn redirect-write-section
+(comment
+  ;; => {:title "lexx",
+  ;;     :detail "bell",
+  ;;     :file
+  ;;     [{:filename "97856444_012_94b1.jpg",
+  ;;       :content-type "image/jpeg",
+  ;;       :tempfile
+  ;;       #object[java.io.File 0x684fe363 "/var/folders/qc/m81gfdnj5kv0ftd2w6cj_g3h0000gn/T/ring-multipart-11993421227697888404.tmp"],
+  ;;       :size 84874}
+  ;;      {:filename "68f4555c6f4c96fe2bf9908bb8492124.jpg",
+  ;;       :content-type "image/jpeg",
+  ;;       :tempfile
+  ;;       #object[java.io.File 0x44fa9bbc "/var/folders/qc/m81gfdnj5kv0ftd2w6cj_g3h0000gn/T/ring-multipart-10142877634193057190.tmp"],
+  ;;       :size 206523}]}
+  )
+
+(defn store-file
+  [post-id {:keys [filename tempfile size]}]
+  (storage/upload-image
+   #:image{:id (u/uuid)
+           :objk (str (u/uuid))
+           :post-id post-id
+           :filename filename
+           :size size}
+   tempfile))
+
+(defn submit-review-and-redirect-section
   [{:keys [params person place]}]
-  (let [{:keys [title detail]} params
+  (let [{:keys [title detail file]} params
         handle (:place/handle place)
         place-id (db-place/place-handle->id handle)
-        post #:post{:id (u/uuid)
+        post-id (u/uuid)
+        post #:post{:id post-id
                     :title title
                     :kind :review
                     :detail detail
@@ -76,6 +89,8 @@
                     :person-id (get person :person/id)}
         path (c/path :place handle :reviews)]
     (db-common/record! post)
+    (doseq [item file]
+      (store-file post-id item))
     [:div
      [:p "Your review has been posted."]
      [:a {:href path}
@@ -105,6 +120,8 @@
         (db-common/pull-by-id post-id)
         {:person/keys [nickname]}
         (db-common/pull-by-id person-id)
+        images (db-image/get-images-by-post-id post-id)
+        presigned-urls (map #(storage/presign-url (:image/objk %)) images)
         detail' (case cover
                   :removed "removed by user"
                   :banned "content is banned"
@@ -115,6 +132,8 @@
       [:h6.card-subtitle.mb-2.text-body-secondary
        (str "by " nickname)]
       [:div {:id :review-detail-and-controls}
+       [:div (for [purl presigned-urls]
+               [:img {:src purl}])]
        [:p {:id :reviewdetail
             :class (c/>s :card-text)
             :style {:white-space :pre-line}}
@@ -259,8 +278,7 @@
    [["" {:get (make-page reviews-section)}]
     ["/create"
      [["/write" {:get (make-page write-review-section)}]
-      ["/confirm" {:get (make-page confirm-write-section)}]
-      ["/redirect" {:get (make-page redirect-write-section)}]]]
+      ["/submit" {:post (make-page submit-review-and-redirect-section)}]]]
     ["/:post-id"
      [["/read" {:get (make-page review-section)}]
       ["/edit-content" {:get edit-detail-form

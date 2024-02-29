@@ -64,3 +64,24 @@
 (comment
   (presign-url "toto")
   :=> "https://purple-...s3.amazonaws.com/toto?X-Amz-Algorithm=AWS4...")
+
+(defn delete-image [objk]
+  (s3/delete-object
+   aws
+   :bucket-name s3-bucket
+   :key objk)
+  (image-db/delete-image-by-objk objk))
+
+(comment
+  (let [objks '("1f229f7b-115f-43df-823e-fee9fd43fa52"
+                "ba509037-25b9-4ea1-b604-f659fb8c831e"
+                "e21560f4-3730-4fcd-b96e-dfb7adc82f9b"
+                "53e2fc2b-2c4d-4211-9c51-b434338d5b2c"
+                "7f71bb5d-4734-40fc-8ca8-16d9855dcbd3"
+                "6324a81a-eed7-41e1-baf2-44c88d83975c"
+                "1f6efc61-6691-4b2b-a179-697776022636"
+                "be3ed809-811f-48ea-aa9b-36c8c11501c1"
+                "52bbc22b-de03-4acd-9896-547cd5561e4a")]
+    (doseq [objk objks]
+      (delete-image objk)))
+  :=> nil)

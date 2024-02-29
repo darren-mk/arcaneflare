@@ -40,3 +40,16 @@
         :image/filename "68f4555c6f4c96fe2bf9908bb8492124.jpg",
         :image/size 206523,
         :xt/id #uuid "013b54ac-417c-4feb-be75-82df3d8d672b"}))
+
+(defn delete-image-by-objk [objk]
+  (let [qr '{:find [?image-id]
+             :in [[?objk]]
+             :where [[?image :image/id ?image-id]
+                     [?image :image/objk ?objk]]}
+        image-id (ffirst (dbc/query qr [objk]))]
+    (dbc/delete! image-id)))
+
+(comment
+  (delete-image-by-objk "18a4b3a4-62e9-41bc-9af8-cf5bdec7f82c")
+  :=> #:xtdb.api{:tx-id 1805,
+                 :tx-time #inst "2024-02-29T14:46:41.971-00:00"})

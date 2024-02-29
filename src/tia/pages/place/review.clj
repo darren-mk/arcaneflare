@@ -46,23 +46,6 @@
      [:button.btn.btn-warning "Cancel"]
      [:button.btn.btn-primary {:type :submit} "Submit"]]))
 
-
-(comment
-  ;; => {:title "lexx",
-  ;;     :detail "bell",
-  ;;     :file
-  ;;     [{:filename "97856444_012_94b1.jpg",
-  ;;       :content-type "image/jpeg",
-  ;;       :tempfile
-  ;;       #object[java.io.File 0x684fe363 "/var/folders/qc/m81gfdnj5kv0ftd2w6cj_g3h0000gn/T/ring-multipart-11993421227697888404.tmp"],
-  ;;       :size 84874}
-  ;;      {:filename "68f4555c6f4c96fe2bf9908bb8492124.jpg",
-  ;;       :content-type "image/jpeg",
-  ;;       :tempfile
-  ;;       #object[java.io.File 0x44fa9bbc "/var/folders/qc/m81gfdnj5kv0ftd2w6cj_g3h0000gn/T/ring-multipart-10142877634193057190.tmp"],
-  ;;       :size 206523}]}
-  )
-
 (defn store-file
   [post-id {:keys [filename tempfile size]}]
   (storage/upload-image
@@ -243,7 +226,7 @@
                "Could not review detail content. Contact administrator."
                (:post/detail post)]))))
 
-(defn edit-detail-form
+(defn edit-content-form
   [{:keys [path-params place]}]
   (let [handle (:place/handle place)
         post-id (-> path-params :post-id parse-uuid)
@@ -281,7 +264,7 @@
       ["/submit" {:post (make-page submit-review-and-redirect-section)}]]]
     ["/:post-id"
      [["/read" {:get (make-page review-section)}]
-      ["/edit-content" {:get edit-detail-form
+      ["/edit-content" {:get edit-content-form
                         :patch patch-detail-comp}]
       ["/delete-content" {:delete remove-detail-and-comp}]
       ["/commentaries"

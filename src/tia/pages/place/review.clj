@@ -72,7 +72,7 @@
                     :person-id (get person :person/id)}
         path (c/path :place handle :reviews)]
     (db-common/record! post)
-    (doseq [item file]
+    (doseq [item (flatten [file])]
       (store-file post-id item))
     [:div
      [:p "Your review has been posted."]
@@ -170,7 +170,7 @@
     (db-common/delete! commentary-id)
     (l/comp nil)))
 
-(defn render-post [{:keys [handle post]}]
+(defn post-link [{:keys [handle post]}]
   (let [{:post/keys [id title person-id]} post
         {:person/keys [nickname]} (db-common/pull-by-id person-id)
         path (uri handle [id :read])]
@@ -185,7 +185,7 @@
       [:div "Comments: 23"]
       [:span.text-body-secondary "Views: 280"]]]))
 
-(defn reviews-section [{:keys [place] :as _req}]
+(defn reviews-section [{:keys [place]}]
   (let [handle (:place/handle place)
         path (uri handle [:create :write])
         posts (db-post/get-by-handle handle)]
@@ -194,7 +194,7 @@
       {:href path} "Write review"]
      [:div.list-group
       (for [post posts]
-        (render-post {:handle handle
+        (post-link {:handle handle
                       :post post}))]]))
 
 (defn create-commentary-comp [{:keys [person params path-params]}]

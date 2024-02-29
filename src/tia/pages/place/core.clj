@@ -12,6 +12,7 @@
    [tia.middleware :as mw]
    [tia.pages.place.common :as p-common]
    [tia.pages.place.review :as p-review]
+   [tia.pages.place.gallery :as p-gallery]
    [tia.storage :as storage]
    [tia.util :as u]))
 
@@ -29,37 +30,13 @@
    [:p (cstr/join " " ["Nudity: " nudity])]
    [:p (cstr/join " " ["Address: " street city state country])]])
 
-(defn gallery [{:keys [place/id] :as place}]
-  (let [images (db-common/pull-all-having-kv :image/place-id id)
-        presigned-urls (map #(storage/presign-url (:image/objk %)) images)]
-    [:div
-     [:h1 "images will be here."]
-     [:h2 (str place)]
-     [:h3 (str (first images))]
-     [:div
-      (for [purl presigned-urls]
-        [:img {:src purl}])]
-     [:form {:method :post
-             :enctype "multipart/form-data"}
-      [:div
-       [:label {:for :file}
-        "choose file"]
-       [:input {:type :file
-                :id :file
-                :name :file
-                :multiple true
-                :accept ".jpg, .jpeg, .png"}]]
-      [:button
-       "upload image"]]]))
-
 (defn content
   [selection place address]
   (case selection
     :info (info place address)
     :event [:h1 "event will be here."]
     :menu [:h1 "menu will be here."]
-    :dancer [:h1 "dancer will be here."]
-    :gallery (gallery place)))
+    :dancer [:h1 "dancer will be here."]))
 
 (defn tab [ident selection place]
   (let [handle (:place/handle place)
@@ -116,5 +93,4 @@
    ["/menu" {:get (page :menu)}]
    ["/dancer" {:get (page :dancer)}]
    p-review/routes
-   ["/gallery" {:get (page :gallery)
-                :post upload}]])
+   p-gallery/routes])

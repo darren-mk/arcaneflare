@@ -79,8 +79,8 @@
   [:map {:closed true}
    [:xt/id {:optional true} :uuid]
    [:image/id :uuid]
-   [:image/post-id {:optional true} :uuid]
-   [:image/objk [:string {:min 5 :max 40}]]
+   [:image/post-id :uuid]
+   [:image/objk [:string {:min 5 :max 60}]]
    [:image/filename [:string {:min 1 :max 60}]]
    [:image/size :int]])
 

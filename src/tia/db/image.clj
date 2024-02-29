@@ -41,6 +41,15 @@
         :image/size 206523,
         :xt/id #uuid "013b54ac-417c-4feb-be75-82df3d8d672b"}))
 
+(defn get-images-by-place-id [place-id]
+  (let [qr '{:find [(pull ?image [*])]
+             :in [[?place-id]]
+             :where [[?image :image/post-id ?post-id]
+                     [?post :post/id ?post-id]
+                     [?post :post/place-id ?place-id]]}
+        raw (dbc/query qr [place-id])]
+    (map first raw)))
+
 (defn delete-image-by-objk [objk]
   (let [qr '{:find [?image-id]
              :in [[?objk]]

@@ -121,3 +121,14 @@
 (comment
   (place-handle->id :flamingo-gentlemens-club)
   :=> #uuid "deae0e86-5a02-4d1b-8894-f59734aa009b")
+
+(defn place-id->handle [id]
+  (let [ql '{:find [?handle]
+             :in [[?id]]
+             :where [[?place :place/id ?id]
+                     [?place :place/handle ?handle]]}]
+    (ffirst (common/query ql [id]))))
+
+(comment
+  (place-id->handle #uuid "deae0e86-5a02-4d1b-8894-f59734aa009b")
+  :=> :flamingo-gentlemens-club)

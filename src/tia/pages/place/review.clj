@@ -4,7 +4,7 @@
    [tia.data :as d]
    [tia.db.place :as db-place]
    [tia.db.post :as db-post]
-   [tia.db.image :as db-image]
+   [tia.db.file :as db-file]
    [tia.db.commentary :as db-commentary]
    [tia.db.common :as db-common]
    [tia.layout :as l]
@@ -48,12 +48,13 @@
 
 (defn store-file
   [post-id {:keys [filename tempfile size]}]
-  (storage/upload-image
-   #:image{:id (u/uuid)
-           :objk (str (u/uuid))
-           :post-id post-id
-           :filename filename
-           :size size}
+  (storage/upload-file
+   #:file{:id (u/uuid)
+          :objk (str (u/uuid))
+          :kind :image
+          :post-id post-id
+          :designation filename
+          :size size}
    tempfile))
 
 (defn submit-review-and-redirect-section
@@ -103,8 +104,8 @@
         (db-common/pull-by-id post-id)
         {:person/keys [nickname]}
         (db-common/pull-by-id person-id)
-        images (db-image/get-images-by-post-id post-id)
-        presigned-urls (map #(storage/presign-url (:image/objk %)) images)
+        images (db-file/get-files-by-post-id post-id)
+        presigned-urls (map #(storage/presign-url (:file/objk %)) images)
         detail' (case cover
                   :removed "removed by user"
                   :banned "content is banned"

@@ -82,7 +82,7 @@
                       :person-id person-id
                       :filename filename
                       :size size}]
-    (storage/upload-image
+    (storage/upload-file
      image tempfile)))
 
 (def routes

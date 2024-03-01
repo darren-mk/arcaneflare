@@ -2,7 +2,7 @@
   (:require
    [tia.calc :as c]
    [tia.db.place :as db-place]
-   [tia.db.image :as db-image]
+   [tia.db.file :as db-file]
    [tia.db.common :as db-common]
    [tia.pages.place.common :as place-common]
    [tia.storage :as storage]))
@@ -14,7 +14,7 @@
 (def make-page
   (partial place-common/paginate :gallery))
 
-(defn image-card [{:image/keys [post-id objk]}]
+(defn card [{:file/keys [post-id objk]}]
   (let [presigned-url (storage/presign-url objk)
         {:post/keys [place-id title]} (db-common/pull-by-id post-id)
         handle (db-place/place-id->handle place-id)]
@@ -29,11 +29,11 @@
 
 (defn gallery-section [{:keys [place]}]
   (let [{:place/keys [id]} place
-        images (db-image/get-images-by-place-id id)]
+        medias (db-file/get-files-by-place-id id)]
     [:div
      [:div {:style {:display :flex :flex-direction :row :gap :30px}}
-      (for [image images]
-        (image-card image))]]))
+      (for [media medias]
+        (card media))]]))
 
 (def routes
   ["/gallery"

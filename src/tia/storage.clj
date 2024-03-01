@@ -4,7 +4,7 @@
    [malli.core :as m]
    [mount.core :refer [defstate]]
    [tia.config :refer [env]]
-   [tia.db.image :as image-db]
+   [tia.db.file :as db-file]
    [tia.model :as model]
    [tia.util :as u]))
 
@@ -32,27 +32,27 @@
                 :display-name "darrenkim"}
         :creation-date "#object..."}])
 
-(m/=> upload-image
-      [:=> [:cat model/image :any]
+(m/=> upload-file
+      [:=> [:cat model/file :any]
        :any])
 
-(defn upload-image
-  [{:keys [image/objk] :as image} file]
-  (image-db/create! image)
+(defn upload-file
+  [{:file/keys [objk] :as file} data]
+  (db-file/create! file)
   (s3/put-object
    aws
    :bucket-name s3-bucket
    :key objk
-   :file file))
+   :file data))
 
-(defn get-file [objk]
+(defn get-data [objk]
   (-> (s3/get-object
        aws s3-bucket objk)
       :input-stream
       slurp))
 
 (comment
-  (get-file "toto")
+  (get-data "toto")
   :=> "test\nyoyoyo\n")
 
 (defn presign-url [objk]
@@ -65,12 +65,12 @@
   (presign-url "toto")
   :=> "https://purple-...s3.amazonaws.com/toto?X-Amz-Algorithm=AWS4...")
 
-(defn delete-image [objk]
+(defn delete-file [objk]
   (s3/delete-object
    aws
    :bucket-name s3-bucket
    :key objk)
-  (image-db/delete-image-by-objk objk))
+  (db-file/delete-file-by-objk objk))
 
 (comment
   (let [objks '("1f229f7b-115f-43df-823e-fee9fd43fa52"
@@ -83,5 +83,5 @@
                 "be3ed809-811f-48ea-aa9b-36c8c11501c1"
                 "52bbc22b-de03-4acd-9896-547cd5561e4a")]
     (doseq [objk objks]
-      (delete-image objk)))
+      (delete-file objk)))
   :=> nil)

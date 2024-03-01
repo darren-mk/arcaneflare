@@ -75,14 +75,15 @@
    [:person/agreed? :boolean]
    [:person/preferences {:optional true} :map]])
 
-(def image
+(def file
   [:map {:closed true}
    [:xt/id {:optional true} :uuid]
-   [:image/id :uuid]
-   [:image/post-id :uuid]
-   [:image/objk [:string {:min 5 :max 60}]]
-   [:image/filename [:string {:min 1 :max 60}]]
-   [:image/size :int]])
+   [:file/id :uuid]
+   [:file/post-id :uuid]
+   [:file/kind [:enum :image :video :document]]
+   [:file/objk [:string {:min 5 :max 60}]]
+   [:file/designation [:string {:min 1 :max 60}]]
+   [:file/size :int]])
 
 (def profile
   [:map {:closed true}

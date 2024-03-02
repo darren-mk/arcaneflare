@@ -137,7 +137,7 @@
               :else
               [:p.text-danger
                "A nickname cannot have a space or special charaters."])]
-    (l/comp [:div msg])))
+    (l/elem [:div msg])))
 
 (defn check-email [{:keys [params]}]
   (let [{:keys [email]} params
@@ -150,7 +150,7 @@
               [:p.text-danger "Must be in valid email format."]
               :else
               [:p.text-primary "This email is available to use."])]
-    (l/comp [:div msg])))
+    (l/elem [:div msg])))
 
 (defn check-password [{:keys [params]}]
   (let [{:keys [password]} params
@@ -164,7 +164,7 @@
                [:p.text-danger "one uppercase letter,"]
                [:p.text-danger "one special character, no space,"]
                [:p.text-danger "and it must be 8-16 characters long."]])]
-    (l/comp [:div msg])))
+    (l/elem [:div msg])))
 
 (def routes
   ["/signup"

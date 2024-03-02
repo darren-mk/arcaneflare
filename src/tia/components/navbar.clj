@@ -76,9 +76,15 @@
    [:a.btn.btn-secondary.flex-grow-1.text-nowrap
     {:area-hidden true} 3980]])
 
-(defn in []
-  [:a.btn.btn-primary.text-nowrap
-   {:href "/login"} "Log In"])
+(defn gate [session]
+  (if session
+    [:div
+     [:h1 (-> session :person/nickname)]
+     [:a.btn.btn-primary.text-nowrap
+      {:href "/logout"} "Log Out"]]
+    [:div
+     [:a.btn.btn-primary.text-nowrap
+      {:href "/login"} "Log In"]]))
 
 (defn navbar [{:keys [session nav]}]
   (let [selection (:selection nav)]
@@ -96,7 +102,4 @@
         (path #{:article :articlelist} selection)
         (path #{:gallery} selection)]
        [:div.d-flex.align-items-center.justify-content-center
-        (region) search (counter)
-        (if session
-          [:h1 (-> session :person/nickname)]
-          (in))]]]])) 
+        (region) search (counter) (gate session)]]]]))

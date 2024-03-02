@@ -1,7 +1,7 @@
 (ns tia.pages.login
   (:require
    [clojure.string :as cstr]
-   [tia.layout :as layout]
+   [tia.layout :as l]
    [tia.db.session :as session-db]))
 
 (defn result [{:keys [params]}]
@@ -13,7 +13,7 @@
         tag (if session
               [:div [:p "logged in"]]
               [:div [:p "Failed to log in."]])]
-    (layout/page prop tag)))
+    (l/page prop tag)))
 
 (defn input [k]
   (let [label (-> k name
@@ -46,7 +46,7 @@
    no-account])
 
 (defn page [_]
-  (layout/page
+  (l/page
    {:nav {:selection nil}}
    [:div.container-md.px-3.px-sm-4.px-xl-5
     [:div.d-flex.justify-content-center

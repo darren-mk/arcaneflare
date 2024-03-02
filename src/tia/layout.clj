@@ -24,15 +24,15 @@
    :headers (:plain d/content-type)
    :body text})
 
-(defn comp [data]
+(defn elem [data]
   {:status 200
    :headers (:html d/content-type)
    :body (-> data h/html str)})
 
-(m/=> headerize
+(m/=> sessionize
       [:=> [:cat [:maybe :uuid]] :map])
 
-(defn headerize [session-id]
+(defn sessionize [session-id]
   (merge
    (:html d/content-type)
    (when session-id
@@ -41,10 +41,10 @@
        session-id)})))
 
 (comment
-  (headerize (u/uuid))
+  (sessionize (u/uuid))
   :=> {"Content-Type" "text/html",
        "Set-Cookie" "session-id=2dfd...;path=/"}
-  (headerize nil)
+  (sessionize nil)
   :=> {"Content-Type" "text/html"})
 
 (defn bodify [prop data]
@@ -59,7 +59,7 @@
 
 (defn page [prop data]
   (let [session-id (-> prop :session :id)
-        headers (headerize session-id)
+        headers (sessionize session-id)
         head (headify)
         body (bodify prop data)
         html [:html d/html-prop

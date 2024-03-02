@@ -2,7 +2,7 @@
   (:require
    [malli.core :as m]
    [tia.model :as md]
-   [tia.db.common :as com]
+   [tia.db.common :as db-common]
    [tia.db.person :as pdb]
    [tia.util :as u]))
 
@@ -11,7 +11,7 @@
 
 (defn get-session-and-person [id]
   (first
-   (com/query
+   (db-common/query
     '{:find [(pull ?session [*])
              (pull ?person [*])]
       :keys [session person]
@@ -41,7 +41,7 @@
 
 (defn find-all-by-email [email]
   (mapv first
-        (com/query
+        (db-common/query
          '{:find [(pull ?session [*])]
            :in [[?email]]
            :where [[?session :session/person-id ?pid]
@@ -60,36 +60,26 @@
         :session/expiration #inst "2024-02-20T12:44:59.414-00:00",
         :xt/id #uuid "028a68e8-ae32-4d08-b7ae-e1201ba2cf5f"}])
 
-(defn create! [session]
-  (com/record! session))
-
-(m/=> sessionize
+(m/=> session-instance
       [:=> [:cat :uuid] md/session])
 
-(defn sessionize [pid]
+(defn session-instance [pid]
   {:session/id (u/uuid)
    :session/person-id pid
    :session/renewal (u/after-days 27)
    :session/expiration (u/after-days 30)})
 
-(comment
-  (create!
-   {:session/id #uuid "4b02e9b1-2b40-40a9-a57c-878ddcddba93"
-    :session/person-id #uuid "c864fd4b-ec4b-4310-8d69-e1be290cd57e"
-    :session/expiration #inst "2024-01-20T21:21:38.248-00:00"})
-  :=> #:xtdb.api{:tx-id 502, :tx-time #inst "2024-01-20T21:22:42.061-00:00"})
-
 (defn login!
   ([person-id]
-   (let [session (sessionize person-id)]
-     (when (:xtdb.api/tx-id (create! session))
+   (let [session (session-instance person-id)]
+     (when (:xtdb.api/tx-id (db-common/record! session))
        session)))
   ([email password]
    (let [person (pdb/find-by-email email)
          person-id (:person/id person)
          matched? (= password (:person/password person))
-         session (sessionize person-id)]
-     (when (and matched? (:xtdb.api/tx-id (create! session)))
+         session (session-instance person-id)]
+     (when (and matched? (:xtdb.api/tx-id (db-common/record! session)))
        session))))
 
 (comment
@@ -101,8 +91,11 @@
                 :renewal #inst "2024-02-18T15:48:24.225-00:00",
                 :expiration #inst "2024-02-21T15:48:24.225-00:00"})
 
+(defn logout! [session-id]
+  (db-common/delete! session-id))
+
 (defn count-sessions []
-  (com/count-all-having-key :session/id))
+  (db-common/count-all-having-key :session/id))
 
 (comment
   (count-sessions)

@@ -169,7 +169,7 @@
 (defn delete-commentary-comp-empty [{:keys [path-params]}]
   (let [commentary-id (-> path-params :commentary-id parse-uuid)]
     (db-common/delete! commentary-id)
-    (l/comp nil)))
+    (l/elem nil)))
 
 (defn post-link [{:keys [handle post]}]
   (let [{:post/keys [id title person-id]} post
@@ -209,11 +209,11 @@
                                 :post-id post-id
                                 :person-id (:person/id person)}]
     (if (db-common/record! commentary)
-      (l/comp
+      (l/elem
        [:div
         [:p nickname]
         [:p content]])
-      (l/comp
+      (l/elem
        [:p "failed in creating comment. refresh page and try again."]))))
 
 (defn remove-detail-and-comp [{:keys [path-params]}]
@@ -222,8 +222,8 @@
         post (db-common/pull-by-id post-id)
         post' (assoc post :post/cover :removed)]
     (if (db-common/upsert! post')
-      (l/comp [:span msg])
-      (l/comp [:span
+      (l/elem [:span msg])
+      (l/elem [:span
                "Could not review detail content. Contact administrator."
                (:post/detail post)]))))
 
@@ -232,7 +232,7 @@
   (let [handle (:place/handle place)
         post-id (-> path-params :post-id parse-uuid)
         post (db-common/pull-by-id post-id)]
-    (l/comp
+    (l/elem
      [:form {:id :review-detail-and-controls
              :hx-patch (uri handle [post-id :edit-content])
              :hx-target :#review-detail-and-controls
@@ -255,7 +255,7 @@
         new-detail (:detail params)
         post' (assoc post :post/detail new-detail)]
     (db-common/upsert! post')
-    (l/comp [:p new-detail])))
+    (l/elem [:p new-detail])))
 
 (def routes
   ["/reviews"

@@ -85,8 +85,10 @@
       "Move back to review section!"]]))
 
 (defn commentary-card
-  [handle post-id {:commentary/keys [id updated person-id content]}]
-  (let [{:person/keys [nickname]} (db-common/pull-by-id person-id)
+  [handle user-person-id post-id commentary]
+  (let [{:commentary/keys [id updated person-id content]} commentary
+        commenter-person-id person-id
+        {:person/keys [nickname]} (db-common/pull-by-id commenter-person-id)
         header (str "By " nickname " at " updated)
         deletion-confirm-msg "Do you wish to delete this comment?"
         path (uri handle [post-id :commentaries id :delete])]
@@ -98,16 +100,18 @@
      [:div.card-body
       [:blockquote.blockquote.mb-0
        [:p content]]]
-     [:div.card-footer
-      [:button.btn.btn-link "Edit"]
-      [:button.btn.btn-link
-       {:type :submit} "Delete"]]]))
+     (when (= user-person-id commenter-person-id)
+       [:div.card-footer
+        [:button.btn.btn-link "Edit"]
+        [:button.btn.btn-link
+         {:type :submit} "Delete"]])]))
 
-(defn post-card [handle post-id]
+(defn post-card [handle user-person-id post-id]
   (let [{:post/keys [title cover detail person-id]}
         (db-common/pull-by-id post-id)
+        reviewer-person-id person-id
         {:person/keys [nickname]}
-        (db-common/pull-by-id person-id)
+        (db-common/pull-by-id reviewer-person-id)
         images (db-file/get-files-by-post-id post-id)
         presigned-urls (map #(storage/presign-url (:file/objk %)) images)
         detail' (case cover
@@ -126,7 +130,8 @@
             :class (c/>s :card-text)
             :style {:white-space :pre-line}}
         detail']
-       [:button
+      (when (= reviewer-person-id user-person-id)
+        [:button
         {:hx-get (uri handle [post-id :edit-content])
          :hx-confirm "Only the content of the review will be delete. Do you wish to?"
          :hx-target :#review-detail-and-controls
@@ -139,19 +144,21 @@
          :hx-target :#reviewdetail
          :hx-trigger :click
          :hx-swap :outerHTML}
-        "delete"]]]]))
+        "delete"])]]]))
 
 (defn review-section
-  [{:keys [place path-params]}]
-  (let [handle (:place/handle place)
+  [{:keys [place path-params person]}]
+  (let [user-person-id (:person/id person)
+        handle (:place/handle place)
         post-id (-> path-params :post-id parse-uuid)
         commentaries (db-commentary/get-commentaries-by-post-id post-id)
         post-path (uri handle [post-id :commentaries :create])]
     [:div.container.mt-5.px-5
-     (post-card handle post-id)
+     (post-card handle user-person-id post-id)
      [:div#commentaries
       (for [commentary commentaries]
-        (commentary-card handle post-id commentary))]
+        (commentary-card
+         handle user-person-id post-id commentary))]
      [:form.container.mt-5.px-5
       {:hx-post post-path
        :hx-trigger :submit

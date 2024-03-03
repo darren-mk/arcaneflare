@@ -3,6 +3,7 @@
    [next.jdbc.date-time]
    [next.jdbc.prepare]
    [next.jdbc.result-set]
+   [clojure.java.io :as io]
    [clojure.tools.logging :as log]
    [tia.config :as config]
    [tia.model]
@@ -27,7 +28,10 @@
            :connection-pool :xtdb.jdbc/connection-pool}
           :xtdb/document-store
           {:xtdb/module 'xtdb.jdbc/->document-store
-           :connection-pool :xtdb.jdbc/connection-pool}}))
+           :connection-pool :xtdb.jdbc/connection-pool}
+          :xtdb/index-store
+          {:kv-store {:xtdb/module 'xtdb.rocksdb/->kv-store
+                      :db-dir (io/file "/tmp/rocksdb")}}}))
     (do (log/warn "database connection URL was not found")
         db))
   :stop

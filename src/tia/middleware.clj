@@ -71,24 +71,21 @@
 
 (defn sessionize [handler]
   (fn [req]
-    (let [sid (-> req :cookies (get "session-id") :value)
-          session+person
-          (when sid (-> sid parse-uuid
-                        session-db/get-session-and-person))
-          {:keys [session/renewal
-                  session/expiration]} (:session session+person)
-          person-id (-> session+person :person :session/person-id)
-          expired? (boolean (and expiration (u/past? expiration)))
-          renewing? (boolean (and renewal (u/past? renewal)))
-          req' (if expired? req
-                   (merge req session+person))
-          resp (handler req')]
-      (if (and (not expired?) renewing?)
-        (let [{:keys [session/id]} (session-db/login! person-id)
-              path [:headers d/set-cookie]
-              session-str (calc/session-stringify id)]
-          (assoc-in resp path session-str))
-        resp))))
+    (let [sid (some-> req :cookies (get "session-id") :value parse-uuid)
+          cached-session-m (get @session-db/cache sid)]
+      (if (= :out cached-session-m)
+        (handler req)
+        (let [{:keys [session person]}
+              (when sid (or (session-db/get-session-and-person sid)
+                            cached-session-m))
+              expiration (:session/expiration session)
+              expired? (boolean (and expiration (u/past? expiration)))
+              req' (if expired? req
+                       (-> req
+                           (assoc :session session)
+                           (assoc :person person)))]
+          (swap! session-db/cache dissoc sid)
+          (handler req'))))))
 
 (defn handle->place+address [handler]
   (fn [{:keys [path-params] :as req}]

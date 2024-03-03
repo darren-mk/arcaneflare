@@ -4,16 +4,10 @@
    [tia.layout :as l]
    [tia.db.session :as session-db]))
 
-(defn result [{:keys [params]}]
+(defn login-and-redirect [{:keys [params]}]
   (let [{:keys [email password]} params
-        session (session-db/login! email password)
-        prop (if session
-               {:session {:id (:session/id session)}}
-               {})
-        tag (if session
-              [:div [:p "logged in"]]
-              [:div [:p "Failed to log in."]])]
-    (l/page prop tag)))
+        session (session-db/login! email password)]
+    (l/redirect "/" (:session/id session))))
 
 (defn input [k]
   (let [label (-> k name
@@ -27,7 +21,7 @@
        :required true
        :placeholder label}]]))
 
-(def sign-in
+(def submit
   [:div.mb-3.pb-3.border-bottom
    [:button.btn.btn-primary.w-100
     {:type :submit} "Sign in"]])
@@ -42,7 +36,7 @@
           :method :post}
    (input :email)
    (input :password)
-   sign-in
+   submit
    no-account])
 
 (defn page [_]
@@ -55,4 +49,4 @@
 (def routes
   ["/login"
    ["" {:get page}]
-   ["/result" {:post result}]])
+   ["/result" {:post login-and-redirect}]])

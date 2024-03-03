@@ -2,8 +2,9 @@
   (:require
    [tia.layout :as l]))
 
-(defn page [_req]
-  (l/page {:nav {:selection nil}}
+(defn page [{:keys [session person]}]
+  (l/page {:nav {:selection nil}
+           :session session :person person}
    [:main {:class "position-relative flex-grow-1 d-flex align-items-center"}
     [:div {:class "container-fluid g-0 overflow-hidden position-relative z-1"}
      [:h1 "hello"]]]))

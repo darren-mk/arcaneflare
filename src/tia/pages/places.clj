@@ -93,9 +93,11 @@
        :any])
 
 (defn page [selection]
-  (fn [{:keys [session] :as _req}]
-    (layout/page {:nav {:selection :club}
-                   :session session}
+  (fn [{:keys [session person] :as _req}]
+    (layout/page
+     {:nav {:selection :club}
+      :session session
+      :person person}
      [:div.container-md.px-3.px-sm-4.px-xl-5
       [:div.row
        [:div.py-3.py-sm-4

@@ -2,16 +2,19 @@
   (:require
    [malli.core :as m]
    [tia.model :as md]
-   [tia.db.common :as db-common]
+   [tia.db.common :as dbc]
    [tia.db.person :as pdb]
    [tia.util :as u]))
+
+(defonce cache
+  (atom {}))
 
 (m/=> get-session-and-person
       [:=> [:cat uuid?] :any])
 
 (defn get-session-and-person [id]
   (first
-   (db-common/query
+   (dbc/query
     '{:find [(pull ?session [*])
              (pull ?person [*])]
       :keys [session person]
@@ -21,27 +24,9 @@
               [?person :person/id ?pid]]}
     [id])))
 
-(comment
-  (get-session-and-person
-   #uuid "be350684-2dd4-4875-be28-f923532540ed")
-  :=> {:session
-       {:session/id #uuid "be350684-2dd4-4875-be28-f923532540ed",
-        :session/person-id #uuid "11381509-5e3b-448b-958d-6a23b242ce61",
-        :session/renewal #inst "2024-03-08T16:59:18.357-00:00",
-        :session/expiration #inst "2024-03-11T16:59:18.357-00:00",
-        :xt/id #uuid "be350684-2dd4-4875-be28-f923532540ed"},
-       :person
-       {:person/id #uuid "11381509-5e3b-448b-958d-6a23b242ce61",
-        :person/nickname "kokonut",
-        :person/email "kokonut@koko.nut",
-        :person/password "Abc123!@#",
-        :person/role :customer,
-        :person/agreed? true,
-        :xt/id #uuid "11381509-5e3b-448b-958d-6a23b242ce61"}})
-
 (defn find-all-by-email [email]
   (mapv first
-        (db-common/query
+        (dbc/query
          '{:find [(pull ?session [*])]
            :in [[?email]]
            :where [[?session :session/person-id ?pid]
@@ -60,10 +45,10 @@
         :session/expiration #inst "2024-02-20T12:44:59.414-00:00",
         :xt/id #uuid "028a68e8-ae32-4d08-b7ae-e1201ba2cf5f"}])
 
-(m/=> session-instance
+(m/=> instantiate
       [:=> [:cat :uuid] md/session])
 
-(defn session-instance [pid]
+(defn instantiate [pid]
   {:session/id (u/uuid)
    :session/person-id pid
    :session/renewal (u/after-days 27)
@@ -71,15 +56,17 @@
 
 (defn login!
   ([person-id]
-   (let [session (session-instance person-id)]
-     (when (:xtdb.api/tx-id (db-common/record! session))
+   (let [session (instantiate person-id)]
+     (when (:xtdb.api/tx-id (dbc/record! session))
        session)))
   ([email password]
    (let [person (pdb/find-by-email email)
          person-id (:person/id person)
          matched? (= password (:person/password person))
-         session (session-instance person-id)]
-     (when (and matched? (:xtdb.api/tx-id (db-common/record! session)))
+         {:session/keys [id] :as session} (instantiate person-id)]
+     (swap! cache assoc-in [id :session] session)
+     (swap! cache assoc-in [id :person] person)
+     (when (and matched? (:xtdb.api/tx-id (dbc/record! session)))
        session))))
 
 (comment
@@ -92,10 +79,11 @@
                 :expiration #inst "2024-02-21T15:48:24.225-00:00"})
 
 (defn logout! [session-id]
-  (db-common/delete! session-id))
+  (swap! cache assoc session-id :out)
+  (dbc/delete! session-id))
 
 (defn count-sessions []
-  (db-common/count-all-having-key :session/id))
+  (dbc/count-all-having-key :session/id))
 
 (comment
   (count-sessions)

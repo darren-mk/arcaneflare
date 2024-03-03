@@ -76,17 +76,29 @@
    [:a.btn.btn-secondary.flex-grow-1.text-nowrap
     {:area-hidden true} 3980]])
 
-(defn gate [session]
-  (if session
-    [:div
-     [:h1 (-> session :person/nickname)]
-     [:a.btn.btn-primary.text-nowrap
-      {:href "/logout"} "Log Out"]]
+(defn gate [session person]
+  (if (and session person)
+    [:div {:class "dropdown"}
+     [:button {:class "btn btn-secondary dropdown-toggle"
+               :type "button"
+               :data-bs-toggle "dropdown"
+               :aria-expanded "false"}
+      (:person/nickname person)]
+     [:ul {:class "dropdown-menu"}
+      [:li [:a {:class "dropdown-item"
+                :href "#"}
+            "Pofile"]]
+      [:li [:a {:class "dropdown-item"
+                :href "#"}
+            "Another action"]]
+      [:li [:a {:class "dropdown-item"
+                :href "/logout"}
+            "Log Out"]]]]
     [:div
      [:a.btn.btn-primary.text-nowrap
       {:href "/login"} "Log In"]]))
 
-(defn navbar [{:keys [session nav]}]
+(defn navbar [{:keys [person session nav]}]
   (let [selection (:selection nav)]
     [:nav.navbar.navbar-expand-md.border-bottom.border-secondary.border-opacity-25
      {:style {:background-color "var(--bs-content-bg)"
@@ -102,4 +114,4 @@
         (path #{:article :articlelist} selection)
         (path #{:gallery} selection)]
        [:div.d-flex.align-items-center.justify-content-center
-        (region) search (counter) (gate session)]]]]))
+        (region) search (counter) (gate session person)]]]]))

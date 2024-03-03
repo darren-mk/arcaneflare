@@ -57,6 +57,20 @@
    d/htmx d/ui-style
    d/css-link d/icons])
 
+(defn redirect
+  ([uri]
+   {:status 301
+    :headers (merge (:html d/content-type)
+                    {"Location" uri})
+    :body nil})
+  ([uri session-id]
+   (let [session-str (calc/session-stringify session-id)]
+     {:status 301
+      :headers (merge (:html d/content-type)
+                      {"Location" uri
+                       d/set-cookie session-str})
+      :body nil})))
+
 (defn page [prop data]
   (let [session-id (-> prop :session :id)
         headers (sessionize session-id)

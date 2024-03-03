@@ -6,6 +6,7 @@
    [tia.pages.database :as database]
    [tia.pages.landing :as landing]
    [tia.pages.login :as login]
+   [tia.pages.logout :as logout]
    [tia.pages.region :as region]
    [tia.pages.reviews :as reviews]
    [tia.pages.signup :as signup]
@@ -24,6 +25,7 @@
    place/routes
    signup/routes
    login/routes
+   logout/routes
    #_database/routes
    #_region/routes
    reviews/routes

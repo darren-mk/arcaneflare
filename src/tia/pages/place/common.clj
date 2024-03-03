@@ -26,10 +26,11 @@
           elems)))
 
 (defn paginate [selection section]
-  (fn [{:keys [session place] :as req}]
+  (fn [{:keys [session person place] :as req}]
     (l/page
      {:nav {:selection :club}
-      :session session}
+      :session session
+      :person person}
      [:div.container-md.px-3.px-sm-4.px-xl-5
       [:div.row
        [:div.py-3.py-sm-4

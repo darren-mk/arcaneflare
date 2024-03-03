@@ -1,9 +1,9 @@
 (ns tia.db.person
   (:require
-   [tia.db.common :as com]))
+   [tia.db.common :as dbcm]))
 
 (defn nickname-existent? [s]
-  (pos? (com/count-all-having-kv
+  (pos? (dbcm/count-all-having-kv
          :person/nickname s)))
 
 (comment
@@ -11,7 +11,7 @@
   :=> false)
 
 (defn email-existent? [s]
-  (pos? (com/count-all-having-kv
+  (pos? (dbcm/count-all-having-kv
          :person/email s)))
 
 (comment
@@ -19,7 +19,7 @@
   :=> false)
 
 (defn create! [person]
-  (com/record! person))
+  (dbcm/record! person))
 
 (comment
   (create! {:person/id #uuid "c864fd4b-ec4b-4310-8d69-e1be290cd57e"
@@ -32,7 +32,7 @@
                  :tx-time #inst "2024-01-20T20:03:50.401-00:00"})
 
 (defn count-persons []
-  (com/count-all-having-key :person/id))
+  (dbcm/count-all-having-key :person/id))
 
 (comment
   (count-persons)
@@ -40,7 +40,7 @@
 
 (defn find-by-email [email]
   (ffirst
-   (com/query
+   (dbcm/query
     '{:find [(pull ?person [*])]
       :in [[?email]]
       :where [[?person :person/email ?email]]}

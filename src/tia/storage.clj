@@ -32,18 +32,16 @@
                 :display-name "darrenkim"}
         :creation-date "#object..."}])
 
-(m/=> upload-file
-      [:=> [:cat model/file :any]
-       :any])
-
-(defn upload-file
-  [{:file/keys [objk] :as file} data]
-  (db-file/create! file)
-  (s3/put-object
-   aws
-   :bucket-name s3-bucket
-   :key objk
-   :file data))
+(def upload-file
+  (m/-instrument
+   {:schema [:=> [:cat model/file :any] :any]}
+   (fn [{:file/keys [objk] :as file} data]
+     (db-file/create! file)
+     (s3/put-object
+      aws
+      :bucket-name s3-bucket
+      :key objk
+      :file data))))
 
 (defn get-data [objk]
   (-> (s3/get-object

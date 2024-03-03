@@ -1,5 +1,7 @@
 (ns tia.pages.place.review
   (:require
+   [clojure.tools.logging :as log]
+   [malli.core :as m]
    [tia.calc :as c]
    [tia.data :as d]
    [tia.db.place :as db-place]
@@ -8,6 +10,7 @@
    [tia.db.commentary :as db-commentary]
    [tia.db.common :as db-common]
    [tia.layout :as l]
+   [tia.model :as model]
    [tia.pages.place.common :as place-common]
    [tia.storage :as storage]
    [tia.util :as u]))
@@ -48,14 +51,15 @@
 
 (defn store-file
   [post-id {:keys [filename tempfile size]}]
-  (storage/upload-file
-   #:file{:id (u/uuid)
-          :objk (str (u/uuid))
-          :kind :image
-          :post-id post-id
-          :designation filename
-          :size size}
-   tempfile))
+  (let [file #:file{:id (u/uuid)
+                    :objk (str (u/uuid))
+                    :kind :image
+                    :post-id post-id
+                    :designation filename
+                    :size size}]
+    (if (m/validate model/file file)
+      (storage/upload-file file tempfile)
+      (log/error "invalid file attempted to store"))))
 
 (defn submit-review-and-redirect-section
   [{:keys [params person place]}]

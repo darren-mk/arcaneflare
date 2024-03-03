@@ -1,6 +1,7 @@
 (ns tia.routes
   (:require
    [tia.style :as style]
+   [tia.pages.admin :as admin]
    [tia.pages.place.core :as place]
    [tia.pages.places :as places]
    [tia.pages.database :as database]
@@ -30,4 +31,5 @@
    #_region/routes
    reviews/routes
    #_storage/routes
-   post/routes])
+   post/routes
+   admin/routes])

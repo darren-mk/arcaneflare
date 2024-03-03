@@ -75,7 +75,9 @@
          ts #inst "2024-02-03T03:39:45.580-00:00"]
      {:xt/id id
       :tick/id id
-      :tick/timestamp ts})))
+      :tick/timestamp ts}))
+  :=> #:xtdb.api{:tx-id 1909,
+                 :tx-time #inst "2024-03-03T03:28:11.301-00:00"})
 
 (defn delete! [id]
   (xt/submit-tx db [[::xt/delete id]]))

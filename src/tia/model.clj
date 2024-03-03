@@ -125,3 +125,10 @@
    [:commentary/updated inst?]
    [:commentary/post-id :uuid]
    [:commentary/person-id :uuid]])
+
+(def setting
+  [:map {:closed true}
+   [:xt/id {:optional true} :keyword]
+   [:setting/id :keyword]
+   [:setting/session-expiration-days :int]
+   [:setting/admin-password [:string {:min 5 :max 15}]]])

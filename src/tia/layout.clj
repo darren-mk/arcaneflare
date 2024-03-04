@@ -21,12 +21,12 @@
 (defn plain
   [text]
   {:status 200
-   :headers (:plain d/content-type)
+   :headers {d/content-type d/text-plain}
    :body text})
 
 (defn elem [data]
   {:status 200
-   :headers (:html d/content-type)
+   :headers {d/content-type d/text-html}
    :body (-> data h/html str)})
 
 (m/=> sessionize
@@ -34,7 +34,7 @@
 
 (defn sessionize [session-id]
   (merge
-   (:html d/content-type)
+   {d/content-type d/text-html}
    (when session-id
      {d/set-cookie
       (calc/session-stringify
@@ -60,15 +60,15 @@
 (defn redirect
   ([uri]
    {:status 301
-    :headers (merge (:html d/content-type)
-                    {"Location" uri})
+    :headers {d/content-type d/text-html
+              d/location uri}
     :body nil})
   ([uri session-id]
    (let [session-str (calc/session-stringify session-id)]
      {:status 301
-      :headers (merge (:html d/content-type)
-                      {"Location" uri
-                       d/set-cookie session-str})
+      :headers {d/content-type d/text-html
+                d/location uri
+                d/set-cookie session-str}
       :body nil})))
 
 (defn page [prop data]
@@ -84,7 +84,7 @@
 
 (defn css [s]
   {:status 200
-   :headers (:css d/content-type)
+   :headers {d/content-type d/text-css}
    :body s})
 
 (defn error-page
@@ -96,6 +96,6 @@
    returns a response map with the error page as the body
    and the status specified by the status key"
   [error-details]
-  {:status  (:status error-details)
-   :headers {"Content-Type" "text/html; charset=utf-8"}
-   :body    (parser/render-file "error.html" error-details)})
+  {:status (:status error-details)
+   :headers {d/content-type "text/html; charset=utf-8"}
+   :body (parser/render-file "error.html" error-details)})

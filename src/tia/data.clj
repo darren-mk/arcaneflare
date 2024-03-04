@@ -26,16 +26,25 @@
    :data-bs-core :modern
    :data-bs-theme :dark})
 
+(def location
+  "Location")
+
 (def content-type
-  (let [k "Content-Type"]
-    {:plain {k "text/plain"}
-     :css {k "text/css"}
-     :html {k "text/html"}}))
+  "Content-Type")
+
+(def text-plain
+  "text/plain")
+
+(def text-css
+  "text/css")
+
+(def text-html
+  "text/html")
 
 (def css-link
   [:link
    {:rel :stylesheet
-    :type "text/css"
+    :type text-css
     :href "/css"}])
 
 (def icons

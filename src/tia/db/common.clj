@@ -2,6 +2,7 @@
   (:require
    [clojure.java.jdbc :as jdbc]
    [clojure.tools.logging :as log]
+   [honey.sql :as sql]
    [tia.db.core :as db-core :refer [*db*]]
    [tia.calc :as c]
    [malli.core :as m]
@@ -12,13 +13,17 @@
     [conn {:datasource db-core/*db*}]
     (jdbc/query conn s)))
 
+(defn hq [code]
+  (-> code sql/format q))
+
 (defn d [& codes]
   (jdbc/with-db-connection
     [conn {:datasource db-core/*db*}]
     (doseq [code codes]
       (jdbc/execute! conn code))))
-#_
-(q (clojure.string/join " " '(select * from user (123))))
+
+(defn hd [code]
+  (-> code sql/format d))
 
 (defn query
   ([ql]

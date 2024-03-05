@@ -4,6 +4,7 @@
                  [cheshire "5.11.0"]
                  [clojure.java-time "1.4.2"]
                  [clj-http "3.12.3"]
+                 [com.github.seancorfield/honeysql "2.6.1126"]
                  [com.xtdb/xtdb-core "1.24.3"]
                  [com.xtdb/xtdb-rocksdb "1.24.3"]
                  [com.xtdb/xtdb-jdbc "1.24.3"]

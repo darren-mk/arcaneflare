@@ -60,27 +60,17 @@
 (def password
   [:re #"^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.* ).{8,16}$"])
 
-(def job
+(def jobs
   [:enum :customer :provider :owner :staff])
 
 (def person
   [:map {:closed true}
-   [:xt/id {:optional true} :uuid]
    [:person/id :uuid]
    [:person/nickname nickname]
    [:person/email email]
    [:person/password password]
-   [:person/job job]
-   [:person/agreed? :boolean]])
-
-(comment
-  '(create table person (
-    id uuid primary key,
-    nickname varchar(15) not null unique,
-    email varchar(40) not null unique,
-    password varchar(16) not null,
-    job job not null,
-    verified boolean not null)))
+   [:person/job jobs]
+   [:person/verified :boolean]])
 
 (def file
   [:map {:closed true}

@@ -62,4 +62,4 @@
   (restart)
   (restart-db)
   (migrate!)
-  (schemafy! "change jobs type name"))
+  (schemafy! "create persons table"))

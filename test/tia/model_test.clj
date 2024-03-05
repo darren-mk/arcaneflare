@@ -38,8 +38,8 @@
            :nickname "mako"
            :email "makoto@abc.com"
            :password "Qwe123!@#"
-           :job :dancer
-           :agreed? true})
+           :job :customer
+           :verified false})
 
 (def sample-file
   #:file{:id #uuid "61a1da52-557c-45ea-a772-98e4700caabd"

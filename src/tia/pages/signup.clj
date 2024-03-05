@@ -28,9 +28,9 @@
   (let [{:keys [nickname email password
                 role agreed?]} params
         msgs (hash-set
-              (when (pdb/nickname-existent? nickname)
+              (when (pdb/nickname-exists? nickname)
                 :nickname-already-exists)
-              (when (pdb/email-existent? email)
+              (when (pdb/email-exists? email)
                 :email-already-exists)
               (when (not= "on" agreed?)
                 :term-is-not-agreed)
@@ -46,7 +46,7 @@
                                   :person/email email
                                   :person/password password
                                   :person/job (keyword role)
-                                  :person/agreed? (= "on" agreed?)}))
+                                  :person/verified (= "on" agreed?)}))
                  (success)
                  (fail :error-recording-in-db))
                (into [:div back] (map fail errors)))]
@@ -125,7 +125,7 @@
 
 (defn check-nickname [{:keys [params]}]
   (let [{:keys [nickname]} params
-        avail? (not (pdb/nickname-existent? nickname))
+        avail? (not (pdb/nickname-exists? nickname))
         valid? (m/validate md/nickname nickname)
         msg (cond
               (and avail? valid?)
@@ -141,7 +141,7 @@
 
 (defn check-email [{:keys [params]}]
   (let [{:keys [email]} params
-        unavailable? (pdb/email-existent? email)
+        unavailable? (pdb/email-exists? email)
         invalid? (not (m/validate md/email email))
         msg (cond
               unavailable?

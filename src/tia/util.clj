@@ -8,6 +8,10 @@
 (defn uuid []
   (java.util.UUID/randomUUID))
 
+(comment
+  (uuid)
+  :=> #uuid "7baa6a7a-cc90-4219-a80a-cac6c33c9101")
+
 (defn now []
   (java.util.Date.))
 

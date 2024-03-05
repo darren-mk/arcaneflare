@@ -1,10 +1,24 @@
 (ns tia.db.common
   (:require
+   [clojure.java.jdbc :as jdbc]
    [clojure.tools.logging :as log]
-   [tia.db.core :as dbcr :refer [db]]
+   [tia.db.core :as db-core :refer [db]]
    [tia.calc :as c]
    [malli.core :as m]
    [xtdb.api :as xt]))
+
+(defn q [s]
+  (jdbc/with-db-connection
+    [connection {:datasource db-core/db}]
+    (jdbc/query connection s)))
+
+(defn d [& codes]
+  (jdbc/with-db-connection
+    [connection {:datasource db-core/db}]
+    (doseq [code codes]
+      (jdbc/execute! connection code))))
+#_
+(q (clojure.string/join " " '(select * from user (123))))
 
 (defn query
   ([ql]

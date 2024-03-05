@@ -8,6 +8,7 @@
                  [com.xtdb/xtdb-rocksdb "1.24.3"]
                  [com.xtdb/xtdb-jdbc "1.24.3"]
                  [cprop "0.1.19"]
+                 [conman "0.9.6"]
                  [expound "0.9.0"]
                  [funcool/struct "1.4.0"]
                  [garden "1.3.10"]

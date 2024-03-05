@@ -9,18 +9,17 @@
      :where [[?post :post/place-id ?pid]]}
    [pid]))
 
-(defn get-by-handle [handle]
-  (map first
-       (common/query
-        '{:find [(pull ?post [*])]
-          :in [[?handle]]
-          :where [[?place :place/handle ?handle]
-                  [?place :place/id ?place-id]
-                  [?post :post/place-id ?place-id]]}
-        [handle])))
+(defn get-by-handle [handle kind]
+  (let [qr '{:find [(pull ?post [*])]
+             :in [[?handle ?kind]]
+             :where [[?place :place/handle ?handle]
+                     [?place :place/id ?place-id]
+                     [?post :post/place-id ?place-id]
+                     [?post :post/kind ?kind]]}]
+    (map first (common/query qr [handle kind]))))
 
 (comment
-  (get-by-handle :silk-gentlemens-club)
+  (get-by-handle :silk-gentlemens-club :review)
   :=> '({:post/updated #inst "2024-02-17T03:43:44.464-00:00",
          :post/person-id #uuid "11381509-5e3b-448b-958d-6a23b242ce61",
          :post/created #inst "2024-02-17T03:43:44.464-00:00",

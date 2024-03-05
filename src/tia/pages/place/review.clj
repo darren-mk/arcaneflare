@@ -1,5 +1,6 @@
 (ns tia.pages.place.review
   (:require
+   [clojure.string :as cstr]
    [clojure.tools.logging :as log]
    [malli.core :as m]
    [tia.calc :as c]
@@ -151,7 +152,7 @@
   (let [user-person-id (:person/id person)
         handle (:place/handle place)
         post-id (-> path-params :post-id parse-uuid)
-        commentaries (db-commentary/get-commentaries-by-post-id post-id)
+        commentaries (db-commentary/get-all-of-post post-id)
         post-path (uri handle [post-id :commentaries :create])]
     [:div.container.mt-5.px-5
      (post-card handle user-person-id post-id)
@@ -183,24 +184,39 @@
     (l/elem nil)))
 
 (defn post-link [{:keys [handle post]}]
-  (let [{:post/keys [id title person-id]} post
+  (let [{:post/keys [id title person-id created]} post
+        post-id id
         {:person/keys [nickname]} (db-common/pull-by-id person-id)
-        path (uri handle [id :read])]
+        {:keys [latest-commentary-updated
+                latest-commentary-commenter-nickname]}
+        (db-commentary/get-latest-of-post post-id)
+        num-of-commentaries (db-commentary/count-by-post post-id)
+        path (uri handle [post-id :read])]
     [:a {:href path
          :class (c/>s :list-group-item :list-group-item-action
                       :d-flex :justify-content-between
                       :align-items-center :py-3)}
      [:div.me-auto
       [:div.fw-bold title]
-      [:span.text-body-secondary (str "authored by " nickname)]]
+      [:span.text-body-secondary
+       (cstr/join
+        " "
+        (concat ["Posted by " nickname
+                 "at" created]
+                (when latest-commentary-commenter-nickname
+                  ["Last commented by"
+                   latest-commentary-commenter-nickname
+                   "at" latest-commentary-updated])))]]
      [:div
-      [:div "Comments: 23"]
-      [:span.text-body-secondary "Views: 280"]]]))
+      [:div d/chat-empty-icon num-of-commentaries]
+      [:div d/heart-outlined-icon "33"]
+      [:div d/hand-thumbs-up-outlined-icon "22"]
+      [:div d/hand-thumbs-down-outlined-icon "-2"]]]))
 
 (defn reviews-section [{:keys [place]}]
   (let [handle (:place/handle place)
         path (uri handle [:create :write])
-        posts (db-post/get-by-handle handle)]
+        posts (db-post/get-by-handle handle :review)]
     [:div
      [:a.btn.btn-primary
       {:href path} "Write review"]

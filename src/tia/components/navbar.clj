@@ -72,7 +72,7 @@
   [:div.btn-group.me-2
    [:a.btn.btn-secondary.d-flex.align-items-center
     {:target :_blank :rel :noreferrer}
-    [:i.fa-solid.fa-heart]]
+    d/heart-outlined-icon]
    [:a.btn.btn-secondary.flex-grow-1.text-nowrap
     {:area-hidden true} 3980]])
 

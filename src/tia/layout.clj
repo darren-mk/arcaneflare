@@ -55,7 +55,7 @@
 (defn headify []
   [:head
    d/htmx d/ui-style
-   d/css-link d/icons])
+   d/css-link])
 
 (defn redirect
   ([uri]

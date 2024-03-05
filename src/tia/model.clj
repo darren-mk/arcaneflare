@@ -73,6 +73,15 @@
    [:person/job job]
    [:person/agreed? :boolean]])
 
+(comment
+  '(create table person (
+    id uuid primary key,
+    nickname varchar(15) not null unique,
+    email varchar(40) not null unique,
+    password varchar(16) not null,
+    job job not null,
+    verified boolean not null)))
+
 (def file
   [:map {:closed true}
    [:xt/id {:optional true} :uuid]

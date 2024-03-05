@@ -26,7 +26,7 @@
             :person/nickname "jackiemema"
             :person/email "jackie@abc.com"
             :person/password "Abc123!@#"
-            :person/role (keyword "customer")
+            :person/job (keyword "customer")
             :person/agreed? (= "on" "on")})
   :=> #:xtdb.api{:tx-id 498,
                  :tx-time #inst "2024-01-20T20:03:50.401-00:00"})
@@ -52,6 +52,6 @@
        :person/nickname "kokonut",
        :person/email "kokonut@abc.com",
        :person/password "Abc123!@#",
-       :person/role :customer,
+       :person/job :customer,
        :person/agreed? true,
        :xt/id #uuid "a3a9e552-773e-4b3b-9594-4c0fa5e6c79e"})

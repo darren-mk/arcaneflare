@@ -60,9 +60,8 @@
 (def password
   [:re #"^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.* ).{8,16}$"])
 
-(def roles
-  [:enum :customer :dancer
-   :provider :owner :staff])
+(def job
+  [:enum :customer :provider :owner :staff])
 
 (def person
   [:map {:closed true}
@@ -71,9 +70,8 @@
    [:person/nickname nickname]
    [:person/email email]
    [:person/password password]
-   [:person/role roles]
-   [:person/agreed? :boolean]
-   [:person/preferences {:optional true} :map]])
+   [:person/job job]
+   [:person/agreed? :boolean]])
 
 (def file
   [:map {:closed true}

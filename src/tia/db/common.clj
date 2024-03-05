@@ -2,33 +2,33 @@
   (:require
    [clojure.java.jdbc :as jdbc]
    [clojure.tools.logging :as log]
-   [tia.db.core :as db-core :refer [db]]
+   [tia.db.core :as db-core :refer [*db*]]
    [tia.calc :as c]
    [malli.core :as m]
    [xtdb.api :as xt]))
 
 (defn q [s]
   (jdbc/with-db-connection
-    [connection {:datasource db-core/db}]
-    (jdbc/query connection s)))
+    [conn {:datasource db-core/*db*}]
+    (jdbc/query conn s)))
 
 (defn d [& codes]
   (jdbc/with-db-connection
-    [connection {:datasource db-core/db}]
+    [conn {:datasource db-core/*db*}]
     (doseq [code codes]
-      (jdbc/execute! connection code))))
+      (jdbc/execute! conn code))))
 #_
 (q (clojure.string/join " " '(select * from user (123))))
 
 (defn query
   ([ql]
-   (xt/q (xt/db db) ql))
+   (xt/q (xt/db *db*) ql))
   ([ql var]
-   (xt/q (xt/db db) ql var)))
+   (xt/q (xt/db *db*) ql var)))
 
 (defn- put! [m]
   (xt/submit-tx
-   db [[::xt/put m]]))
+   *db* [[::xt/put m]]))
 
 (defn record! [data]
   (let [ns-s (c/nsmap->ns data)
@@ -94,7 +94,7 @@
                  :tx-time #inst "2024-03-03T03:28:11.301-00:00"})
 
 (defn delete! [id]
-  (xt/submit-tx db [[::xt/delete id]]))
+  (xt/submit-tx *db* [[::xt/delete id]]))
 
 (comment
   (count-all)

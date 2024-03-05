@@ -38,7 +38,7 @@
            :nickname "mako"
            :email "makoto@abc.com"
            :password "Qwe123!@#"
-           :role :dancer
+           :job :dancer
            :agreed? true})
 
 (def sample-file

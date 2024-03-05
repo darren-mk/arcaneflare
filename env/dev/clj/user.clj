@@ -6,8 +6,10 @@
    [clojure.string :as cstr]
    [clojure.spec.alpha :as s]
    [expound.alpha :as expound]
+   [luminus-migrations.core :as migrations]
    [malli.instrument :as mi]
    [mount.core :as mount]
+   [tia.config :as config]
    [tia.core]
    [tia.db.core]))
 
@@ -29,34 +31,35 @@
 (defn unst []
   (mi/unstrument!))
 
-(defn start
-  "Starts application.
-  You'll usually want to run this on startup."
-  []
+(defn start []
   (inst)
   (mount/start))
 
-(defn stop
-  "Stops application."
-  []
+(defn stop []
   (unst)
   (mount/stop))
 
-(defn restart
-  "Restarts application."
-  []
+(defn restart []
   (stop)
   (start))
 
-(defn restart-db
-  "Restarts database."
-  []
-  (mount/stop #'tia.db.core/db)
-  (mount/start #'tia.db.core/db))
+(defn restart-db []
+  (mount/stop #'tia.db.core/*db*)
+  (mount/start #'tia.db.core/*db*))
+
+(defn migrate! []
+  (let [km (select-keys config/env [:database-url])]
+    (migrations/migrate ["migrate"] km)))
+
+(defn schemafy! [s]
+  (let [km (select-keys config/env [:database-url])]
+    (migrations/create s km)))
 
 (comment
   (dot "abc def")
   (inst)
   (unst)
   (restart)
-  (restart-db))
+  (restart-db)
+  (migrate!)
+  (schemafy! "create person table"))

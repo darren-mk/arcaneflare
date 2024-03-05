@@ -10,12 +10,12 @@
    [mount.core :refer [defstate]])
   (:import (org.postgresql.util PGobject)))
 
-(declare db)
+(declare *db*)
 
-(defstate ^:dynamic db
+(defstate ^:dynamic *db*
   :start (conman/connect!
           {:jdbc-url (config/env :database-url)})
-  :stop (conman/disconnect! db))
+  :stop (conman/disconnect! *db*))
 
 (defn pgobj->clj [^org.postgresql.util.PGobject pgobj]
   (let [type (.getType pgobj)

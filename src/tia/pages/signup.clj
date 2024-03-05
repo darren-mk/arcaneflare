@@ -45,7 +45,7 @@
                                   :person/nickname nickname
                                   :person/email email
                                   :person/password password
-                                  :person/role (keyword role)
+                                  :person/job (keyword role)
                                   :person/agreed? (= "on" agreed?)}))
                  (success)
                  (fail :error-recording-in-db))

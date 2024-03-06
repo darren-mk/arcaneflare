@@ -14,13 +14,14 @@
 
 (def address
   [:map {:closed true}
-   [:xt/id {:optional true} :uuid]
    [:address/id :uuid]
-   [:address/street [:string {:min 2 :max 30}]]
+   [:address/street [:string {:min 2 :max 80}]]
    [:address/city [:string {:min 2 :max 30}]]
-   [:address/state [:string {:min 2 :max 15}]]
-   [:address/zip [:string {:min 3 :max 10}]]
-   [:address/country [:string {:min 2 :max 20}]]])
+   [:address/state [:string {:min 2 :max 30}]]
+   [:address/zip [:string {:min 3 :max 15}]]
+   [:address/country [:string {:min 2 :max 30}]]
+   [:address/created-at {:optional true} inst?]
+   [:address/updated-at {:optional true} inst?]])
 
 (def industry
   [:enum :strip-club :parlor])

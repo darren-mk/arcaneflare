@@ -61,4 +61,4 @@
   (restart)
   (restart-db)
   (migrate!)
-  (schemafy! "create ticks table"))
+  (schemafy! "create addresses table"))

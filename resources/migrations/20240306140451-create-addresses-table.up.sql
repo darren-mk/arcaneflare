@@ -1,0 +1,9 @@
+create table addresses (
+    id uuid primary key,
+    street varchar(80) not null,
+    city varchar(30) not null,
+    state varchar(30) not null,
+    zip varchar(15) not null,
+    country varchar(30) not null,
+    created_at timestamp default now(),
+    updated_at timestamp default now());

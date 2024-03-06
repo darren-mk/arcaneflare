@@ -11,12 +11,10 @@
 (def sample-address
   #:address{:id #uuid "c1cb1901-d48d-46dc-9ea5-2deb66b4da5c"
             :state "NJ"
-            :language :en
             :zip "07503"
-            :country :usa
+            :country "US"
             :street "95 Barclay St"
-            :city "Paterson"
-            :county "Bergen"})
+            :city "Paterson"})
 
 (def sample-place
   #:place{:phone "1-973-684-7678",
@@ -63,7 +61,7 @@
 
 (t/deftest address-test
   (t/is
-   (m/explain
+   (m/validate
     model/address
     sample-address)))
 

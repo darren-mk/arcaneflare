@@ -61,4 +61,4 @@
   (restart)
   (restart-db)
   (migrate!)
-  (schemafy! "create industries enum type"))
+  (schemafy! "create nudities enum type"))

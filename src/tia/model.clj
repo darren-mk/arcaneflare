@@ -6,7 +6,7 @@
   [:map {:closed true}
    [:xt/id {:optional true} :uuid]
    [:tick/id :uuid]
-   [:tick/timestamp inst?]])
+   [:tick/created-at inst?]])
 
 (def language
   "following iso 639 language codes"

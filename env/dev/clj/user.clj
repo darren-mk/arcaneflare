@@ -1,7 +1,6 @@
 (ns user
   "Userspace functions you can run by default in your local REPL."
   (:require
-   [tia.config]
    [clojure.pprint]
    [clojure.string :as cstr]
    [clojure.spec.alpha :as s]
@@ -62,4 +61,4 @@
   (restart)
   (restart-db)
   (migrate!)
-  (schemafy! "create persons table"))
+  (schemafy! "create ticks table"))

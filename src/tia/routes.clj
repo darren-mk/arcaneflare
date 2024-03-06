@@ -27,7 +27,7 @@
    signup/routes
    login/routes
    logout/routes
-   #_database/routes
+   database/routes
    #_region/routes
    reviews/routes
    #_storage/routes

@@ -1,25 +1,33 @@
 (ns tia.db.tick
   (:require
+   [malli.core :as m]
    [tia.db.common :as common]
-   [tia.util :as u]))
+   [tia.model :as model]))
 
-(defn tick! []
-  (common/record!
-   {:tick/id (u/uuid)
-    :tick/timestamp (u/now)}))
+(defn convert
+  [{:keys [id created_at]}]
+  (let [tick #:tick{:id id
+                    :created-at created_at}]
+    (m/coerce model/tick tick)))
 
-(comment
-  (tick!)
-  :=> #:xtdb.api{:tx-id 222
-                 :tx-time #inst "2024-01-02T05:38:04.708-00:00"})
-
-(defn ticks []
-  (let [ql '{:find [timestamp]
-             :where [[?tick :tick/timestamp timestamp]]
-             :order-by [[timestamp :asc]]}]
-    (mapv first (common/query ql))))
+(defn get-all []
+  (->> {:select [:*]
+        :from [:ticks]}
+       common/hq
+       (map convert)))
 
 (comment
-  (ticks)
-  :=> [#inst "2023-12-30T23:20:06.288-00:00"
-       #inst "2023-12-30T23:22:51.720-00:00"])
+  (get-all)
+  :=> (#:tick{:id #uuid "f8b00820-8d90-4441-bdb9-6048d0171be9"
+              :created-at #inst "2024-03-06T18:24:06.255017000-00:00"}
+       #:tick{:id #uuid "cc49b830-28d5-4cb0-93b5-e8fd8272959e"
+              :created-at #inst "2024-03-06T18:26:24.385753000-00:00"}))
+
+(defn create! []
+  (common/hd
+   {:insert-into [:ticks]
+    :columns [:id :created-at]
+    :values [[:default :default]]}))
+
+(comment
+  (create!))

@@ -6,7 +6,7 @@
 
 (def sample-tick
   #:tick{:id #uuid "f1d8bc86-b0d9-439d-b3e8-06d113bbc076"
-         :timestamp #inst "2024-01-29T15:14:31.246-00:00"})
+         :created-at #inst "2024-01-29T15:14:31.246-00:00"})
 
 (def sample-address
   #:address{:id #uuid "c1cb1901-d48d-46dc-9ea5-2deb66b4da5c"

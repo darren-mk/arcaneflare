@@ -1,15 +1,19 @@
 (ns tia.db.person
   (:require
-   [tia.db.common :as dbcm]))
+   [malli.core :as m]
+   [tia.db.common :as dbcm]
+   [tia.model :as model]))
 
-(defn convert [{:keys [id nickname email
-                       password job verified]}]
-  #:person{:id id
-           :nickname nickname
-           :email email
-           :password password
-           :job (keyword job)
-           :verified verified})
+(defn convert
+  [{:keys [id nickname email
+           password job verified]}]
+  (let [person #:person{:id id
+                        :nickname nickname
+                        :email email
+                        :password password
+                        :job (keyword job)
+                        :verified verified}]
+    (m/coerce model/person person)))
 
 (defn get-all []
   (map
@@ -34,7 +38,8 @@
                  :verified false}))
 
 (defn create!
-  [{:person/keys [id nickname email password job verified]}]
+  [{:person/keys [id nickname email password job verified] :as person}]
+  (assert (m/validate model/person person))
   (dbcm/hd {:insert-into [:persons]
             :columns [:id :nickname :email :password :job :verified]
             :values [[id nickname email password
@@ -84,13 +89,14 @@
               :from [:persons]
               :where [:= :email email]}
         raw (-> code dbcm/hq first)
-        {:keys [id nickname email password job verified]} raw]
-    #:person{:id id
-             :nickname nickname
-             :email email
-             :password password
-             :job (keyword job)
-             :verified verified}))
+        {:keys [id nickname email password job verified]} raw
+        person #:person{:id id
+                        :nickname nickname
+                        :email email
+                        :password password
+                        :job (keyword job)
+                        :verified verified}]
+    (m/coerce model/person person)))
 
 (comment
   (find-by-email "koko@nut.com")

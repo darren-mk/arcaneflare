@@ -61,4 +61,4 @@
   (restart)
   (restart-db)
   (migrate!)
-  (schemafy! "create addresses table"))
+  (schemafy! "create industries enum type"))

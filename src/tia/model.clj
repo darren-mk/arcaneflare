@@ -23,19 +23,23 @@
    [:address/created-at {:optional true} inst?]
    [:address/updated-at {:optional true} inst?]])
 
-(def industry
-  [:enum :strip-club :parlor])
+(def industries
+  [:enum :strip-club :massage-parlor])
+
+(def nudities
+  [:enum :full :top :none :unknown])
+
+(def statuses
+  [:enum :operational :closed :temp-closed])
 
 (def place
   [:map {:closed true}
-   [:xt/id {:optional true} :uuid]
    [:place/id :uuid]
-   [:place/language language]
-   [:place/industry industry]
+   [:place/industry industries]
    [:place/label [:string {:min 1 :max 60}]]
    [:place/handle :keyword]
-   [:place/nudity {:optional true} [:enum :full :top :none :unknown]]
-   [:place/status [:enum :operational :closed :temp-closed]]
+   [:place/nudity {:optional true} nudities]
+   [:place/status statuses]
    [:place/website {:optional true} [:string {:min 1 :max 120}]]
    [:place/facebook {:optional true} [:string {:min 1 :max 100}]]
    [:place/twitterx {:optional true} [:string {:min 1 :max 100}]]

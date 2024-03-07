@@ -13,7 +13,9 @@
   :=> #uuid "7baa6a7a-cc90-4219-a80a-cac6c33c9101")
 
 (defn now []
-  (java.util.Date.))
+  (-> (java.util.Date.)
+      .getTime
+      java.sql.Timestamp.))
 
 (m/=> after-days
       [:=> [:cat :int] inst?])

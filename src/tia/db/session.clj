@@ -9,6 +9,47 @@
 (defonce cache
   (atom {}))
 
+(defn convert
+  [{:keys [id person_id expiration]}]
+  (let [session #:session{:id id
+                          :person-id person_id
+                          :expiration expiration}]
+    (m/coerce md/session session)))
+
+(defn get-all []
+  (map
+   convert
+   (dbc/hq
+    {:select [:*]
+     :from [:sessions]})))
+
+(comment
+  (get-all)
+  :=> (#:session{:id #uuid "cfc0995e-c64b-46fe-9887-99f2ad735c0d"
+                 :person-id #uuid "4dd28ba4-c12c-4367-ab1d-1548f9c9764c"
+                 :expiration #inst "1969-12-31T05:00:00.000000000-00:00"}
+       #:session{:id #uuid "c210dc8d-0e21-4542-aaf6-d256970591a8"
+                 :person-id #uuid "4dd28ba4-c12c-4367-ab1d-1548f9c9764c"
+                 :expiration #inst "2024-03-07T15:14:19.488000000-00:00"}
+       #:session{:id #uuid "f3ce481b-e5d9-49a9-a3b1-dfbc674f994a"
+                 :person-id #uuid "4dd28ba4-c12c-4367-ab1d-1548f9c9764c"
+                 :expiration #inst "2024-03-07T15:14:30.532000000-00:00"}))
+
+(defn create!
+  [{:session/keys [id person-id expiration] :as session}]
+  (assert (m/validate md/session session))
+  (dbc/hd {:insert-into [:sessions]
+           :columns [:id :person-id :expiration]
+           :values [[id person-id
+                     [:cast expiration :timestamp]]]}))
+
+(comment
+  (create!
+   #:session{:id (u/uuid)
+             :person-id #uuid "4dd28ba4-c12c-4367-ab1d-1548f9c9764c"
+             :expiration (u/now)})
+  :=> nil)
+
 (m/=> get-session-and-person
       [:=> [:cat uuid?] :any])
 

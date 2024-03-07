@@ -61,4 +61,4 @@
   (restart)
   (restart-db)
   (migrate!)
-  (schemafy! "create places table"))
+  (schemafy! "create sessions table"))

@@ -61,4 +61,4 @@
   (restart)
   (restart-db)
   (migrate!)
-  (schemafy! "create statuses enum type"))
+  (schemafy! "create places table"))

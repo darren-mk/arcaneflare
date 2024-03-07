@@ -20,7 +20,6 @@
   #:place{:phone "1-973-684-7678",
           :address-id #uuid "c1cb1901-d48d-46dc-9ea5-2deb66b4da5c",
           :facebook "https://www.facebook.com/JohnnyAsHitchingPost",
-          :language :en,
           :status :operational,
           :id #uuid "23f58509-1cbe-4f11-a1d8-6a1fde6a85e4",
           :website "http://johnnyashitchingpost.com/",

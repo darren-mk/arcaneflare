@@ -27,6 +27,24 @@
 (defn hd [code]
   (-> code sql/format d))
 
+(def ->jsonb
+  db-core/clj->jsonb-pgobj)
+
+(comment
+  (->jsonb {:a 1 :b "2"})
+  :=> #object[org.postgresql.util.PGobject
+              0x6a1ba823 "{\"a\":1,\"b\":\"2\"}"])
+
+(def ->edn
+  db-core/pgobj->clj)
+
+(comment
+  (let [obj (->jsonb {:a 1 :b "2"})]
+    (->edn obj))
+  :=> {:a 1, :b "2"})
+
+;;;;;;;;
+
 (defn query
   ([ql]
    (xt/q (xt/db *db*) ql))

@@ -4,6 +4,17 @@
    [tia.db.common :as dbc]
    [tia.model :as model]))
 
+(defn convert
+  [{:keys [id nickname email
+           password job verified]}]
+  (let [person #:person{:id id
+                        :nickname nickname
+                        :email email
+                        :password password
+                        :job (keyword job)
+                        :verified verified}]
+    (m/coerce model/person person)))
+
 (defn get-all []
   (dbc/hq
    {:select [:*]

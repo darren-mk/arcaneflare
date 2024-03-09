@@ -61,4 +61,4 @@
   (restart)
   (restart-db)
   (migrate!)
-  (schemafy! "create literatures enum type"))
+  (schemafy! "create curbs enum type"))

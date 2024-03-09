@@ -108,14 +108,14 @@
          {:type :submit} "Delete"]])]))
 
 (defn post-card [handle user-person-id post-id]
-  (let [{:post/keys [title cover detail person-id]}
+  (let [{:post/keys [title curb detail person-id]}
         (db-common/pull-by-id post-id)
         reviewer-person-id person-id
         {:person/keys [nickname]}
         (db-common/pull-by-id reviewer-person-id)
         images (db-file/get-files-by-post-id post-id)
         presigned-urls (map #(storage/presign-url (:file/objk %)) images)
-        detail' (case cover
+        detail' (case curb
                   :removed "removed by user"
                   :banned "content is banned"
                   detail)]
@@ -247,7 +247,7 @@
   (let [msg d/content-deletion-msg
         post-id (-> path-params :post-id parse-uuid)
         post (db-common/pull-by-id post-id)
-        post' (assoc post :post/cover :removed)]
+        post' (assoc post :post/curb :removed)]
     (if (db-common/upsert! post')
       (l/elem [:span msg])
       (l/elem [:span

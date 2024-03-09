@@ -104,12 +104,14 @@
 (def literatures
   [:enum :review :article :event])
 
+(def curbs [:enum :removed :banned :none])
+
 (def post
   [:map {:closed true}
    [:post/id :uuid]
    [:post/title [:string {:min 2 :max 60}]]
    [:post/literature literatures]
-   [:post/cover {:optional true} [:enum :removed :banned :none]]
+   [:post/curb curbs]
    [:post/detail [:string {:min 3}]]
    [:post/place-id {:optional true} :uuid]
    [:post/region {:optional true} :map]

@@ -1,16 +1,12 @@
 (ns tia.db.common
   (:require
    [clojure.java.jdbc :as jdbc]
-   [clojure.tools.logging :as log]
    [honey.sql :as sql]
-   [tia.db.core :as db-core :refer [*db*]]
-   [tia.calc :as c]
-   [malli.core :as m]
-   [xtdb.api :as xt]))
+   [tia.db.core :as db-core]))
 
 (defn q [s]
   (jdbc/with-db-connection
-    [conn {:datasource db-core/*db*}]
+    [conn {:datasource db-core/db}]
     (jdbc/query conn s)))
 
 (defn hq [code]
@@ -20,7 +16,7 @@
 
 (defn d [& codes]
   (jdbc/with-db-connection
-    [conn {:datasource db-core/*db*}]
+    [conn {:datasource db-core/db}]
     (doseq [code codes]
       (jdbc/execute! conn code))))
 
@@ -31,9 +27,7 @@
   db-core/clj->jsonb-pgobj)
 
 (comment
-  (->jsonb {:a 1 :b "2"})
-  :=> #object[org.postgresql.util.PGobject
-              0x6a1ba823 "{\"a\":1,\"b\":\"2\"}"])
+  (->jsonb {:a 1 :b "2"}))
 
 (def ->edn
   db-core/pgobj->clj)
@@ -47,84 +41,39 @@
 
 (defn query
   ([ql]
-   (xt/q (xt/db *db*) ql))
+   {:a 1})
   ([ql var]
-   (xt/q (xt/db *db*) ql var)))
+   {:a 1}))
 
 (defn- put! [m]
-  (xt/submit-tx
-   *db* [[::xt/put m]]))
+  {:a 1})
 
 (defn record! [data]
-  (let [ns-s (c/nsmap->ns data)
-        idk (c/ns->idk ns-s)
-        schema (c/ns->schema ns-s)
-        idv (get data idk)
-        m (assoc data :xt/id idv)]
-    (if (m/validate schema m)
-      (put! m)
-      (log/error "data not validated:"
-                 (m/explain schema m)))))
+  {:a 1})
 
 (defn pull-by-id [id]
-  (let [ql '{:find [(pull ?e [*])]
-             :in [[id]]
-             :where [[?e :xt/id id]]}]
-    (ffirst (query ql [id]))))
+  {:a 1})
 
 (defn pull-all-having-key [k]
-  (let [ql {:find '[(pull ?e [*])]
-            :where [['?e k]]}]
-    (map first (query ql))))
+  {:a 1})
 
 (defn pull-all-having-kv [k v]
-  (let [ql {:find '[(pull ?e [*])]
-            :in [['v]]
-            :where [['?e k 'v]]}]
-    (map first (query ql [v]))))
+  {:a 1})
 
 (defn count-all-having-key [k]
-  (let [ql {:find '[(count ?e)]
-            :where [['?e k]]}]
-    (or (ffirst (query ql)) 0)))
+12)
 
 (defn count-all-having-kv [k v]
-  (let [ql {:find '[(count ?e)]
-            :in [['?v]]
-            :where [['?e k '?v]]}]
-    (or (ffirst (query ql [v])) 0)))
+12)
 
 (defn count-all []
-  (count-all-having-key :xt/id))
+  12)
 
 (defn upsert!
   "record data only when the existing
   data is not identical to the new one"
   [data]
-  (let [ns (c/nsmap->ns data)
-        idk (c/ns->idk ns)
-        idv (get data idk)
-        ex (pull-by-id idv)]
-    (when (not= ex data)
-      (record! data))))
-
-(comment
-  (upsert!
-   (let [id #uuid "d9fb6bf4-4009-421a-a1fd-046d05b72772"
-         ts #inst "2024-02-03T03:39:45.580-00:00"]
-     {:xt/id id
-      :tick/id id
-      :tick/created-at ts}))
-  :=> #:xtdb.api{:tx-id 1909,
-                 :tx-time #inst "2024-03-03T03:28:11.301-00:00"})
+  {:a 1})
 
 (defn delete! [id]
-  (xt/submit-tx *db* [[::xt/delete id]]))
-
-(comment
-  (count-all)
-  (delete! :id)
-  (pull-all-having-key :xt/id)
-  (count-all-having-kv
-   :address/street "50 West 33rd Street")
-  :=> 1)
+  {:a 1})

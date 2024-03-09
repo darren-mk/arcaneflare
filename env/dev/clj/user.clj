@@ -43,8 +43,8 @@
   (start))
 
 (defn restart-db []
-  (mount/stop #'tia.db.core/*db*)
-  (mount/start #'tia.db.core/*db*))
+  (mount/stop #'tia.db.core/db)
+  (mount/start #'tia.db.core/db))
 
 (defn migrate! []
   (let [km (select-keys config/env [:database-url])]
@@ -61,4 +61,4 @@
   (restart)
   (restart-db)
   (migrate!)
-  (schemafy! "create sessions table"))
+  (schemafy! "create literatures enum type"))

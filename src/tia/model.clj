@@ -131,6 +131,7 @@
    [:xt/id {:optional true} :uuid]
    [:recency/id :uuid]
    [:recency/post-id :uuid]
+   [:recency/commentary-id {:optional true} :uuid]
    [:recency/timestamp inst?]])
 
 (def setting

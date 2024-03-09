@@ -60,5 +60,5 @@
 (defn create!
   [{:commentary/keys [id post-id] :as commentary}]
   (assert (m/validate model/commentary commentary))
-  (r/upsert-recency post-id)
+  (r/upsert-recency! post-id id)
   (dbc/put! (merge {:xt/id id} commentary)))

@@ -7,7 +7,7 @@
 
 (defn create! [{:post/keys [id] :as post}]
   (assert (m/validate model/post post))
-  (r/upsert-recency id)
+  (r/upsert-recency! id)
   (dbc/put! (merge {:xt/id id} post)))
 
 (defn get-posts-by-place [pid]

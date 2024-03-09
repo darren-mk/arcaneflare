@@ -126,6 +126,13 @@
    [:commentary/post-id :uuid]
    [:commentary/person-id :uuid]])
 
+(def recency
+  [:map {:closed true}
+   [:xt/id {:optional true} :uuid]
+   [:recency/id :uuid]
+   [:recency/post-id :uuid]
+   [:recency/timestamp inst?]])
+
 (def setting
   [:map {:closed true}
    [:xt/id {:optional true} :keyword]

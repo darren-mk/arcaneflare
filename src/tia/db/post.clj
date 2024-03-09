@@ -1,22 +1,34 @@
 (ns tia.db.post
   (:require
-   [tia.db.common :as common]))
+   [malli.core :as m]
+   [tia.db.common :as dbc]
+   [tia.db.recency :as r]
+   [tia.model :as model]))
+
+(defn create! [{:post/keys [id] :as post}]
+  (assert (m/validate model/post post))
+  (r/upsert-recency id)
+  (dbc/put! (merge {:xt/id id} post)))
 
 (defn get-posts-by-place [pid]
-  (common/query
+  (dbc/query
    '{:find [(pull ?post [*])]
      :in [[?pid]]
      :where [[?post :post/place-id ?pid]]}
    [pid]))
 
 (defn get-by-handle [handle kind]
-  (let [qr '{:find [(pull ?post [*])]
+  (let [qr '{:find [(pull ?post [*]) ?timestamp]
              :in [[?handle ?kind]]
              :where [[?place :place/handle ?handle]
                      [?place :place/id ?place-id]
                      [?post :post/place-id ?place-id]
-                     [?post :post/kind ?kind]]}]
-    (map first (common/query qr [handle kind]))))
+                     [?post :post/kind ?kind]
+                     [?post :post/id ?post-id]
+                     [?recency :recency/post-id ?post-id]
+                     [?recency :recency/timestamp ?timestamp]]
+             :order-by [[?timestamp :desc]]}]
+    (map first (dbc/query qr [handle kind]))))
 
 (comment
   (get-by-handle :silk-gentlemens-club :review)
@@ -38,5 +50,5 @@
          :post/place-id #uuid "0f16d843-8d5d-4670-bdad-dc2fde38cee8",
          :xt/id #uuid "abe5eea4-3eed-4245-9f8c-fccda81d444c",
          :post/detail "mama"})
-  (common/count-all-having-key :post/id)
+  (dbc/count-all-having-key :post/id)
   :=> 2)

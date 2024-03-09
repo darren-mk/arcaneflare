@@ -77,7 +77,7 @@
                     :updated (u/now)
                     :person-id (get person :person/id)}
         path (c/path :place handle :reviews)]
-    (db-common/record! post)
+    (db-post/create! post)
     (doseq [item (flatten [file])]
       (store-file post-id item))
     [:div
@@ -235,7 +235,7 @@
                                 :updated (u/now)
                                 :post-id post-id
                                 :person-id (:person/id person)}]
-    (if (db-common/record! commentary)
+    (if (db-commentary/create! commentary)
       (l/elem
        [:div
         [:p nickname]

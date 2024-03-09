@@ -50,3 +50,15 @@
   (count-by-post
    #uuid"2c03a573-9eda-4800-8481-ae5c3f664c00")
   :=> 2)
+(ns tia.db.commentary
+  (:require
+   [malli.core :as m]
+   [tia.db.common :as dbc]
+   [tia.db.recency :as r]
+   [tia.model :as model]))
+
+(defn create!
+  [{:commentary/keys [id post-id] :as commentary}]
+  (assert (m/validate model/commentary commentary))
+  (r/upsert-recency post-id)
+  (dbc/put! (merge {:xt/id id} commentary)))

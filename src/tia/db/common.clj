@@ -12,7 +12,7 @@
   ([ql var]
    (xt/q (xt/db db) ql var)))
 
-(defn- put! [m]
+(defn put! [m]
   (xt/submit-tx
    db [[::xt/put m]]))
 

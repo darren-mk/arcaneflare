@@ -101,20 +101,21 @@
    [:session/person-id :uuid]
    [:session/expiration inst?]])
 
+(def literatures
+  [:enum :review :article :event])
+
 (def post
   [:map {:closed true}
-   [:xt/id {:optional true} :uuid]
    [:post/id :uuid]
-   [:post/title {:optional true} [:string {:min 2 :max 60}]]
-   [:post/kind [:enum :review :article :event]]
-   [:post/cover {:optional true} [:enum :removed :banned]]
+   [:post/title [:string {:min 2 :max 60}]]
+   [:post/literature literatures]
+   [:post/cover {:optional true} [:enum :removed :banned :none]]
    [:post/detail [:string {:min 3}]]
    [:post/place-id {:optional true} :uuid]
    [:post/region {:optional true} :map]
-   [:post/image-ids {:optional true} [:set :uuid]]
-   [:post/created inst?]
-   [:post/updated inst?]
-   [:post/person-id :uuid]])
+   [:post/created-at inst?]
+   [:post/edited-at inst?]
+   [:post/author-id :uuid]])
 
 (def commentary
   [:map {:closed true}

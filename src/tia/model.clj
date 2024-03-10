@@ -69,12 +69,12 @@
 
 (def person
   [:map {:closed true}
-   [:person/id :uuid]
-   [:person/nickname nickname]
-   [:person/email email]
-   [:person/password password]
-   [:person/job jobs]
-   [:person/verified :boolean]])
+   [:person_id :uuid]
+   [:nickname nickname]
+   [:email email]
+   [:password password]
+   [:job jobs]
+   [:verified :boolean]])
 
 (def file
   [:map {:closed true}

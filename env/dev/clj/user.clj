@@ -61,4 +61,4 @@
   (restart)
   (restart-db)
   (migrate!)
-  (schemafy! "recreate ticking table"))
+  (schemafy! "redefine person table"))

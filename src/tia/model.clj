@@ -2,11 +2,10 @@
   (:require
    [tia.data :as d]))
 
-(def tick
+(def ticking
   [:map {:closed true}
-   [:xt/id {:optional true} :uuid]
-   [:tick/id :uuid]
-   [:tick/created-at inst?]])
+   [:ticking_id :uuid]
+   [:created_at inst?]])
 
 (def language
   "following iso 639 language codes"

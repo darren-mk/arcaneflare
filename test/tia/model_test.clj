@@ -55,7 +55,7 @@
 (t/deftest tick-test
   (t/is
    (m/validate
-    model/tick
+    model/ticking
     sample-tick)))
 
 (t/deftest address-test

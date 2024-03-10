@@ -4,7 +4,7 @@
    [tia.pages.admin :as admin]
    [tia.pages.place.core :as place]
    [tia.pages.places :as places]
-   [tia.pages.database :as database]
+   [tia.pages.ticking :as ticking]
    [tia.pages.landing :as landing]
    [tia.pages.login :as login]
    [tia.pages.logout :as logout]
@@ -27,7 +27,7 @@
    signup/routes
    login/routes
    logout/routes
-   database/routes
+   ticking/routes
    #_region/routes
    reviews/routes
    #_storage/routes

@@ -61,4 +61,4 @@
   (restart)
   (restart-db)
   (migrate!)
-  (schemafy! "create curbs enum type"))
+  (schemafy! "recreate ticking table"))

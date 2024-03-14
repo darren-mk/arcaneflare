@@ -4,8 +4,8 @@
 
 (def ticking
   [:map {:closed true}
-   [:ticking_id :uuid]
-   [:created_at inst?]])
+   [:ticking/id :uuid]
+   [:ticking/created-at inst?]])
 
 (def language
   "following iso 639 language codes"

@@ -6,7 +6,9 @@
 (defn page [_]
   (db-ticking/create!)
   (layout/plain
-   (map #(str (:created_at %) "\n")
+   (map #(str
+          (:ticking/id %) " at "
+          (:ticking/created-at %) "\n")
         (db-ticking/get-all))))
 
 (def routes

@@ -9,8 +9,7 @@
 (defn convert [m]
   (let [renaming {:created_at :created-at
                   :edited_at :edited-at}
-        address (-> m
-                    (cset/rename-keys renaming)
+        address (-> (cset/rename-keys m renaming)
                     (u/map->nsmap :address))]
     (m/coerce model/address address)))
 

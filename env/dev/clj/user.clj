@@ -61,4 +61,4 @@
   (restart)
   (restart-db)
   (migrate!)
-  (schemafy! "rename address edited at field"))
+  (schemafy! "rename ticking id field"))

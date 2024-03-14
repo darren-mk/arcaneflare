@@ -20,7 +20,7 @@
    [:address/zip [:string {:min 3 :max 15}]]
    [:address/country [:string {:min 2 :max 30}]]
    [:address/created-at {:optional true} inst?]
-   [:address/updated-at {:optional true} inst?]])
+   [:address/edited-at {:optional true} inst?]])
 
 (def industries
   [:enum :strip-club :massage-parlor])

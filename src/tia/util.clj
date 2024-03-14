@@ -2,6 +2,7 @@
   "utility functions that involve side effects
   or that are not regarding domain logic."
   (:require
+   [clojure.walk :as w]
    [malli.core :as m]
    [tick.core :as t]))
 
@@ -69,3 +70,20 @@
        {:interval interval
         :max (dec max)
         :f f}))))
+
+(m/=> map->nsmap
+      [:=> [:cat :map :keyword]
+       :map])
+
+(defn map->nsmap
+  "Apply the string n to the supplied structure m as a namespace."
+  [m nk]
+  (w/postwalk
+   #(if (keyword? %)
+      (keyword (name nk) (name %))
+       %)
+   m))
+
+(comment
+  (map->nsmap {:a 1 :b 2} :hello)
+  :=> #:hello{:a 1, :b 2})

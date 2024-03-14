@@ -61,4 +61,4 @@
   (restart)
   (restart-db)
   (migrate!)
-  (schemafy! "redefine person table"))
+  (schemafy! "rename address edited at field"))

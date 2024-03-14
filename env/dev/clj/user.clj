@@ -61,4 +61,4 @@
   (restart)
   (restart-db)
   (migrate!)
-  (schemafy! "add creation timestamp to session"))
+  (schemafy! "rename post edited at field"))

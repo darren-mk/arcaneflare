@@ -70,7 +70,7 @@
         post-id (u/uuid)
         post #:post{:id post-id
                     :title title
-                    :literature :review
+                    :subject :review
                     :detail detail
                     :place-id place-id
                     :created (u/now)

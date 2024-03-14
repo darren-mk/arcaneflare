@@ -102,23 +102,29 @@
    [:session/created-at inst?]
    [:session/expired-at inst?]])
 
-(def literatures
+(def subject
   [:enum :review :article :event])
 
-(def curbs [:enum :removed :banned :none])
+(def curb [:enum :removed :banned :none])
+
+(def location
+  [:map
+   [:place-id {:optional true} :uuid]
+   [:city {:optional true} :string]
+   [:state {:optional true} :string]
+   [:country {:optional true} :string]])
 
 (def post
   [:map {:closed true}
    [:post/id :uuid]
+   [:post/subject subject]
+   [:post/curb curb]
+   [:post/author-id :uuid]
+   [:post/location location]
    [:post/title [:string {:min 2 :max 60}]]
-   [:post/literature literatures]
-   [:post/curb curbs]
    [:post/detail [:string {:min 3}]]
-   [:post/place-id {:optional true} :uuid]
-   [:post/region {:optional true} :map]
    [:post/created-at inst?]
-   [:post/edited-at inst?]
-   [:post/author-id :uuid]])
+   [:post/edited-at inst?]])
 
 (def commentary
   [:map {:closed true}

@@ -61,4 +61,4 @@
   (restart)
   (restart-db)
   (migrate!)
-  (schemafy! "add timestamps to place"))
+  (schemafy! "add timestamps to person table"))

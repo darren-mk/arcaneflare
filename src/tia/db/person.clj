@@ -1,37 +1,35 @@
 (ns tia.db.person
   (:require
+   [clojure.set :as cset]
    [malli.core :as m]
    [tia.db.common :as dbc]
    [tia.model :as model]
    [tia.util :as u]))
 
-(defn convert
-  [obj]
-  (as-> obj $
-    (update $ :job keyword)
-    (m/coerce model/person $)))
+(defn translate [m]
+  (let [renaming {:verified :verified?
+                  :created_at :created-at
+                  :edited_at :edited-at}
+        person (-> (cset/rename-keys m renaming)
+                   (update :job keyword)
+                   (u/map->nsmap :person))]
+    (m/coerce model/person person)))
 
 (defn get-all []
-  (map
-   convert
-   (dbc/hq
-    {:select [:*]
-     :from [:person]})))
+  (let [q {:select [:*]
+           :from [:person]}]
+    (map translate (dbc/hq q))))
 
 (comment
-  (get-all)
-  :=> '({:person_id #uuid "b55f31fc-71cd-4996-81e0-6dad720e825b",
-         :nickname "mako",
-         :email "makoto@abc.com",
-         :password "Qwe123!@#",
-         :verified false,
-         :job :customer}
-        {:person_id #uuid "4dd28ba4-c12c-4367-ab1d-1548f9c9764c",
-         :nickname "kokonut",
-         :email "koko@nut.com",
-         :password "Abc123!@#",
-         :verified false,
-         :job :customer}))
+  (take 1 (get-all))
+  :=> '(#:person{:id #uuid "b55f31fc-71cd-4996-81e0-6dad720e825b",
+                 :nickname "mako",
+                 :email "makoto@abc.com",
+                 :password "Qwe123!@#",
+                 :job :customer,
+                 :verified? false,
+                 :created-at #inst "2024-03-14T07:49:24.548449000-00:00",
+                 :edited-at #inst "2024-03-14T07:49:24.548449000-00:00"}))
 
 (defn create!
   [{:keys [person_id nickname email password job verified] :as person}]

@@ -128,13 +128,12 @@
 
 (def commentary
   [:map {:closed true}
-   [:xt/id {:optional true} :uuid]
    [:commentary/id :uuid]
-   [:commentary/content [:string {:min 3}]]
-   [:commentary/created inst?]
-   [:commentary/updated inst?]
    [:commentary/post-id :uuid]
-   [:commentary/person-id :uuid]])
+   [:commentary/annotator-id :uuid]
+   [:commentary/content [:string {:min 3}]]
+   [:commentary/created-at inst?]
+   [:commentary/edited-at inst?]])
 
 (def setting
   [:map {:closed true}

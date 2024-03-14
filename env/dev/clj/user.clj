@@ -61,4 +61,4 @@
   (restart)
   (restart-db)
   (migrate!)
-  (schemafy! "rename post edited at field"))
+  (schemafy! "rename commentary edited at field"))

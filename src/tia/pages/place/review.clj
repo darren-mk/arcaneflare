@@ -87,10 +87,10 @@
 
 (defn commentary-card
   [handle user-person-id post-id commentary]
-  (let [{:commentary/keys [id updated person-id content]} commentary
-        commenter-person-id person-id
+  (let [{:commentary/keys [id edited-at annotator-id content]} commentary
+        commenter-person-id annotator-id
         {:person/keys [nickname]} (db-common/pull-by-id commenter-person-id)
-        header (str "By " nickname " at " updated)
+        header (str "By " nickname " at " edited-at)
         deletion-confirm-msg "Do you wish to delete this comment?"
         path (uri handle [post-id :commentaries id :delete])]
     [:form.card {:hx-get path
@@ -231,10 +231,10 @@
         content (:content params)
         commentary #:commentary{:id (u/uuid)
                                 :content content
-                                :created (u/now)
-                                :updated (u/now)
+                                :created-at (u/now)
+                                :edited-at (u/now)
                                 :post-id post-id
-                                :person-id (:person/id person)}]
+                                :annotator-id (:person/id person)}]
     (if (db-common/record! commentary)
       (l/elem
        [:div

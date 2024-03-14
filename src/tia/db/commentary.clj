@@ -1,16 +1,62 @@
 (ns tia.db.commentary
   (:require
-   [tia.db.common :as common]))
+   [clojure.set :as cset]
+   [malli.core :as m]
+   [tia.db.common :as dbcm]
+   [tia.model :as model]
+   [tia.util :as u]))
+
+(defn translate [m]
+  (let [renaming {:post_id :post-id
+                  :annotator_id :annotator-id
+                  :created_at :created-at
+                  :edited_at :edited-at}
+        commentary (-> (cset/rename-keys m renaming)
+                       (u/map->nsmap :commentary))]
+    (m/coerce model/commentary commentary)))
+
+(defn get-all []
+  (let [q {:select [:*]
+           :from [:commentary]}]
+    (map translate (dbcm/hq q))))
+
+(comment
+  (take 1 (get-all))
+  :=> (#:commentary{:id #uuid "4ea34bb9-6122-4a58-9dd2-5207d3dc0580",
+                    :content "yes, agreed. good place to have happy time!",
+                    :post-id #uuid "d43d0d0c-f4e2-475f-b891-888449a41425",
+                    :annotator-id #uuid "0cb97a6c-2ed8-44dd-a403-439ab21b93fd",
+                    :created-at #inst "2024-03-14T14:09:30.728000000-00:00",
+                    :edited-at #inst "2024-03-14T14:09:30.728000000-00:00"}))
+
+(defn create!
+  [{:commentary/keys [id post-id annotator-id content
+                      created-at edited-at] :as commentary}]
+  (assert (m/validate model/commentary commentary))
+  (dbcm/hd {:insert-into [:commentary]
+            :columns [:id :post_id :annotator_id :content
+                      :created-at :edited-at]
+            :values [[id post-id annotator-id content
+                      created-at edited-at]]}))
+
+(comment
+  (create! #:commentary{:id (u/uuid)
+                        :post-id #uuid "d43d0d0c-f4e2-475f-b891-888449a41425"
+                        :annotator-id #uuid "0cb97a6c-2ed8-44dd-a403-439ab21b93fd"
+                        :content "yes, agreed. good place to have happy time!"
+                        :created-at (u/now)
+                        :edited-at (u/now)})
+  :=> nil)
 
 (defn get-all-of-post [post-id]
   (let [qr '{:find [(pull ?commentary [*])]
              :in [[?post-id]]
              :where [[?commentary :commentary/post-id ?post-id]
-                     [?commentary :commentary/updated ?updated]]}
-        raw (common/query qr [post-id])]
+                     [?commentary :commentary/edited-at ?updated]]}
+        raw (dbcm/query qr [post-id])]
     (->> raw
          (map first)
-         (sort-by :commentary/updated))))
+         (sort-by :commentary/edited-at))))
 
 (defn get-latest-of-post [post-id]
   (let [qr '{:find [?id ?updated ?person-id ?nickname]
@@ -20,13 +66,13 @@
              :in [[?post-id]]
              :where [[?commentary :commentary/post-id ?post-id]
                      [?commentary :commentary/id ?id]
-                     [?commentary :commentary/person-id ?person-id]
-                     [?commentary :commentary/updated ?updated]
+                     [?commentary :commentary/annotator-id ?person-id]
+                     [?commentary :commentary/edited-at ?updated]
                      [?person :person/id ?person-id]
                      [?person :person/nickname ?nickname]]
              :order-by [[?updated :desc]]
              :limit 1}]
-    (first (common/query qr [post-id]))))
+    (first (dbcm/query qr [post-id]))))
 
 (comment
   (get-latest-of-post
@@ -44,7 +90,7 @@
              :in [[?post-id]]
              :where [[?commentary :commentary/post-id ?post-id]
                      [?commentary :commentary/id ?commentary-id]]}]
-    (or (ffirst (common/query qr [post-id])) 0)))
+    (or (ffirst (dbcm/query qr [post-id])) 0)))
 
 (comment
   (count-by-post

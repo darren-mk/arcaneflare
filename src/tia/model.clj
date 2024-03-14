@@ -28,6 +28,16 @@
 (def status
   [:enum :operational :closed :temp-closed])
 
+(def misc
+  [:map
+   [:website {:optional true} [:string {:min 1 :max 120}]]
+   [:facebook {:optional true} [:string {:min 1 :max 100}]]
+   [:twitterx {:optional true} [:string {:min 1 :max 100}]]
+   [:instagram {:optional true} [:string {:min 1 :max 100}]]
+   [:phone {:optional true} [:string {:min 1 :max 30}]]
+   [:google-id {:optional true} [:string {:min 1 :max 60}]]
+   [:google-uri {:optional true} [:string {:min 1 :max 60}]]])
+
 (def place
   [:map {:closed true}
    [:place/id :uuid]
@@ -37,13 +47,7 @@
    [:place/nudity nudity]
    [:place/status status]
    [:place/address-id :uuid]
-   [:place/website {:optional true} [:string {:min 1 :max 120}]]
-   [:place/facebook {:optional true} [:string {:min 1 :max 100}]]
-   [:place/twitterx {:optional true} [:string {:min 1 :max 100}]]
-   [:place/instagram {:optional true} [:string {:min 1 :max 100}]]
-   [:place/phone {:optional true} [:string {:min 1 :max 30}]]
-   [:place/google-id {:optional true} [:maybe [:string {:min 1 :max 60}]]]
-   [:place/google-uri {:optional true} [:maybe [:string {:min 1 :max 60}]]]
+   [:place/misc misc]
    [:place/created-at inst?]
    [:place/edited-at inst?]])
 

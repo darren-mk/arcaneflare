@@ -61,4 +61,4 @@
   (restart)
   (restart-db)
   (migrate!)
-  (schemafy! "rename commentary edited at field"))
+  (schemafy! "put place optionals to misc"))

@@ -10,10 +10,9 @@
   (let [renaming {:address_id :address-id
                   :created_at :created-at
                   :edited_at :edited-at}
-        blob-m (-> m :blob dbc/->edn)
+        misc (-> m :misc dbc/->edn)
         place (-> (cset/rename-keys m renaming)
-                  (dissoc :blob)
-                  (merge blob-m)
+                  (assoc :misc misc)
                   (update :sector keyword)
                   (update :handle keyword)
                   (update :nudity keyword)
@@ -27,22 +26,17 @@
     (map translate (dbc/hq qr))))
 
 (comment
-  (get-all)
-  :=> '(#:place{:phone "1-973-684-7678",
+  (take 1 (get-all))
+  :=> '(#:place{:misc {:phone "1-973-684-7678",
+                       :website "http://johnnyashitchingpost.com/"},
                 :address-id #uuid "c1cb1901-d48d-46dc-9ea5-2deb66b4da5c",
                 :sector :strip-club,
-                :facebook "https://www.facebook.com/JohnnyAsHitchingPost",
-                :google-uri nil,
                 :edited-at #inst "2024-03-14T07:20:47.101045000-00:00",
                 :status :operational,
                 :id #uuid "23f58509-1cbe-4f11-a1d8-6a1fde6a85e4",
-                :google-id nil,
-                :website "http://johnnyashitchingpost.com/",
                 :created-at #inst "2024-03-14T07:20:47.101045000-00:00",
-                :twitterx "https://twitter.com/hitchingpostnj",
                 :nudity :none,
                 :label "Johnny A’s Hitching Post",
-                :instagram "https://www.instagram.com/Hitching_Post_/",
                 :handle :johnny-as-hitching-post}))
 
 (defn create!

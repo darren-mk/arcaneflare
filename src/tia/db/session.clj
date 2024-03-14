@@ -12,6 +12,7 @@
 
 (defn translate[m]
   (let [renaming {:person_id :person-id
+                  :created_at :created-at
                   :expired_at :expired-at}
         session (-> (cset/rename-keys m renaming)
                     (u/map->nsmap :session))]
@@ -26,6 +27,7 @@
   (take 1 (get-all))
   :=> '(#:session{:id #uuid "cfc0995e-c64b-46fe-9887-99f2ad735c0d",
                   :person-id #uuid "4dd28ba4-c12c-4367-ab1d-1548f9c9764c",
+                  :created-at #inst "2024-03-14T16:59:47.981408000-00:00",
                   :expired-at #inst "1969-12-31T05:00:00.000000000-00:00"}))
 
 (defn create!

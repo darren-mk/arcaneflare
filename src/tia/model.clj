@@ -99,6 +99,7 @@
   [:map {:closed true}
    [:session/id :uuid]
    [:session/person-id :uuid]
+   [:session/created-at inst?]
    [:session/expired-at inst?]])
 
 (def literatures

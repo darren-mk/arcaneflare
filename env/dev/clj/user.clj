@@ -61,4 +61,4 @@
   (restart)
   (restart-db)
   (migrate!)
-  (schemafy! "rename session fields"))
+  (schemafy! "add creation timestamp to session"))

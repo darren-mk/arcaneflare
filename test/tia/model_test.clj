@@ -27,7 +27,7 @@
           :nudity :none,
           :label "Johnny A’s Hitching Post",
           :instagram "https://www.instagram.com/Hitching_Post_/",
-          :industry :strip-club,
+          :sector :strip-club,
           :handle :johnny-as-hitching-post})
 
 (def sample-person

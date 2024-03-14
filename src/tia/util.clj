@@ -2,7 +2,6 @@
   "utility functions that involve side effects
   or that are not regarding domain logic."
   (:require
-   [clojure.walk :as w]
    [malli.core :as m]
    [tick.core :as t]))
 
@@ -77,12 +76,10 @@
 
 (defn map->nsmap
   "Apply the string n to the supplied structure m as a namespace."
-  [m nk]
-  (w/postwalk
-   #(if (keyword? %)
-      (keyword (name nk) (name %))
-       %)
-   m))
+  [m ns]
+  (let [->nsk (fn [a b] (keyword (name a) (name b)))
+        f (fn [acc [k v]] (assoc acc (->nsk ns k) v))]
+    (reduce f {} m)))
 
 (comment
   (map->nsmap {:a 1 :b 2} :hello)

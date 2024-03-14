@@ -1,53 +1,52 @@
 (ns tia.db.place
   (:require
+   [clojure.set :as cset]
    [malli.core :as m]
    [tia.db.common :as dbc]
-   [tia.model :as model]))
+   [tia.model :as model]
+   [tia.util :as u]))
 
-(defn convert
-  [{:keys [id industry label handle nudity
-           status address_id blob]}]
-  (let [{:keys [website facebook twitterx instagram
-                phone google-id google-uri]} (dbc/->edn blob)
-        place (merge
-               #:place{:id id
-                       :industry (keyword industry)
-                       :label label
-                       :handle (keyword handle)
-                       :nudity (keyword nudity)
-                       :status (keyword status)
-                       :address-id address_id}
-               (when website {:place/website website})
-               (when facebook {:place/facebook facebook})
-               (when twitterx {:place/twitterx twitterx})
-               (when instagram {:place/instagram instagram})
-               (when phone {:place/phone phone})
-               (when google-id {:place/google-id google-id})
-               (when google-uri {:place/google-uri google-uri}))]
+(defn translate [m]
+  (let [renaming {:address_id :address-id
+                  :created_at :created-at
+                  :edited_at :edited-at}
+        blob-m (-> m :blob dbc/->edn)
+        place (-> (cset/rename-keys m renaming)
+                  (dissoc :blob)
+                  (merge blob-m)
+                  (update :sector keyword)
+                  (update :handle keyword)
+                  (update :nudity keyword)
+                  (update :status keyword)
+                  (u/map->nsmap :place))]
     (m/coerce model/place place)))
 
 (defn get-all []
   (let [qr {:select [:*]
-            :from [:places]}]
-    (map convert (dbc/hq qr))))
+            :from [:place]}]
+    (map translate (dbc/hq qr))))
 
 (comment
   (get-all)
-  :=> (#:place{:phone "1-973-684-7678",
-               :address-id #uuid "c1cb1901-d48d-46dc-9ea5-2deb66b4da5c",
-               :facebook "https://www.facebook.com/JohnnyAsHitchingPost",
-               :status :operational,
-               :id #uuid "23f58509-1cbe-4f11-a1d8-6a1fde6a85e4",
-               :website "http://johnnyashitchingpost.com/",
-               :twitterx "https://twitter.com/hitchingpostnj",
-               :nudity :none,
-               :label "Johnny A’s Hitching Post",
-               :instagram "https://www.instagram.com/Hitching_Post_/",
-               :industry :strip-club,
-               :handle :johnny-as-hitching-post}))
+  :=> '(#:place{:phone "1-973-684-7678",
+                :address-id #uuid "c1cb1901-d48d-46dc-9ea5-2deb66b4da5c",
+                :sector :strip-club,
+                :facebook "https://www.facebook.com/JohnnyAsHitchingPost",
+                :google-uri nil,
+                :edited-at #inst "2024-03-14T07:20:47.101045000-00:00",
+                :status :operational,
+                :id #uuid "23f58509-1cbe-4f11-a1d8-6a1fde6a85e4",
+                :google-id nil,
+                :website "http://johnnyashitchingpost.com/",
+                :created-at #inst "2024-03-14T07:20:47.101045000-00:00",
+                :twitterx "https://twitter.com/hitchingpostnj",
+                :nudity :none,
+                :label "Johnny A’s Hitching Post",
+                :instagram "https://www.instagram.com/Hitching_Post_/",
+                :handle :johnny-as-hitching-post}))
 
 (defn create!
-  [{:place/keys [id industry label handle nudity
+  [{:place/keys [id sector label handle nudity
                  status address-id website facebook
                  twitterx instagram phone google-id
                  google-uri] :as place}]
@@ -60,7 +59,7 @@
     (dbc/hd {:insert-into [:places]
              :columns [:id :industry :label :handle
                        :nudity :status :address-id :blob]
-             :values [[id [:cast (name industry) :industries]
+             :values [[id [:cast (name sector) :industries]
                        label (name handle) [:cast (name nudity) :nudities]
                        [:cast (name status) :statuses] address-id blob]]})))
 
@@ -76,7 +75,7 @@
            :nudity :none,
            :label "Johnny A’s Hitching Post",
            :instagram "https://www.instagram.com/Hitching_Post_/",
-           :industry :strip-club,
+           :sector :strip-club,
            :handle :johnny-as-hitching-post}))
 
 (defn find-places-in-city [city]
@@ -84,7 +83,7 @@
             :from [:places]
             :join [:addresses [:= :places.address_id :addresses.id]]
             :where [[:= :addresses.city city]]}]
-    (map convert (dbc/hq qr))))
+    (map translate (dbc/hq qr))))
 
 (comment
   (find-places-in-city "Paterson")
@@ -98,7 +97,7 @@
                 :nudity :none,
                 :label "Johnny A’s Hitching Post",
                 :instagram "https://www.instagram.com/Hitching_Post_/",
-                :industry :strip-club,
+                :sector :strip-club,
                 :handle :johnny-as-hitching-post}))
 
 (defn find-cities-in-state [state]
@@ -149,7 +148,7 @@
        :place/website "http://instagram.com/platinumdollzpassaicnj",
        :xt/id #uuid "0deec79e-12b9-4c10-88b6-95e5e3cae65c",
        :place/label "Platinum Dollz Gentlemens Lounge",
-       :place/industry :strip-club,
+       :place/sector :strip-club,
        :place/handle :platinum-dollz-gentlemens-lounge})
 
 (defn find-place-and-address [handle]

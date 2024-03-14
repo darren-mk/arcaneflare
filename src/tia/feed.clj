@@ -39,7 +39,7 @@
         label (:text displayName)
         status (-> businessStatus cstr/lower-case keyword)
         place (merge {:place/id place-id
-                      :place/industry industry
+                      :place/sector industry
                       :place/language :en
                       :place/label label
                       :place/handle (calc/handlify address label)

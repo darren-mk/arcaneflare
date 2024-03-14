@@ -7,10 +7,6 @@
    [:ticking/id :uuid]
    [:ticking/created-at inst?]])
 
-(def language
-  "following iso 639 language codes"
-  [:enum :en :es :fr])
-
 (def address
   [:map {:closed true}
    [:address/id :uuid]
@@ -22,31 +18,34 @@
    [:address/created-at {:optional true} inst?]
    [:address/edited-at {:optional true} inst?]])
 
-(def industries
+(def sector
   [:enum :strip-club :massage-parlor])
 
-(def nudities
-  [:enum :full :top :none :unknown])
+(def nudity
+  [:enum :full :top :none
+   :unknown :unimportant])
 
-(def statuses
+(def status
   [:enum :operational :closed :temp-closed])
 
 (def place
   [:map {:closed true}
    [:place/id :uuid]
-   [:place/industry industries]
+   [:place/sector sector]
    [:place/label [:string {:min 1 :max 60}]]
    [:place/handle :keyword]
-   [:place/nudity nudities]
-   [:place/status statuses]
+   [:place/nudity nudity]
+   [:place/status status]
    [:place/address-id :uuid]
    [:place/website {:optional true} [:string {:min 1 :max 120}]]
    [:place/facebook {:optional true} [:string {:min 1 :max 100}]]
    [:place/twitterx {:optional true} [:string {:min 1 :max 100}]]
    [:place/instagram {:optional true} [:string {:min 1 :max 100}]]
    [:place/phone {:optional true} [:string {:min 1 :max 30}]]
-   [:place/google-id {:optional true} [:string {:min 1 :max 60}]]
-   [:place/google-uri {:optional true} [:string {:min 1 :max 60}]]])
+   [:place/google-id {:optional true} [:maybe [:string {:min 1 :max 60}]]]
+   [:place/google-uri {:optional true} [:maybe [:string {:min 1 :max 60}]]]
+   [:place/created-at inst?]
+   [:place/edited-at inst?]])
 
  (def division
   (vec (cons :enum (keys d/divisions))))

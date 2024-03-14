@@ -61,4 +61,4 @@
   (restart)
   (restart-db)
   (migrate!)
-  (schemafy! "rename ticking id field"))
+  (schemafy! "add timestamps to place"))

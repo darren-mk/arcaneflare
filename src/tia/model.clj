@@ -99,7 +99,7 @@
   [:map {:closed true}
    [:session/id :uuid]
    [:session/person-id :uuid]
-   [:session/expiration inst?]])
+   [:session/expired-at inst?]])
 
 (def literatures
   [:enum :review :article :event])

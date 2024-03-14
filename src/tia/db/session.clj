@@ -1,5 +1,6 @@
 (ns tia.db.session
   (:require
+   [clojure.set :as cset]
    [malli.core :as m]
    [tia.model :as md]
    [tia.db.common :as dbc]
@@ -9,45 +10,37 @@
 (defonce cache
   (atom {}))
 
-(defn convert
-  [{:keys [id person_id expiration]}]
-  (let [session #:session{:id id
-                          :person-id person_id
-                          :expiration expiration}]
+(defn translate[m]
+  (let [renaming {:person_id :person-id
+                  :expired_at :expired-at}
+        session (-> (cset/rename-keys m renaming)
+                    (u/map->nsmap :session))]
     (m/coerce md/session session)))
 
 (defn get-all []
-  (map
-   convert
-   (dbc/hq
-    {:select [:*]
-     :from [:sessions]})))
+  (let [q {:select [:*]
+           :from [:session]}]
+    (map translate (dbc/hq q))))
 
 (comment
-  (get-all)
-  :=> (#:session{:id #uuid "cfc0995e-c64b-46fe-9887-99f2ad735c0d"
-                 :person-id #uuid "4dd28ba4-c12c-4367-ab1d-1548f9c9764c"
-                 :expiration #inst "1969-12-31T05:00:00.000000000-00:00"}
-       #:session{:id #uuid "c210dc8d-0e21-4542-aaf6-d256970591a8"
-                 :person-id #uuid "4dd28ba4-c12c-4367-ab1d-1548f9c9764c"
-                 :expiration #inst "2024-03-07T15:14:19.488000000-00:00"}
-       #:session{:id #uuid "f3ce481b-e5d9-49a9-a3b1-dfbc674f994a"
-                 :person-id #uuid "4dd28ba4-c12c-4367-ab1d-1548f9c9764c"
-                 :expiration #inst "2024-03-07T15:14:30.532000000-00:00"}))
+  (take 1 (get-all))
+  :=> '(#:session{:id #uuid "cfc0995e-c64b-46fe-9887-99f2ad735c0d",
+                  :person-id #uuid "4dd28ba4-c12c-4367-ab1d-1548f9c9764c",
+                  :expired-at #inst "1969-12-31T05:00:00.000000000-00:00"}))
 
 (defn create!
-  [{:session/keys [id person-id expiration] :as session}]
+  [{:session/keys [id person-id expired-at] :as session}]
   (assert (m/validate md/session session))
   (dbc/hd {:insert-into [:sessions]
            :columns [:id :person-id :expiration]
            :values [[id person-id
-                     [:cast expiration :timestamp]]]}))
+                     [:cast expired-at :timestamp]]]}))
 
 (comment
   (create!
    #:session{:id (u/uuid)
              :person-id #uuid "4dd28ba4-c12c-4367-ab1d-1548f9c9764c"
-             :expiration (u/now)})
+             :expired-at (u/now)})
   :=> nil)
 
 (m/=> get-session-and-person
@@ -79,11 +72,11 @@
   (find-all-by-email "kokonut@abc.com")
   :=> [{:session/id #uuid "f1e86d8a-7102-4640-8622-950cde242c8e",
         :session/person-id #uuid "a3a9e552-773e-4b3b-9594-4c0fa5e6c79e",
-        :session/expiration #inst "2024-02-20T12:40:07.918-00:00",
+        :session/expired-at #inst "2024-02-20T12:40:07.918-00:00",
         :xt/id #uuid "f1e86d8a-7102-4640-8622-950cde242c8e"}
        {:session/id #uuid "028a68e8-ae32-4d08-b7ae-e1201ba2cf5f",
         :session/person-id #uuid "a3a9e552-773e-4b3b-9594-4c0fa5e6c79e",
-        :session/expiration #inst "2024-02-20T12:44:59.414-00:00",
+        :session/expired-at #inst "2024-02-20T12:44:59.414-00:00",
         :xt/id #uuid "028a68e8-ae32-4d08-b7ae-e1201ba2cf5f"}])
 
 (m/=> instantiate
@@ -93,7 +86,7 @@
   {:session/id (u/uuid)
    :session/person-id pid
    :session/renewal (u/after-days 27)
-   :session/expiration (u/after-days 30)})
+   :session/expired-at (u/after-days 30)})
 
 (defn login!
   ([person-id]
@@ -117,7 +110,7 @@
   :=> #:session{:id #uuid "7185156a-cde1-42d4-ada6-805c9d39cb10",
                 :person-id #uuid "c864fd4b-ec4b-4310-8d69-e1be290cd57e",
                 :renewal #inst "2024-02-18T15:48:24.225-00:00",
-                :expiration #inst "2024-02-21T15:48:24.225-00:00"})
+                :expired-at #inst "2024-02-21T15:48:24.225-00:00"})
 
 (defn logout! [session-id]
   (swap! cache assoc session-id :out)

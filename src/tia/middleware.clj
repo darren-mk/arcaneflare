@@ -78,7 +78,7 @@
         (let [{:keys [session person]}
               (when sid (or (session-db/get-session-and-person sid)
                             cached-session-m))
-              expiration (:session/expiration session)
+              expiration (:session/expired-at session)
               expired? (boolean (and expiration (u/past? expiration)))
               req' (if expired? req
                        (-> req

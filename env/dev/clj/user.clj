@@ -24,18 +24,18 @@
     (cstr/split $ #" ")
     (cstr/join "." $)))
 
-(defn inst []
+(defn inst! []
   (mi/instrument!))
 
-(defn unst []
+(defn unst! []
   (mi/unstrument!))
 
 (defn start []
-  (inst)
+  (inst!)
   (mount/start))
 
 (defn stop []
-  (unst)
+  (unst!)
   (mount/stop))
 
 (defn restart []
@@ -56,9 +56,9 @@
 
 (comment
   (dot "abc def")
-  (inst)
-  (unst)
+  (inst!)
+  (unst!)
   (restart)
   (restart-db)
   (migrate!)
-  (schemafy! "put place optionals to misc"))
+  (schemafy! "rename person id in commentary"))

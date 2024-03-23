@@ -134,7 +134,7 @@
   [:map {:closed true}
    [:commentary/id :uuid]
    [:commentary/post-id :uuid]
-   [:commentary/annotator-id :uuid]
+   [:commentary/person-id :uuid]
    [:commentary/content [:string {:min 3}]]
    [:commentary/created-at inst?]
    [:commentary/edited-at inst?]])

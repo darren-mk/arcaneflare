@@ -3,6 +3,7 @@
    [clojure.string :as cstr]
    [tia.calc :as calc]
    [tia.data :as data]
+   [tia.db.address :as db-address]
    [tia.db.place :as db-place]
    [tia.layout :as layout]
    [tia.model :as model]
@@ -38,7 +39,7 @@
   (let [state-arg (if (keyword? state)
                     (-> state name cstr/upper-case)
                     state)
-        cities (db-place/find-cities-in-state
+        cities (db-address/find-cities-in-state
                 state-arg)]
     [:div.accordion-item
      [:h2.accordion-header

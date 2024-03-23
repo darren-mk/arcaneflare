@@ -56,9 +56,19 @@
             :edited-at (u/now)})
   :=> nil)
 
+(defn get-by-id [id]
+  (let [code {:select [:person.*]
+              :from [:person]
+              :where [:= :person.id id]}]
+    (-> code dbc/hq first coerce)))
+
+(comment
+  (get-by-id
+   #uuid "487d9a9c-ca17-4dc5-9d34-b4c1fe48b04f"))
+
 (defn nickname-exists? [s]
   (let [code {:select [:%count.*]
-              :from [:persons]
+              :from [:person]
               :where [:= :nickname s]}]
     (-> code dbc/hq first :count pos?)))
 

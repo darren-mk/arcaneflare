@@ -12,22 +12,28 @@
   (uuid)
   :=> #uuid "7baa6a7a-cc90-4219-a80a-cac6c33c9101")
 
-(defn now []
-  (-> (java.util.Date.)
-      .getTime
+(defn ->sql-dt [dt]
+  (-> dt .getTime
       java.sql.Timestamp.))
+
+(defn now []
+  (->sql-dt (java.util.Date.)))
+
+(comment
+  (now)
+  :=> #inst "2024-03-23T18:43:57.210000000-00:00")
 
 (m/=> after-days
       [:=> [:cat :int] inst?])
 
 (defn after-days [n]
-  (t/inst
-   (t/>> (t/instant)
-         (t/new-duration n :days))))
+  (-> (t/instant)
+      (t/>> (t/new-duration n :days))
+      (t/inst) ->sql-dt))
 
 (comment
-  (after-days 30)
-  :=> #inst "2024-02-21T15:43:47.621-00:00")
+  (after-days 3)
+  :=> #inst "2024-03-26T18:44:21.424000000-00:00")
 
 (defn after-minutes [n]
   (t/inst

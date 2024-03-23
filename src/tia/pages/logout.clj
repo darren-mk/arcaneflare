@@ -4,7 +4,7 @@
    [tia.db.session :as db-session]))
 
 (defn logout-and-redirect [{:keys [session]}]
-  (db-session/logout! (:session/id session))
+  (db-session/delete! (:session/id session))
   (l/redirect "/"))
 
 (def routes

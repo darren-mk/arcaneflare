@@ -140,3 +140,22 @@
 (comment
   (sjoin '(select * from persons))
   :=> "select * from persons")
+
+(defn kebab-kw [kw]
+  (-> kw name
+      (cstr/replace "_" "-")
+      keyword))
+
+(comment
+  (kebab-kw :abc_def)
+  :=> :abc-def)
+
+(defn kebab-m [m]
+  (let [f (fn [acc [k v]] (assoc acc (kebab-kw k) v))]
+    (reduce f {} m)))
+
+(comment
+  (kebab-m {:a_b "xyz"
+            :c_d 123})
+  :=> {:a-b "xyz"
+       :c-d 123})

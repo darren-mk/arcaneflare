@@ -87,8 +87,8 @@
 
 (defn commentary-card
   [handle user-person-id post-id commentary]
-  (let [{:commentary/keys [id edited-at annotator-id content]} commentary
-        commenter-person-id annotator-id
+  (let [{:commentary/keys [id edited-at person-id content]} commentary
+        commenter-person-id person-id
         {:person/keys [nickname]} (db-common/pull-by-id commenter-person-id)
         header (str "By " nickname " at " edited-at)
         deletion-confirm-msg "Do you wish to delete this comment?"
@@ -152,7 +152,7 @@
   (let [user-person-id (:person/id person)
         handle (:place/handle place)
         post-id (-> path-params :post-id parse-uuid)
-        commentaries (db-commentary/get-all-of-post post-id)
+        commentaries (db-commentary/get-by-post-id post-id)
         post-path (uri handle [post-id :commentaries :create])]
     [:div.container.mt-5.px-5
      (post-card handle user-person-id post-id)
@@ -189,8 +189,8 @@
         {:person/keys [nickname]} (db-common/pull-by-id person-id)
         {:keys [latest-commentary-updated
                 latest-commentary-commenter-nickname]}
-        (db-commentary/get-latest-of-post post-id)
-        num-of-commentaries (db-commentary/count-by-post post-id)
+        (db-commentary/get-latest-of-post-id post-id)
+        num-of-commentaries (db-commentary/count-by-post-id post-id)
         path (uri handle [post-id :read])]
     [:a {:href path
          :class (c/>s :list-group-item :list-group-item-action
@@ -216,7 +216,7 @@
 (defn reviews-section [{:keys [place]}]
   (let [handle (:place/handle place)
         path (uri handle [:create :write])
-        posts (db-post/get-by-handle handle :review)]
+        posts (db-post/get-by-handle-and-kind handle :review)]
     [:div
      [:a.btn.btn-primary
       {:href path} "Write review"]
@@ -234,7 +234,7 @@
                                 :created-at (u/now)
                                 :edited-at (u/now)
                                 :post-id post-id
-                                :annotator-id (:person/id person)}]
+                                :person-id (:person/id person)}]
     (if (db-common/record! commentary)
       (l/elem
        [:div

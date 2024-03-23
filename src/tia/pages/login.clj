@@ -6,7 +6,7 @@
 
 (defn login-and-redirect [{:keys [params]}]
   (let [{:keys [email password]} params
-        session (session-db/login! email password)]
+        session (session-db/findemail password)]
     (l/redirect "/" (:session/id session))))
 
 (defn input [k]

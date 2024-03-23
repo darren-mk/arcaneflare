@@ -61,4 +61,4 @@
   (restart)
   (restart-db)
   (migrate!)
-  (schemafy! "rename person id in commentary"))
+  (schemafy! "make file object key unique"))

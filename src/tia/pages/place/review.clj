@@ -53,7 +53,7 @@
 (defn store-file
   [post-id {:keys [filename tempfile size]}]
   (let [file #:file{:id (u/uuid)
-                    :objk (str (u/uuid))
+                    :object-key (str (u/uuid))
                     :kind :image
                     :post-id post-id
                     :designation filename
@@ -114,7 +114,7 @@
         {:person/keys [nickname]}
         (db-common/pull-by-id reviewer-person-id)
         images (db-file/get-files-by-post-id post-id)
-        presigned-urls (map #(storage/presign-url (:file/objk %)) images)
+        presigned-urls (map #(storage/presign-url (:file/object-key %)) images)
         detail' (case curb
                   :removed "removed by user"
                   :banned "content is banned"
@@ -189,7 +189,7 @@
         {:person/keys [nickname]} (db-common/pull-by-id person-id)
         {:keys [latest-commentary-updated
                 latest-commentary-commenter-nickname]}
-        (db-commentary/get-latest-of-post-id post-id)
+        (db-commentary/get-latest-by-post-id post-id)
         num-of-commentaries (db-commentary/count-by-post-id post-id)
         path (uri handle [post-id :read])]
     [:a {:href path

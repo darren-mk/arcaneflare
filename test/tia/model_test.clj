@@ -42,7 +42,7 @@
   #:file{:id #uuid "61a1da52-557c-45ea-a772-98e4700caabd"
          :post-id #uuid "b55f31fc-71cd-4996-81e0-6dad720e825b"
          :kind :image
-         :objk "f9cec5bc-143c-431c-8796-494d22d36a69"
+         :object-key "f9cec5bc-143c-431c-8796-494d22d36a69"
          :designation "zicos-profile-photo.jpg"
          :size 12345})
 

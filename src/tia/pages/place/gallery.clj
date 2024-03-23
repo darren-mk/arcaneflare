@@ -14,8 +14,8 @@
 (def make-page
   (partial place-common/paginate :gallery))
 
-(defn card [{:file/keys [post-id objk]}]
-  (let [presigned-url (storage/presign-url objk)
+(defn card [{:file/keys [post-id object-key]}]
+  (let [presigned-url (storage/presign-url object-key)
         {:post/keys [place-id title]} (db-common/pull-by-id post-id)
         handle (db-place/place-id->handle place-id)]
     [:div {:class "card" :style "width: 18rem;"}

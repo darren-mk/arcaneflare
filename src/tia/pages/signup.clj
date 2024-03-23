@@ -2,7 +2,7 @@
   (:require
    [clojure.string :as cstr]
    [malli.core :as m]
-   [tia.db.person :as pdb]
+   [tia.db.person :as db-person]
    [tia.layout :as l]
    [tia.model :as md]
    [tia.calc :refer [>s]]
@@ -26,11 +26,11 @@
 
 (defn result [{:keys [params] :as _req}]
   (let [{:keys [nickname email password
-                role agreed?]} params
+                job agreed?]} params
         msgs (hash-set
-              (when (pdb/nickname-exists? nickname)
+              (when (db-person/nickname-exists? nickname)
                 :nickname-already-exists)
-              (when (pdb/email-exists? email)
+              (when (db-person/email-exists? email)
                 :email-already-exists)
               (when (not= "on" agreed?)
                 :term-is-not-agreed)
@@ -41,12 +41,15 @@
         errors (remove nil? msgs)
         tags (if (empty? errors)
                (if (:xtdb.api/tx-id
-                    (pdb/create! {:person/id (u/uuid)
-                                  :person/nickname nickname
-                                  :person/email email
-                                  :person/password password
-                                  :person/job (keyword role)
-                                  :person/verified (= "on" agreed?)}))
+                    (db-person/create!
+                     #:person{:id (u/uuid)
+                              :nickname nickname
+                              :email email
+                              :password password
+                              :job (keyword job)
+                              :verified? (= "on" agreed?)
+                              :created-at (u/now)
+                              :edited-at (u/now)}))
                  (success)
                  (fail :error-recording-in-db))
                (into [:div back] (map fail errors)))]
@@ -70,10 +73,10 @@
               checker)]
       [:div {:id target}]]]))
 
-(defn role [k]
+(defn job [k]
   [:div.form-check
    [:input.form-check-input
-    {:name :role :type :radio
+    {:name :job :type :radio
      :required true :value k}]
    [:label.form-check-label
     (-> k name cstr/capitalize)]])
@@ -113,7 +116,7 @@
     [:legend.col-form-label.mb-1.mb-sm-0.col-sm-3.pt-0
      "Role"]
     [:div.col-sm-9
-     (role :customer) (role :dancer) (role :staff)]]
+     (job :customer) (job :dancer) (job :staff)]]
    agreement control have-account])
 
 (defn page [_]
@@ -125,7 +128,7 @@
 
 (defn check-nickname [{:keys [params]}]
   (let [{:keys [nickname]} params
-        avail? (not (pdb/nickname-exists? nickname))
+        avail? (not (db-person/nickname-exists? nickname))
         valid? (m/validate md/nickname nickname)
         msg (cond
               (and avail? valid?)
@@ -141,7 +144,7 @@
 
 (defn check-email [{:keys [params]}]
   (let [{:keys [email]} params
-        unavailable? (pdb/email-exists? email)
+        unavailable? (db-person/email-exists? email)
         invalid? (not (m/validate md/email email))
         msg (cond
               unavailable?

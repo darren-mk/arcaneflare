@@ -78,7 +78,7 @@
 
 (defn email-exists? [s]
   (let [code {:select [:%count.*]
-              :from [:persons]
+              :from [:person]
               :where [:= :email s]}]
     (-> code dbc/hq first :count pos?)))
 

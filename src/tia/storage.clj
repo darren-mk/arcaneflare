@@ -35,12 +35,12 @@
 (def upload-file
   (m/-instrument
    {:schema [:=> [:cat model/file :any] :any]}
-   (fn [{:file/keys [objk] :as file} data]
+   (fn [{:file/keys [object-key] :as file} data]
      (db-file/create! file)
      (s3/put-object
       aws
       :bucket-name s3-bucket
-      :key objk
+      :key object-key
       :file data))))
 
 (defn get-data [objk]

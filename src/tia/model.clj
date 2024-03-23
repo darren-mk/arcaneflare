@@ -87,9 +87,10 @@
    [:file/id :uuid]
    [:file/post-id :uuid]
    [:file/kind [:enum :image :video :document]]
-   [:file/objk [:string {:min 5 :max 60}]]
+   [:file/object-key [:string {:min 5 :max 60}]]
    [:file/designation [:string {:min 1 :max 60}]]
-   [:file/size :int]])
+   [:file/size :int]
+   [:file/created-at inst?]])
 
 (def profile
   [:map {:closed true}

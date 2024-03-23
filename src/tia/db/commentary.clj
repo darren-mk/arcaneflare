@@ -56,7 +56,6 @@
   (get-by-post-id
    #uuid "f4632b70-5db5-431c-87f9-2fce82ff3e62"))
 
-
 (defn get-latest-by-post-id [post-id]
   (let [qr {:select [:commentary.*]
             :from [:commentary]

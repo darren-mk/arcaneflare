@@ -6,19 +6,22 @@
    [tia.model :as model]
    [tia.util :as u]))
 
-(defn translate [m]
+(m/=> coerce
+      [:=> [:cat :map]
+       model/person])
+
+(defn coerce [m]
   (let [renaming {:verified :verified?
                   :created_at :created-at
-                  :edited_at :edited-at}
-        person (-> (cset/rename-keys m renaming)
-                   (update :job keyword)
-                   (u/map->nsmap :person))]
-    (m/coerce model/person person)))
+                  :edited_at :edited-at}]
+    (-> (cset/rename-keys m renaming)
+        (u/update-if-exists :job keyword)
+        (u/map->nsmap :person))))
 
 (defn get-all []
   (let [q {:select [:*]
            :from [:person]}]
-    (map translate (dbc/hq q))))
+    (map coerce (dbc/hq q))))
 
 (comment
   (take 1 (get-all))
@@ -32,20 +35,25 @@
                  :edited-at #inst "2024-03-14T07:49:24.548449000-00:00"}))
 
 (defn create!
-  [{:keys [person_id nickname email password job verified] :as person}]
+  [{:person/keys [id nickname email password job verified?
+                  created-at edited-at] :as person}]
   (assert (m/validate model/person person))
   (dbc/hd {:insert-into [:person]
-            :columns [:person_id :nickname :email :password :job :verified]
-            :values [[person_id nickname email password (name job) verified]]}))
+           :columns [:id :nickname :email :password
+                     :job :verified :created_at :edited_at]
+           :values [[id nickname email password (name job) verified?
+                     created-at edited-at]]}))
 
 (comment
   (create!
-   {:person_id (u/uuid)
-    :nickname "monkey"
-    :email "monkey@banana.com"
-    :password "Abc123!@#"
-    :job :customer
-    :verified false})
+   #:person{:id (u/uuid)
+            :nickname "monkey"
+            :email "monkey@banana.com"
+            :password "Abc123!@#"
+            :job :customer
+            :verified? false
+            :created-at (u/now)
+            :edited-at (u/now)})
   :=> nil)
 
 (defn nickname-exists? [s]
@@ -70,7 +78,7 @@
 
 (defn count-all []
   (let [code {:select [:%count.*]
-              :from [:persons]}]
+              :from [:person]}]
     (-> code dbc/hq first :count)))
 
 (comment
@@ -79,23 +87,18 @@
 
 (defn find-by-email [email]
   (let [code {:select [:*]
-              :from [:persons]
-              :where [:= :email email]}
-        raw (-> code dbc/hq first)
-        {:keys [id nickname email password job verified]} raw
-        person #:person{:id id
-                        :nickname nickname
-                        :email email
-                        :password password
-                        :job (keyword job)
-                        :verified verified}]
-    (m/coerce model/person person)))
+              :from [:person]
+              :where [:= :email email]}]
+    (->> code dbc/hq
+         (map coerce))))
 
 (comment
-  (find-by-email "koko@nut.com")
-  :=> #:person{:id #uuid "4dd28ba4-c12c-4367-ab1d-1548f9c9764c"
-               :nickname "kokonut"
-               :email "koko@nut.com"
-               :password "Abc123!@#"
-               :job :customer
-               :verified false})
+  (find-by-email "monkey@banana.com")
+  :=> '(#:person{:id #uuid "487d9a9c-ca17-4dc5-9d34-b4c1fe48b04f",
+                 :nickname "monkey",
+                 :email "monkey@banana.com",
+                 :password "Abc123!@#",
+                 :job :customer,
+                 :verified? false,
+                 :created-at #inst "2024-03-23T13:46:18.309000000-00:00",
+                 :edited-at #inst "2024-03-23T13:46:18.309000000-00:00"}))

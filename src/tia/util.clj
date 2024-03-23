@@ -84,3 +84,23 @@
 (comment
   (map->nsmap {:a 1 :b 2} :hello)
   :=> #:hello{:a 1, :b 2})
+
+(defn update-if-exists [m k f]
+  (if (get m k)
+    (update m k f)
+    m))
+
+(comment
+  (update-if-exists {:a 1} :a inc) :=> {:a 2}
+  (update-if-exists {:a 1} :b inc) :=> {:a 1})
+
+(defmacro mf [fname sigs]
+  `(malli.core/=>
+    ~fname
+    [:=> (vec (concat [:cat] (butlast ~sigs)))
+     (last ~sigs)]))
+
+(comment
+  (defn callme [x] x)
+  (mf callme [:string :string])
+  :=> tia.util/callme)

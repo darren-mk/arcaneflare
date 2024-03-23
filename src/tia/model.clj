@@ -67,7 +67,7 @@
 (def password
   [:re #"^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.* ).{8,16}$"])
 
-(def jobs
+(def job
   [:enum :customer :provider :owner :staff])
 
 (def person
@@ -76,7 +76,7 @@
    [:person/nickname nickname]
    [:person/email email]
    [:person/password password]
-   [:person/job jobs]
+   [:person/job job]
    [:person/verified? :boolean]
    [:person/created-at inst?]
    [:person/edited-at inst?]])

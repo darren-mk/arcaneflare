@@ -1,31 +1,35 @@
 (ns tia.style
   (:require
    [clojure.string :as cstr]
-   [garden.core :as g]
+   [garden.core :as garden]
    [tia.layout :as l]))
 
 (def sum
-  {:css/nice {:font-size :64px
+  #:css
+  {:big-font {:font-size :64px
               :color :blue}
-   :css/abc {:background-color "red"}})
+   :abc {:background-color "red"}})
 
-(defn f
-  {:eg (comment
-         (apply f {:abc/xyz {:color :blue}})
-                :=> [:.xyz {:color :blue}])}
-  [[nk v]]
+(defn fmt [[nk v]]
   [(->> nk name (str ".") keyword) v])
 
-(defn c
-  {:eg (comment
-         (c :abc/xyz :def/fgh)
-         :=> "xyz fgh")}
-  [& nks]
-  (let [l (map (fn [nk] (->> nk name)) nks)]
+(comment
+  (apply fmt {:abc/xyz {:color :blue}})
+  :=> [:.xyz {:color :blue}])
+
+(defn cl [& nks]
+  (let [f (fn [nk]
+            (assert (get sum nk))
+            (->> nk name))
+        l (map f nks)]
     (cstr/join " " l)))
 
-(defn core [_r]
-  (l/css
-   (apply
-    g/css
-    (map f sum))))
+(comment
+  (cl :abc/xyz :def/fgh)
+  :=> "xyz fgh")
+
+(defn core [_req]
+  (->> sum
+       (map fmt)
+       (apply garden/css)
+       l/css))

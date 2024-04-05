@@ -2,8 +2,8 @@
   (:require
    [tia.calc :as c]
    [tia.db.place :as db-place]
+   [tia.db.post :as db-post]
    [tia.db.file :as db-file]
-   [tia.db.common :as db-common]
    [tia.pages.place.common :as place-common]
    [tia.storage :as storage]))
 
@@ -16,7 +16,7 @@
 
 (defn card [{:file/keys [post-id object-key]}]
   (let [presigned-url (storage/presign-url object-key)
-        {:post/keys [place-id title]} (db-common/pull-by-id post-id)
+        {:post/keys [place-id title]} (db-post/get-by-id post-id)
         handle (db-place/place-id->handle place-id)]
     [:div {:class "card" :style "width: 18rem;"}
      [:img {:src presigned-url}]

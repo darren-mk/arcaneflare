@@ -45,6 +45,12 @@
                :subject :review,
                :detail "twas really good time! yay! foo!"}))
 
+(defn get-by-id [post-id]
+  (let [q {:select [:*]
+           :from [:post]
+           :where [:= :id post-id]}]
+    (coerce (dbc/hq q))))
+
 (defn create!
   [{:post/keys [id subject curb author-id location title
                 detail created-at edited-at] :as post}]
@@ -73,7 +79,8 @@
         qr {:select [:post.*]
             :from [:post]
             :join [:place [:= :place.id [:raw raw]]]
-            :where [[:= :place.handle (name handle)]]}]
+            :where [[:= :place.handle (name handle)]
+                    [:= :post.kind (name kind)]]}]
     (map coerce (dbc/hq qr))))
 
 (comment

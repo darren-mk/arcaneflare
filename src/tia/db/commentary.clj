@@ -80,3 +80,8 @@
   (count-by-post-id
    #uuid "f4632b70-5db5-431c-87f9-2fce82ff3e62")
   :=> 1)
+
+(defn delete-by-id! [id]
+  (let [qr {:delete [:commentary]
+            :where [[:= :id id]]}]
+    (-> qr dbc/hq first :count)))

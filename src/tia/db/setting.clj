@@ -1,14 +1,16 @@
 (ns tia.db.setting
-  (:require
+ #_ (:require
    [tia.db.common :as dbc]))
 
 (defn auth? [s]
-  (-> (dbc/pull-by-id :setting)
+  true
+  #_(-> (dbc/pull-by-id :setting)
       :setting/admin-password
       (= s)))
 
 (defn present []
-  (-> (dbc/pull-by-id :setting)
+  nil
+  #_(-> (dbc/pull-by-id :setting)
       (dissoc :xt/id)
       (dissoc :setting/id)
       (dissoc :setting/admin-password)))
@@ -18,7 +20,8 @@
   #:setting{:setting-expiration-days 3})
 
 (defn set-session-expiration-days [n]
-  (dbc/upsert!
+  nil
+  #_(dbc/upsert!
    {:setting/id :setting
     :setting/session-expiration-days n}))
 
@@ -28,7 +31,8 @@
                  :tx-time #inst "2024-03-03T03:49:40.098-00:00"})
 
 (defn set-admin-password [s]
-  (dbc/upsert!
+  nil
+  #_(dbc/upsert!
    {:setting/id :setting
     :setting/session-expiration-days 3
     :setting/admin-password s}))

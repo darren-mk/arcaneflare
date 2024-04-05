@@ -43,9 +43,9 @@
       :key object-key
       :file data))))
 
-(defn get-data [objk]
+(defn get-data [object-key]
   (-> (s3/get-object
-       aws s3-bucket objk)
+       aws s3-bucket object-key)
       :input-stream
       slurp))
 
@@ -63,12 +63,12 @@
   (presign-url "toto")
   :=> "https://purple-...s3.amazonaws.com/toto?X-Amz-Algorithm=AWS4...")
 
-(defn delete-file [objk]
+(defn delete-file [object-key]
   (s3/delete-object
    aws
    :bucket-name s3-bucket
-   :key objk)
-  (db-file/delete-file-by-objk objk))
+   :key object-key)
+  (db-file/delete-file-by-object-key object-key))
 
 (comment
   (let [objks '("1f229f7b-115f-43df-823e-fee9fd43fa52"

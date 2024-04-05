@@ -9,12 +9,12 @@
    [tia.db.post :as db-post]
    [tia.db.file :as db-file]
    [tia.db.commentary :as db-commentary]
-   [tia.db.common :as db-common]
    [tia.layout :as l]
    [tia.model :as model]
    [tia.pages.place.common :as place-common]
    [tia.storage :as storage]
-   [tia.util :as u]))
+   [tia.util :as u]
+   [tia.db.person :as db-person]))
 
 (defn uri [handle elems]
   (-> [c/path :place handle :reviews elems]
@@ -77,7 +77,7 @@
                     :updated (u/now)
                     :person-id (get person :person/id)}
         path (c/path :place handle :reviews)]
-    (db-common/record! post)
+    (db-post/create! post)
     (doseq [item (flatten [file])]
       (store-file post-id item))
     [:div
@@ -89,7 +89,7 @@
   [handle user-person-id post-id commentary]
   (let [{:commentary/keys [id edited-at person-id content]} commentary
         commenter-person-id person-id
-        {:person/keys [nickname]} (db-common/pull-by-id commenter-person-id)
+        {:person/keys [nickname]} (db-person/get-by-id commenter-person-id)
         header (str "By " nickname " at " edited-at)
         deletion-confirm-msg "Do you wish to delete this comment?"
         path (uri handle [post-id :commentaries id :delete])]
@@ -109,10 +109,10 @@
 
 (defn post-card [handle user-person-id post-id]
   (let [{:post/keys [title curb detail person-id]}
-        (db-common/pull-by-id post-id)
+        (db-post/get-by-id post-id)
         reviewer-person-id person-id
         {:person/keys [nickname]}
-        (db-common/pull-by-id reviewer-person-id)
+        (db-person/get-by-id reviewer-person-id)
         images (db-file/get-files-by-post-id post-id)
         presigned-urls (map #(storage/presign-url (:file/object-key %)) images)
         detail' (case curb
@@ -180,13 +180,13 @@
 
 (defn delete-commentary-comp-empty [{:keys [path-params]}]
   (let [commentary-id (-> path-params :commentary-id parse-uuid)]
-    (db-common/delete! commentary-id)
+    (db-commentary/delete-by-id! commentary-id)
     (l/elem nil)))
 
 (defn post-link [{:keys [handle post]}]
   (let [{:post/keys [id title person-id created]} post
         post-id id
-        {:person/keys [nickname]} (db-common/pull-by-id person-id)
+        {:person/keys [nickname]} (db-person/get-by-id person-id)
         {:keys [latest-commentary-updated
                 latest-commentary-commenter-nickname]}
         (db-commentary/get-latest-by-post-id post-id)
@@ -235,7 +235,7 @@
                                 :edited-at (u/now)
                                 :post-id post-id
                                 :person-id (:person/id person)}]
-    (if (db-common/record! commentary)
+    (if (db-commentary/create! commentary)
       (l/elem
        [:div
         [:p nickname]
@@ -246,9 +246,9 @@
 (defn remove-detail-and-comp [{:keys [path-params]}]
   (let [msg d/content-deletion-msg
         post-id (-> path-params :post-id parse-uuid)
-        post (db-common/pull-by-id post-id)
+        post (db-post/get-by-id post-id)
         post' (assoc post :post/curb :removed)]
-    (if (db-common/upsert! post')
+    (if (db-post/create! post')
       (l/elem [:span msg])
       (l/elem [:span
                "Could not review detail content. Contact administrator."
@@ -258,7 +258,7 @@
   [{:keys [path-params place]}]
   (let [handle (:place/handle place)
         post-id (-> path-params :post-id parse-uuid)
-        post (db-common/pull-by-id post-id)]
+        post (db-post/get-by-id post-id)]
     (l/elem
      [:form {:id :review-detail-and-controls
              :hx-patch (uri handle [post-id :edit-content])
@@ -278,10 +278,10 @@
 (defn patch-detail-comp
   [{:keys [path-params params]}]
   (let [post-id (-> path-params :post-id parse-uuid)
-        post (db-common/pull-by-id post-id)
+        post (db-post/get-by-id post-id)
         new-detail (:detail params)
         post' (assoc post :post/detail new-detail)]
-    (db-common/upsert! post')
+    #_(db-common/upsert! post')
     (l/elem [:p new-detail])))
 
 (def routes

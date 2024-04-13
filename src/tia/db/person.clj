@@ -60,11 +60,12 @@
   (let [code {:select [:person.*]
               :from [:person]
               :where [:= :person.id id]}]
-    (-> code dbc/hq first coerce)))
+    (some-> code dbc/hq first coerce)))
 
 (comment
   (get-by-id
-   #uuid "487d9a9c-ca17-4dc5-9d34-b4c1fe48b04f"))
+   #uuid "487d9a9c-ca17-4dc5-9d34-b4c1fe48b04f")
+  :=> nil)
 
 (defn nickname-exists? [s]
   (let [code {:select [:%count.*]

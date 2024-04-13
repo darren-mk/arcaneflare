@@ -24,7 +24,7 @@
 (def html-prop
   {:lang :en
    :data-bs-core :modern
-   :data-bs-theme :dark})
+   :data-bs-theme :light})
 
 (def location
   "Location")
@@ -52,6 +52,22 @@
    {:src "https://unpkg.com/htmx.org@1.9.10",
     :integrity "sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC"
     :crossorigin :anonymous}])
+
+(def font-googleapis
+  [:link
+   {:rel :preconnect
+    :href "https://fonts.googleapis.com"}])
+
+(def font-gstatic
+  [:link
+   {:rel :preconnect
+    :href "https://fonts.gstatic.com"}])
+
+(def font-montserrat
+  [:link
+   {:href (str "https://fonts.googleapis.com/css2?"
+               "family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap")
+    :rel :stylesheet}])
 
 (def divisions
   {:us-northeast

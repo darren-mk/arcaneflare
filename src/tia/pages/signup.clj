@@ -16,49 +16,36 @@
   (fail :abc-def)
   :=> [:div [:h3.text-bg-danger "abc def"]])
 
-(def back
-  [:a {:href "/signup"}
-   "Go back to sign up"])
-
 (defn success []
-  [:div [:h3.text-bg-primary
-         "Sign up successful. You can now log in."]])
+  [:div
+   [:h3.text-bg-primary
+    "Sign up successful. You can now log in."]
+   [:a {:href "/login"}
+    "Log in"]])
 
-(defn result [{:keys [params] :as _req}]
+(defn submit [{:keys [params] :as _req}]
   (let [{:keys [nickname email password
                 job agreed?]} params
-        msgs (hash-set
-              (when (db-person/nickname-exists? nickname)
-                :nickname-already-exists)
-              (when (db-person/email-exists? email)
-                :email-already-exists)
-              (when (not= "on" agreed?)
-                :term-is-not-agreed)
-              (when (not (m/validate md/nickname nickname))
-                :nickname-is-not-in-format)
-              (when (not (m/validate md/email email))
-                :email-is-not-in-format))
-        errors (remove nil? msgs)
-        tags (if (empty? errors)
-               (if (:xtdb.api/tx-id
-                    (db-person/create!
-                     #:person{:id (u/uuid)
-                              :nickname nickname
-                              :email email
-                              :password password
-                              :job (keyword job)
-                              :verified? (= "on" agreed?)
-                              :created-at (u/now)
-                              :edited-at (u/now)}))
-                 (success)
-                 (fail :error-recording-in-db))
-               (into [:div back] (map fail errors)))]
-    (l/page {} tags)))
+        id (u/uuid)
+        person #:person{:id id
+                        :nickname nickname
+                        :email email
+                        :password password
+                        :job (keyword job)
+                        :verified? (= "on" agreed?)
+                        :created-at (u/now)
+                        :edited-at (u/now)}]
+    (try (db-person/create! person)
+         (catch Exception _))
+    (l/elem
+     (if (db-person/get-by-id id)
+       (success)
+       (fail :error-recording-in-db)))))
 
 (defn input [k]
   (let [target (str (name k) "check-result")
         label (-> k name cstr/capitalize)
-        checker {:hx-post (str "/signup/check-" (name k))
+        checker {:hx-get (str "/signup/validate-" (name k))
                  :hx-trigger (>s :input :changed)
                  :hx-indicator :.htmx-indicator
                  :hx-target (str "#" target)}]
@@ -99,7 +86,7 @@
 (def control
   [:div.text-end
    [:a.btn.btn-secondary
-    {:href "#"} "Cancel"]
+    {:href "/"} "Cancel"]
    [:button.btn.btn-primary
     {:type :submit} "Sign up"]])
 
@@ -108,25 +95,28 @@
    "Already have account?"
    [:a {:href "/login"} "Log In"]])
 
-(defn form []
-  [:form {:action "/signup/result"
-          :method "POST"}
-   (input :nickname) (input :email) (input :password)
+(def form
+  [:form {:hx-post "/signup/submit"}
+   (input :nickname)
+   (input :email)
+   (input :password)
    [:fieldset.row.mb-3
     [:legend.col-form-label.mb-1.mb-sm-0.col-sm-3.pt-0
      "Role"]
     [:div.col-sm-9
-     (job :customer) (job :dancer) (job :staff)]]
+     (job :customer)
+     (job :dancer)
+     (job :staff)]]
    agreement control have-account])
 
-(defn page [_]
+(defn root-page [_]
   (l/page
    {:nav {:selection nil}}
    [:div.container-md.px-3.px-sm-4.px-xl-5
     [:div.d-flex.justify-content-center
-     (form)]]))
+     form]]))
 
-(defn check-nickname [{:keys [params]}]
+(defn validate-nickname [{:keys [params]}]
   (let [{:keys [nickname]} params
         avail? (not (db-person/nickname-exists? nickname))
         valid? (m/validate md/nickname nickname)
@@ -142,7 +132,7 @@
                "A nickname cannot have a space or special charaters."])]
     (l/elem [:div msg])))
 
-(defn check-email [{:keys [params]}]
+(defn validate-email [{:keys [params]}]
   (let [{:keys [email]} params
         unavailable? (db-person/email-exists? email)
         invalid? (not (m/validate md/email email))
@@ -155,7 +145,7 @@
               [:p.text-primary "This email is available to use."])]
     (l/elem [:div msg])))
 
-(defn check-password [{:keys [params]}]
+(defn validate-password [{:keys [params]}]
   (let [{:keys [password]} params
         valid? (m/validate md/password password)
         msg (if valid?
@@ -171,8 +161,8 @@
 
 (def routes
   ["/signup"
-   ["" {:get page}]
-   ["/check-nickname" {:post check-nickname}]
-   ["/check-email" {:post check-email}]
-   ["/check-password" {:post check-password}]
-   ["/result" {:post result}]])
+   ["" {:get root-page}]
+   ["/validate-nickname" {:get validate-nickname}]
+   ["/validate-email" {:get validate-email}]
+   ["/validate-password" {:get validate-password}]
+   ["/submit" {:post submit}]])

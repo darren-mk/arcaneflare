@@ -48,14 +48,17 @@
   :=> {"Content-Type" "text/html"})
 
 (defn bodify [prop data]
-  [:body.d-flex.flex-column.min-vh-100
-   (navbar prop)
-   data d/ui-action])
+  [:body {:style {:font-family :montserrat}}
+   (navbar prop) data d/ui-action])
 
-(defn headify []
+(def head
   [:head
-   d/htmx d/ui-style
-   d/css-link])
+   d/htmx
+   d/ui-style
+   d/css-link
+   d/font-googleapis
+   d/font-gstatic
+   d/font-montserrat])
 
 (defn redirect
   ([uri]
@@ -74,7 +77,6 @@
 (defn page [prop data]
   (let [session-id (-> prop :session :id)
         headers (sessionize session-id)
-        head (headify)
         body (bodify prop data)
         html [:html d/html-prop
               head body]]

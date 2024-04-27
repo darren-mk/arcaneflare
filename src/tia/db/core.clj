@@ -14,25 +14,29 @@
 
 (defstate ^:dynamic db
   :start
-  (if-let [db-spec {:host (:db-host config/env)
-                    :dbname (:db-name config/env)
-                    :user (:db-user config/env)
-                    :password (:db-password config/env)}]
-    (do (log/info "DB configs are successfully loaded.")
-        (xt/start-node
-         {:xtdb.jdbc/connection-pool
-          {:dialect {:xtdb/module 'xtdb.jdbc.psql/->dialect}
-           :db-spec db-spec}
-          :xtdb/tx-log
-          {:xtdb/module 'xtdb.jdbc/->tx-log
-           :connection-pool :xtdb.jdbc/connection-pool}
-          :xtdb/document-store
-          {:xtdb/module 'xtdb.jdbc/->document-store
-           :connection-pool :xtdb.jdbc/connection-pool}
-          :xtdb/index-store
-          {:kv-store {:xtdb/module 'xtdb.rocksdb/->kv-store
-                      :db-dir (io/file "/tmp/rocksdb")}}}))
-    (do (log/warn "database connection URL was not found")
-        db))
+  (let [host (:db-host config/env)
+        dbname (:db-name config/env)
+        user (:db-user config/env)
+        password (:db-password config/env)
+        db-spec {:host host :dbname dbname
+                 :user user :password password}
+        node (if-not (and host dbname user password) {}
+               {:xtdb.jdbc/connection-pool
+                {:dialect {:xtdb/module 'xtdb.jdbc.psql/->dialect}
+                 :db-spec db-spec}
+                :xtdb/tx-log
+                {:xtdb/module 'xtdb.jdbc/->tx-log
+                 :connection-pool :xtdb.jdbc/connection-pool}
+                :xtdb/document-store
+                {:xtdb/module 'xtdb.jdbc/->document-store
+                 :connection-pool :xtdb.jdbc/connection-pool}
+                :xtdb/index-store
+                {:kv-store {:xtdb/module 'xtdb.rocksdb/->kv-store
+                            :db-dir (io/file "/tmp/rocksdb")}}})]
+    (if node
+      (do (log/info "DB configs are successfully loaded.")
+          (xt/start-node {}))
+      (do (log/warn "database connection URL was not found")
+          db)))
   :stop
   (.close db))

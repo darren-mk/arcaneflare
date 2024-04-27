@@ -20,7 +20,7 @@
         password (:db-password config/env)
         db-spec {:host host :dbname dbname
                  :user user :password password}
-        node (if-not (and host dbname user password) {}
+        node (if-not (or host dbname user password) {}
                {:xtdb.jdbc/connection-pool
                 {:dialect {:xtdb/module 'xtdb.jdbc.psql/->dialect}
                  :db-spec db-spec}

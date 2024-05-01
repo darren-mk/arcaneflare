@@ -1,0 +1,12 @@
+[{:xt/id #uuid "d8e2c351-fb77-439e-a22b-bc7f764cadbc",
+  :city/id #uuid "d8e2c351-fb77-439e-a22b-bc7f764cadbc",
+  :city/label "Lodi",
+  :city/county-id #uuid "7a695942-3cb7-4af0-94b1-5c24cc48fc3c"}
+ {:xt/id #uuid "3188947a-a223-452c-b0e9-b0b22432f00a",
+  :city/id #uuid "3188947a-a223-452c-b0e9-b0b22432f00a",
+  :city/label "Passaic",
+  :city/county-id #uuid "7a695942-3cb7-4af0-94b1-5c24cc48fc3c"}
+ {:xt/id #uuid "0e82fb6b-dc3f-4040-b51a-3857050392ba",
+  :city/id #uuid "0e82fb6b-dc3f-4040-b51a-3857050392ba",
+  :city/label "Hackensack",
+  :city/county-id #uuid "7a695942-3cb7-4af0-94b1-5c24cc48fc3c"}]

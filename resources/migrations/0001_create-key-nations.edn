@@ -1,0 +1,12 @@
+[{:xt/id #uuid "efa7048d-1e56-42f7-8ecf-5b5083ab42cf"
+  :nation/id #uuid "efa7048d-1e56-42f7-8ecf-5b5083ab42cf"
+  :nation/label "United States"
+  :nation/acronym "US"}
+ {:xt/id #uuid "cee4df9b-70bc-4862-9d7c-e2a0b0caf63c"
+  :nation/id #uuid "cee4df9b-70bc-4862-9d7c-e2a0b0caf63c"
+  :nation/label "Canada"
+  :nation/acronym "CA"}
+ {:xt/id #uuid "defa286c-1cf1-4b25-bdbb-6e4b3c54ae5e"
+  :nation/id #uuid "defa286c-1cf1-4b25-bdbb-6e4b3c54ae5e"
+  :nation/label "Mexico"
+  :nation/acronym "MX"}]

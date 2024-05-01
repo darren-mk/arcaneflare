@@ -1,0 +1,6 @@
+[{:xt/id #uuid "52927554-fcac-4ff5-abe0-d74d49731103"
+  :address/id #uuid "52927554-fcac-4ff5-abe0-d74d49731103"
+  :address/number "100"
+  :address/street "NJ-17"
+  :address/zip "07644"
+  :address/city-id #uuid "d8e2c351-fb77-439e-a22b-bc7f764cadbc"}]

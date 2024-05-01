@@ -9,7 +9,8 @@
    [malli.instrument :as mi]
    [mount.core :as mount]
    [tia.core]
-   [tia.db.core]))
+   [tia.db.core]
+   [tia.db.migration :as mig]))
 
 (alter-var-root
  #'s/*explain-out*
@@ -54,9 +55,12 @@
   (mount/stop #'tia.db.core/db)
   (mount/start #'tia.db.core/db))
 
+(def migrate! mig/migrate!)
+
 (comment
   (dot "abc def")
   (inst)
   (unst)
   (restart)
-  (restart-db))
+  (restart-db)
+  (migrate!))

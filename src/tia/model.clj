@@ -12,15 +12,51 @@
   "following iso 639 language codes"
   [:enum :en :es :fr])
 
+(def migration
+  [:map {:closed true}
+   [:xt/id {:optional true} :uuid]
+   [:migration/id :uuid]
+   [:migration/number :int]
+   [:migration/label [:string {:min 2 :max 30}]]
+   [:migration/at inst? ]])
+
+(def nation
+  [:map {:closed true}
+   [:xt/id {:optional true} :uuid]
+   [:nation/id :uuid]
+   [:nation/label [:string {:min 2 :max 30}]]
+   [:nation/acronym [:string {:max 5}]]])
+
+(def state
+  [:map {:closed true}
+   [:xt/id {:optional true} :uuid]
+   [:state/id :uuid]
+   [:state/label [:string {:min 2 :max 30}]]
+   [:state/acronym [:string {:max 5}]]
+   [:state/nation-id :uuid]])
+
+(def county
+  [:map {:closed true}
+   [:xt/id {:optional true} :uuid]
+   [:county/id :uuid]
+   [:county/label [:string {:min 2 :max 30}]]
+   [:county/state-id :uuid]])
+
+(def city
+  [:map {:closed true}
+   [:xt/id {:optional true} :uuid]
+   [:city/id :uuid]
+   [:city/label [:string {:min 2 :max 30}]]
+   [:city/county-id :uuid]])
+
 (def address
   [:map {:closed true}
    [:xt/id {:optional true} :uuid]
    [:address/id :uuid]
+   [:address/number [:string {:min 2 :max 30}]]
    [:address/street [:string {:min 2 :max 30}]]
-   [:address/city [:string {:min 2 :max 30}]]
-   [:address/state [:string {:min 2 :max 15}]]
-   [:address/zip [:string {:min 3 :max 10}]]
-   [:address/country [:string {:min 2 :max 20}]]])
+   [:address/city-id :uuid]
+   [:address/zip [:string {:min 3 :max 10}]]])
 
 (def industry
   [:enum :strip-club :parlor])

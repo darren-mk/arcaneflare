@@ -1,5 +1,6 @@
 (ns tia.db.common
   (:require
+   [clojure.java.io :as io]
    [clojure.tools.logging :as log]
    [tia.db.core :as dbcr :refer [db]]
    [tia.calc :as c]
@@ -62,22 +63,10 @@
   "record data only when the existing
   data is not identical to the new one"
   [data]
-  (let [ns (c/nsmap->ns data)
-        idk (c/ns->idk ns)
-        idv (get data idk)
-        ex (pull-by-id idv)]
-    (when (not= ex data)
-      (record! data))))
-
-(comment
-  (upsert!
-   (let [id #uuid "d9fb6bf4-4009-421a-a1fd-046d05b72772"
-         ts #inst "2024-02-03T03:39:45.580-00:00"]
-     {:xt/id id
-      :tick/id id
-      :tick/timestamp ts}))
-  :=> #:xtdb.api{:tx-id 1909,
-                 :tx-time #inst "2024-03-03T03:28:11.301-00:00"})
+  (let [id (get data :xt/id)
+        existing (pull-by-id id)]
+    (when (not= existing data)
+      (put! data))))
 
 (defn delete! [id]
   (xt/submit-tx db [[::xt/delete id]]))

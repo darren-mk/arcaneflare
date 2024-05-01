@@ -79,35 +79,6 @@
                      (-> % :open :day)))
          first)))
 
-(defn mask-gplace [fields]
-  (->> fields
-       (map #(str "places." (name %)))
-       (cstr/join ",")))
-
-(m/=> parse-address
-      [:=> [:cat :uuid :string]
-       model/address])
-
-(defn parse-address [id s]
-  (let [lst (as-> s $
-              (cstr/split $ #",")
-              (mapv cstr/trim $))
-        rev (vec (reverse lst))
-        country (first rev)
-        unit? (< 4 (count lst))
-        [state zip] (as-> rev $
-                      (get $ 1)
-                      (cstr/split $ #" ")
-                      (mapv cstr/trim $))
-        city (get rev 2)
-        street (if unit?
-                 (->> (take 2 lst)
-                      (cstr/join ", "))
-                 (first lst))]
-    #:address{:id id :street street
-              :city city :state state
-              :zip zip :country country}))
-
 (m/=> idify
       [:=> [:cat :string] :string])
 

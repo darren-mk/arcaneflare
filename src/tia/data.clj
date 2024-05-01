@@ -180,11 +180,6 @@
 (def gplace-uri
   "https://places.googleapis.com/v1/places:searchText")
 
-(def gplace-fields
-  #{:googleMapsUri :internationalPhoneNumber
-    :displayName :websiteUri :businessStatus
-    :id :formattedAddress})
-
 (def address-comp-types
   {:country :keyword
    :state :keyword

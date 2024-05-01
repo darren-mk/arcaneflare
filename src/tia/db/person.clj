@@ -19,7 +19,7 @@
   :=> false)
 
 (defn create! [person]
-  (dbcm/record! person))
+  (dbcm/put! person))
 
 (comment
   (create! {:person/id #uuid "c864fd4b-ec4b-4310-8d69-e1be290cd57e"

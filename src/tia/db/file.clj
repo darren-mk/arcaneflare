@@ -3,7 +3,7 @@
    [tia.db.common :as dbc]))
 
 (defn create! [file]
-  (dbc/record! file))
+  (dbc/put! file))
 
 (defn get-all-files []
   (dbc/pull-all-having-key :file/id))

@@ -57,7 +57,7 @@
 (defn login!
   ([person-id]
    (let [session (instantiate person-id)]
-     (when (:xtdb.api/tx-id (dbc/record! session))
+     (when (:xtdb.api/tx-id (dbc/put! session))
        session)))
   ([email password]
    (let [person (pdb/find-by-email email)
@@ -66,7 +66,7 @@
          {:session/keys [id] :as session} (instantiate person-id)]
      (swap! cache assoc-in [id :session] session)
      (swap! cache assoc-in [id :person] person)
-     (when (and matched? (:xtdb.api/tx-id (dbc/record! session)))
+     (when (and matched? (:xtdb.api/tx-id (dbc/put! session)))
        session))))
 
 (comment

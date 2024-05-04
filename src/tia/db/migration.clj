@@ -6,8 +6,18 @@
    [tia.db.common :as dbc]
    [tia.util :as util]))
 
+(defn files []
+  (let [objects (io/file "./resources/migrations")]
+    (for [fl (.listFiles objects)]
+      (.getName fl))))
+
 (comment
-  (util/uuid))
+  (files)
+  :=> '("0001_create-key-nations.edn"
+        "0002_create-key-us-states.edn"
+        "0003_create-complete-nj-counties.edn"
+        "0004_create-nj-bergen-key-cities.edn"
+        "0005_create-harem-cabaret-address.edn"))
 
 (def migrations
   [[1 "create-key-nations" #uuid "75fe4bcc-8bd0-4f56-9ba3-5eedcfeffb29"]

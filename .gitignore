@@ -9,12 +9,9 @@ test-config.edn
 /.lein-*
 profiles.clj
 .nrepl-port
-/.clj-kondo/.cache/
-/.clj-kondo/hiccup/
-/.clj-kondo/metosin/
-/.clj-kondo/rewrite-clj/
-/.clj-kondo/com.github.seancorfield
-/.lsp/.cache/
+/.clj-kondo
+/.lsp
+/.github
 /.calva/output-window/
 .idea
 .vscode

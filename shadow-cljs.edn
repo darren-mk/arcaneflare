@@ -1,0 +1,14 @@
+{:source-paths ["src/cljs" "test/cljs" "env/dev/cljs"]
+ :dependencies [[binaryage/devtools "1.0.7"]
+                [re-frame "1.4.3"]]
+ :builds {:tia {:target :browser
+                :output-dir "public/js/compiled"
+                :asset-path "/js/compiled"
+                :modules {:main {:entries [tia.core]}}
+                :devtools {:before-load tia.core/stop
+                           :after-load tia.core/start
+                           :http-root "public"
+                           :http-port 8000
+                           :preloads [devtools.preload]
+                           :repl-init-ns user
+                           :repl-pprint true}}}}

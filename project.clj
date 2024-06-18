@@ -32,8 +32,8 @@
                  [selmer "1.12.55"]
                  [tick "0.7.5"]]
   :min-lein-version "2.0.0"
-  :source-paths ["src"]
-  :test-paths ["test"]
+  :source-paths ["src/clj"]
+  :test-paths ["test/clj"]
   :resource-paths ["resources"]
   :target-path "target/%s/"
   :main ^:skip-aot tia.core

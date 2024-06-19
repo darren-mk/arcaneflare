@@ -1,3 +1,0 @@
-{:linters
- {:unresolved-var
-  {:exclude [amazonica.aws.s3]}}}

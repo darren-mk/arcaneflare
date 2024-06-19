@@ -11,13 +11,14 @@ profiles.clj
 .nrepl-port
 /.clj-kondo
 /.lsp
-/.calva/output-window/
+/.calva
 .idea
 .vscode
 /.shadow-cljs
+/.cpcache
 /node_modules
 /log
-/public/js
+/resources/public/js
 .DS_Store
 .env
-dev-config.edn
+.github

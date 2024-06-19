@@ -20,4 +20,3 @@ profiles.clj
 /public/js
 .DS_Store
 .env
-dev-config.edn

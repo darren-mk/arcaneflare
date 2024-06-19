@@ -10,6 +10,7 @@
   (r/upsert-recency! id)
   (dbc/put! (merge {:xt/id id} post)))
 
+#_
 (defn get-posts-by-place [pid]
   (dbc/query
    '{:find [(pull ?post [*])]

@@ -12,6 +12,7 @@
   "following iso 639 language codes"
   [:enum :en :es :fr])
 
+#_
 (def migration
   [:map {:closed true}
    [:xt/id {:optional true} :uuid]
@@ -20,6 +21,7 @@
    [:migration/label [:string {:min 2 :max 30}]]
    [:migration/at inst? ]])
 
+#_
 (def nation
   [:map {:closed true}
    [:xt/id {:optional true} :uuid]
@@ -27,6 +29,7 @@
    [:nation/label [:string {:min 2 :max 30}]]
    [:nation/acronym [:string {:max 5}]]])
 
+#_
 (def state
   [:map {:closed true}
    [:xt/id {:optional true} :uuid]
@@ -35,6 +38,7 @@
    [:state/acronym [:string {:max 5}]]
    [:state/nation-id :uuid]])
 
+#_
 (def county
   [:map {:closed true}
    [:xt/id {:optional true} :uuid]
@@ -42,6 +46,7 @@
    [:county/label [:string {:min 2 :max 30}]]
    [:county/state-id :uuid]])
 
+#_
 (def city
   [:map {:closed true}
    [:xt/id {:optional true} :uuid]
@@ -170,6 +175,7 @@
    [:recency/commentary-id {:optional true} :uuid]
    [:recency/timestamp inst?]])
 
+#_
 (def setting
   [:map {:closed true}
    [:xt/id {:optional true} :keyword]

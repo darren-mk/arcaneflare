@@ -7,6 +7,7 @@
    [tia.pages.place.common :as place-common]
    [tia.storage :as storage]))
 
+#_
 (defn uri [handle elems]
   (-> [c/path :place handle :gallery elems]
       flatten eval))

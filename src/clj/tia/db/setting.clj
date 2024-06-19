@@ -27,6 +27,7 @@
   :=> #:xtdb.api{:tx-id 1913,
                  :tx-time #inst "2024-03-03T03:49:40.098-00:00"})
 
+#_
 (defn set-admin-password [s]
   (dbc/upsert!
    {:setting/id :setting

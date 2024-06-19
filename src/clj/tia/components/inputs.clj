@@ -1,5 +1,6 @@
 (ns tia.components.inputs)
 
+#_
 (defn industry-selection [given]
   (when-not given
     [:div.input-group.my-3

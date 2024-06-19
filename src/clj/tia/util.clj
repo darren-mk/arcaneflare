@@ -45,6 +45,7 @@
 (defn obj->str [obj]
  (.toString obj))
 
+#_
 (defn retry-check-existence [{:keys [interval max f]}]
   (let [result (f)]
     (if (and (nil? result) (< 1 max))
@@ -54,6 +55,7 @@
                   :f f}))
       result)))
 
+#_
 (defn retry-check-deletion
   [{:keys [interval max f]}]
   (let [read (f)]

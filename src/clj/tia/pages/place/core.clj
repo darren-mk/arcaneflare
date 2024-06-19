@@ -2,19 +2,14 @@
   (:require
    [clojure.string :as cstr]
    [malli.core :as m]
-   [tia.calc :refer [>s] :as c]
-   [tia.components.inputs :as comp-input]
-   [tia.db.place :as db-place]
-   [tia.db.post :as db-post]
-   [tia.db.commentary :as db-commentary]
-   [tia.db.common :as db-common]
+   [tia.calc :as c] 
    [tia.layout :as l]
    [tia.middleware :as mw]
    [tia.pages.place.common :as p-common]
    [tia.pages.place.review :as p-review]
    [tia.pages.place.gallery :as p-gallery]
-   [tia.storage :as storage]
-   [tia.util :as u]))
+   #_[tia.storage :as storage]
+   #_[tia.util :as u]))
 
 (def uri
   "/place")
@@ -71,6 +66,7 @@
         (tabs selection place)
         (content selection place address)]]])))
 
+#_
 (defn upload [{:keys [person place] :as req}]
   (let [person-id (:person/id person)
         place-id (:place/id place)

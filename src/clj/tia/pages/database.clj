@@ -1,9 +1,10 @@
 (ns tia.pages.database
   (:require
-   [clojure.string :as cstr]
-   [tia.db.tick :as dbt]
-   [tia.layout :as layout]))
+   #_[clojure.string :as cstr]
+   #_[tia.db.tick :as dbt]
+   #_[tia.layout :as layout]))
 
+#_
 (defn page [_request]
   (dbt/tick!)
   (layout/plain
@@ -11,5 +12,6 @@
         (cstr/join "\n" (map #(str "Read from DB: " %)
                              (dbt/ticks))))))
 
+#_
 (def routes
   ["/database" {:get page}])

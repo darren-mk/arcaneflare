@@ -1,6 +1,5 @@
 (ns tia.db.common
   (:require
-   [clojure.java.io :as io]
    [clojure.tools.logging :as log]
    [tia.db.core :as dbcr :refer [db]]
    [tia.calc :as c]
@@ -39,6 +38,7 @@
             :where [['?e k]]}]
     (map first (query ql))))
 
+#_
 (defn pull-all-having-kv [k v]
   (let [ql {:find '[(pull ?e [*])]
             :in [['v]]

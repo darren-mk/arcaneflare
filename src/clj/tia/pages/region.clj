@@ -88,7 +88,7 @@
         cities (db-address/get-cities county-id)]
     (layout/elem
      (into [:div]
-           (mapv (fn [{:city/keys [id label]}]
+           (mapv (fn [{:city/keys [_id label]}]
                    [:button label]) cities)))))
 
 (defn counties [req]

@@ -32,6 +32,7 @@
 (def content-type
   "Content-Type")
 
+#_
 (def text-plain
   "text/plain")
 
@@ -77,6 +78,7 @@
     :states #{:on :qc :ns :mb :bc :pe
               :sk :ab :nl :nb}}})
 
+#_
 (def countries
   {:us {:label "United States"
          :states #{:al :ak :az :ar :ca :co :ct :de :dc :fl
@@ -158,6 +160,7 @@
    :nl {:label "Newfoundland and Labrador"}
    :nb {:label "New Brunswick"}})
 
+#_
 (def regions
   {:north-nj {:label "North New Jersey"}
    :central-nj {:label "Central New Jersey"}
@@ -180,6 +183,7 @@
 (def gplace-uri
   "https://places.googleapis.com/v1/places:searchText")
 
+#_
 (def address-comp-types
   {:country :keyword
    :state :keyword
@@ -189,6 +193,7 @@
    :street :string
    :number :string})
 
+#_
 (def industries
   {:club {:label "strip club"}
    :parlor {:label "massage parlor"}})
@@ -216,6 +221,7 @@
          :3 :0 :0 :1 :.176-.17C12.72-3.042 :23.333
          :4.867 :8 :15]}]])
 
+#_
 (def heart-filled-icon
   [:svg icon-prop
    [:path
@@ -271,6 +277,7 @@
        :2.2 :0 :0 :0-.505-.804l-.353-.354.353-.354c.006-.005.041-.05.041-.17a.9.9
        :0 :0 :0-.121-.415C12.4 :1.272 :12.063 :1 :11.5 :1]}]])
 
+#_
 (def hand-thumbs-up-filled-icon
   [:svg icon-prop
    [:path
@@ -284,6 +291,7 @@
          :2 :13V9c0-.85.685-1.432 :1.357-1.615.849-.232 :1.574-.787
          :2.132-1.41.56-.627.914-1.28 :1.039-1.639.199-.575.356-1.539.428-2.59z]}]])
 
+#_
 (def hand-thumbs-down-filled-icon
   [:svg icon-prop
    [:path
@@ -306,6 +314,7 @@
          :2 :2v12.793a.5.5 :0 :0 :1-.854.353l-2.853-2.853a1 :1 :0 :0
          :0-.707-.293H2a2 :2 :0 :0 :1-2-2V2a2 :2 :0 :0 :1 :2-2z]}]])
 
+#_
 (def chat-filled-icon
   [:svg icon-prop
    [:path

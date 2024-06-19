@@ -1,21 +1,18 @@
 (ns tia.middleware
   (:require
-   [tia.env :refer [defaults]]
    [tia.db.session :as session-db]
-   [clojure.tools.logging :as log]
-   [tia.calc :as calc]
+   #_[clojure.tools.logging :as log] 
    [tia.db.place :as db-place]
-   [tia.layout :refer [error-page]]
+   #_[tia.layout :refer [error-page]]
    [tia.util :as u]
-   [ring.middleware.anti-forgery :refer [wrap-anti-forgery]]
    [muuntaja.middleware :refer [wrap-format wrap-params]]
    [luminus-transit.time :as time]
    [muuntaja.core :as m]
-   [ring.middleware.flash :refer [wrap-flash]]
-   [ring.adapter.undertow.middleware.session :refer [wrap-session]]
-   [ring.middleware.defaults :refer [site-defaults wrap-defaults]]
-   [tia.data :as d]))
+   #_[ring.middleware.flash :refer [wrap-flash]]
+   #_[ring.adapter.undertow.middleware.session :refer [wrap-session]]
+   #_[ring.middleware.defaults :refer [site-defaults wrap-defaults]]))
 
+#_
 (defn wrap-internal-error [handler]
   (let [error-result (fn [^Throwable t]
                        (log/error t (.getMessage t))
@@ -31,6 +28,7 @@
          (catch Throwable t
            (error-result t)))))))
 
+#_
 (defn wrap-csrf [handler]
   (wrap-anti-forgery
    handler
@@ -59,6 +57,7 @@
       ([request respond raise]
        ((if (:websocket? request) handler wrapped) request respond raise)))))
 
+#_
 (defn wrap-base [handler]
   (-> ((:middleware defaults) handler)
       wrap-flash

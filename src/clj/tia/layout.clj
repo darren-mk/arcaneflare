@@ -18,6 +18,7 @@
  :csrf-field
  (fn [_ _] (anti-forgery-field)))
 
+#_
 (defn plain
   [text]
   {:status 200

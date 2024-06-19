@@ -1,10 +1,6 @@
 (ns tia.db.address
   (:require
-   [malli.core :as m]
-   [tia.model :as md]
-   [tia.db.common :as dbc]
-   [tia.db.person :as pdb]
-   [tia.util :as u]))
+   [tia.db.common :as dbc]))
 
 (defn get-all-nations []
   (map first

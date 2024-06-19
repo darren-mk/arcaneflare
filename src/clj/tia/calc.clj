@@ -2,8 +2,7 @@
   "pure functions for domain logic."
   (:require
    [clojure.string :as cstr]
-   [malli.core :as m]
-   [tia.model :as model]))
+   [malli.core :as m]))
 
 (defn >s [& ts]
   (->> ts
@@ -41,10 +40,6 @@
 (def trim-low
   (comp cstr/trim cstr/lower-case))
 
-(m/=> handlify
-      [:=> [:cat :map :string]
-       :keyword])
-
 (defn handlify
   [{:keys [address/state address/city]} label]
   (let [named (as-> label $
@@ -60,6 +55,10 @@
                    named)]
     (keyword expanded)))
 
+(m/=> handlify
+      [:=> [:cat :map :string]
+       :keyword])
+
 (def day->num
   {:mon 0
    :tue 1
@@ -69,9 +68,6 @@
    :sat 5
    :sun 6})
 
-(m/=> find-period-f
-      [:=> [:cat :keyword] fn?])
-
 (defn find-period-f [day]
   (fn [google-periods]
     (->> google-periods
@@ -79,14 +75,17 @@
                      (-> % :open :day)))
          first)))
 
-(m/=> idify
-      [:=> [:cat :string] :string])
+(m/=> find-period-f
+      [:=> [:cat :keyword] fn?])
 
 (defn idify [s]
   (->> s
        (remove (fn [c] (= c \ )))
        (apply str)
        cstr/lower-case))
+
+(m/=> idify
+      [:=> [:cat :string] :string])
 
 (defn path [& elems]
   (->> elems

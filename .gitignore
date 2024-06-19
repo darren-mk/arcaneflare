@@ -20,3 +20,4 @@ profiles.clj
 /public/js
 .DS_Store
 .env
+.github

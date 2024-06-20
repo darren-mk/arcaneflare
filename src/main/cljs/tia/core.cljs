@@ -1,21 +1,56 @@
 (ns tia.core
   (:require
-   [reagent.dom.client :as rdc]))
+   [reagent.core :as r]
+   [reagent.dom.client :as rdc]
+   [reitit.frontend :as rtf]
+   [reitit.frontend.easy :as rtfe]))
 
 (defonce root-container
-  (rdc/create-root 
-   (js/document.getElementById "tia")))
+  (rdc/create-root
+   (.getElementById js/document "tia")))
+
+(defonce match
+  (r/atom nil))
+
+(defn landing-page []
+  [:div 
+   [:p "landing!"]
+   [:a {:href "/#/about"}
+    "to about page"]])
+
+(defn about-page []
+  [:div [:p "about!"]
+   [:a {:href "/#/"}
+    "to landing page"]])
+
+(def routes
+  [["/"
+    {:name ::landing-page
+     :view landing-page}]
+   ["/about"
+    {:name ::about-page
+     :view about-page}]])
+
+(defn current-page [] 
+  [:div
+   (when @match
+     (let [view (-> @match :data :view)]
+       [view @match]))])
 
 (defn ^:dev/after-load start []
-  (js/console.log "start!"))
+  (println "start!"))
 
 (defn ^:dev/before-load stop []
-  (js/console.log "stop!"))
+  (println "stop!"))
 
 (defn ^:export init []
+  (rtfe/start!
+   (rtf/router routes)
+   (fn [m] (reset! match m))
+   {:use-fragment true})
   (rdc/render
    root-container
-   [:div [:p "abc!"]]))
+   [current-page]))
 
 (comment 
   (start)

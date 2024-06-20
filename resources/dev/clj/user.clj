@@ -1,6 +1,5 @@
 (ns user 
   (:require
-   [integrant.core :as ig]
    [integrant.repl :as ir]
    [tia.core :as tc]))
 

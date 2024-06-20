@@ -7,7 +7,7 @@
   {:adapter/jetty {:port 3000
                    :join? false}})
 
-(defn handler [request]
+(defn handler [_request]
   {:status 200
    :headers {"Content-Type" "text/html"}
    :body "Hello World"})
@@ -21,5 +21,5 @@
   [_ server]
   (.stop server))
 
-(defn run [_]
+(defn ^:export run [_]
   (ig/init config))

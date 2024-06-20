@@ -1,16 +1,19 @@
-(ns user
-  "Userspace functions you can run by default in your local REPL."
-  #_(:require
-   [tia.config]
-   [clojure.pprint]
-   [clojure.string :as cstr]
-   [clojure.spec.alpha :as s]
-   [expound.alpha :as expound]
-   [malli.instrument :as mi]
-   [mount.core :as mount]
-   [tia.core]
-   [tia.db.core]
-   [tia.db.migration :as mig]))
+(ns user 
+  (:require
+   [integrant.repl :as ir]
+   [tia.core :as tc]))
+
+(ir/set-prep! 
+ (constantly tc/config))
+
+(def start! ir/go)
+
+(def stop! ir/halt)
+
+(comment
+  (start!)
+  (stop!))
+
 #_#_#_#_#_#_#_#_#_#_#_
 (alter-var-root
  #'s/*explain-out*
@@ -45,8 +48,7 @@
 
 (defn restart
   "Restarts application."
-  []
-  (stop)
+  [] (stop)
   (start))
 
 (defn restart-db
@@ -64,3 +66,4 @@
   (restart)
   (restart-db)
   (migrate!))
+

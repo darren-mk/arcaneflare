@@ -1,5 +1,9 @@
-{:paths ["src/clj" "resources/dev/clj" 
-         "src/cljs" "resources/dev/cljs"]
+{:paths ["src/main/clj" "src/main/cljs"
+         "src/dev/clj" "src/dev/cljs"]
  :deps {thheller/shadow-cljs {:mvn/version "2.28.9"}
         re-frame/re-frame {:mvn/version "1.4.3"}
-        binaryage/devtools {:mvn/version "1.0.7"}}}
+        binaryage/devtools {:mvn/version "1.0.7"}
+        integrant/integrant {:mvn/version "0.10.0"}
+        integrant/repl {:mvn/version "0.3.3"}
+        ring/ring-core {:mvn/version "1.12.2"}
+        ring/ring-jetty-adapter {:mvn/version "1.12.2"}}}

@@ -1,6 +1,10 @@
 (ns tia.core
   (:require
-   [reagent.dom :as rgd]))
+   [reagent.dom.client :as rdc]))
+
+(defonce root-container
+  (rdc/create-root 
+   (js/document.getElementById "tia")))
 
 (defn ^:dev/after-load start []
   (js/console.log "start!"))
@@ -9,9 +13,9 @@
   (js/console.log "stop!"))
 
 (defn ^:export init []
-  (rgd/render
-   [:div [:p "abc!"]]
-   (.getElementById js/document "tia")))
+  (rdc/render
+   root-container
+   [:div [:p "abc!"]]))
 
 (comment 
   (start)

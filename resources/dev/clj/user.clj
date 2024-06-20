@@ -1,6 +1,6 @@
 (ns user
   "Userspace functions you can run by default in your local REPL."
-  (:require
+  #_(:require
    [tia.config]
    [clojure.pprint]
    [clojure.string :as cstr]
@@ -11,7 +11,7 @@
    [tia.core]
    [tia.db.core]
    [tia.db.migration :as mig]))
-
+#_#_#_#_#_#_#_#_#_#_#_
 (alter-var-root
  #'s/*explain-out*
  (constantly expound/printer))

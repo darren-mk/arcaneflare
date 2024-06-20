@@ -3,7 +3,8 @@
    [integrant.repl :as ir]
    [tia.core :as tc]))
 
-(ir/set-prep! (constantly tc/config))
+(ir/set-prep! 
+ (constantly tc/config))
 
 (def start! ir/go)
 

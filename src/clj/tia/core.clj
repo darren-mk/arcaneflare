@@ -1,7 +1,25 @@
-(ns tia.core)
+(ns tia.core
+  (:require
+   [integrant.core :as ig]
+   [ring.adapter.jetty :as rj]))
 
-(defn run [args]
-  (print "yo"))
+(def config
+  {:adapter/jetty {:port 3000
+                   :join? false}})
 
-(defn -main [& args]
-  (print "hey"))
+(defn handler [request]
+  {:status 200
+   :headers {"Content-Type" "text/html"}
+   :body "Hello World"})
+
+(defmethod ig/init-key :adapter/jetty
+  [_ {:keys [port] :as opts}]
+  (println "jetty starts on port" port)
+  (rj/run-jetty handler opts))
+
+(defmethod ig/halt-key! :adapter/jetty
+  [_ server]
+  (.stop server))
+
+(defn run [_]
+  (ig/init config))

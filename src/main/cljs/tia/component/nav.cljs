@@ -2,10 +2,11 @@
 
 (defn node []
   [:div.nav
-   [:a {:href "/#/"} "Home"]
-   [:a {:href "/#/login"} "Log in"]
-   [:a {:href "/#/signup"} "Sign up"]
-   [:a {:href "/#/place"} "Place"]
-   [:a {:href "/#/review"} "Review"]
-   [:a {:href "/#/discussion"} "Discussion"]
-   [:a {:href "/#/preference"} "Preference"]])
+   [:ul
+    [:li [:a {:href "/#/"} "Home"]]
+    [:li [:a {:href "/#/place"} "Place"]]
+    [:li [:a {:href "/#/review"} "Review"]]
+    [:li [:a {:href "/#/discussion"} "Discussion"]]
+    [:li [:a {:href "/#/preference"} "Preference"]]
+    [:li [:a {:href "/#/login"} "Log in"]]
+    [:li [:a {:href "/#/signup"} "Sign up"]]]])

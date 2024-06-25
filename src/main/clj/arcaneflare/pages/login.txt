@@ -1,0 +1,52 @@
+(ns arcaneflare.pages.login
+  (:require
+   [clojure.string :as cstr]
+   [arcaneflare.layout :as l]
+   [arcaneflare.db.session :as session-db]))
+
+(defn login-and-redirect [{:keys [params]}]
+  (let [{:keys [email password]} params
+        session (session-db/login! email password)]
+    (l/redirect "/" (:session/id session))))
+
+(defn input [k]
+  (let [label (-> k name
+                  cstr/capitalize)]
+    [:div.mb-3
+     [:label.form-label
+      {:for :username}
+      label]
+     [:input.form-control
+      {:name k :type k
+       :required true
+       :placeholder label}]]))
+
+(def submit
+  [:div.mb-3.pb-3.border-bottom
+   [:button.btn.btn-primary.w-100
+    {:type :submit} "Sign in"]])
+
+(def no-account
+  [:div.text-center.text-body-secondary
+   "Don't have an account?"
+   [:a {:href "/signup"} "Sign up"]])
+
+(def form
+  [:form {:action "/login/result"
+          :method :post}
+   (input :email)
+   (input :password)
+   submit
+   no-account])
+
+(defn page [_]
+  (l/page
+   {:nav {:selection nil}}
+   [:div.container-md.px-3.px-sm-4.px-xl-5
+    [:div.d-flex.justify-content-center
+     form]]))
+
+(def routes
+  ["/login"
+   ["" {:get page}]
+   ["/result" {:post login-and-redirect}]])

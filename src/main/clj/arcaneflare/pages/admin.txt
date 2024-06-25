@@ -1,0 +1,16 @@
+(ns arcaneflare.pages.admin
+  (:require
+   [arcaneflare.db.setting :as db-setting]
+   [arcaneflare.layout :as layout]))
+
+(defn page [{:keys [path-params]}]
+  (let [attempt (:password path-params)]
+    (layout/page
+     {}
+     [:div
+      (if (db-setting/auth? attempt)
+        [:p (str (db-setting/present))]
+        [:p "wrong attempt"])])))
+
+(def routes
+  ["/admin/:password" {:get page}])

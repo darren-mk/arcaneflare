@@ -1,12 +1,14 @@
-{:deps true 
- :builds {:tia {:target :browser
-                :output-dir "resources/public/js/compiled"
-                :asset-path "/js/compiled"
-                :modules {:main {:entries [tia.core]}}
-                :devtools {:before-load tia.core/stop
-                           :after-load tia.core/start
-                           :http-root "resources/public"
-                           :http-port 8000
-                           :preloads [devtools.preload]
-                           :repl-init-ns user
-                           :repl-pprint true}}}}
+{:deps true
+ :builds
+ {:arcaneflare
+  {:target :browser
+   :output-dir "resources/public/js/compiled"
+   :asset-path "/js/compiled"
+   :modules {:main {:entries [arcaneflare.core]}}
+   :devtools {:before-load arcaneflare.core/stop
+              :after-load arcaneflare.core/start
+              :http-root "resources/public"
+              :http-port 8000
+              :preloads [devtools.preload]
+              :repl-init-ns user
+              :repl-pprint true}}}}

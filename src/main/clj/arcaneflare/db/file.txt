@@ -1,0 +1,46 @@
+(ns arcaneflare.db.file
+  (:require
+   [arcaneflare.db.common :as dbc]))
+
+(defn create! [file]
+  (dbc/put! file))
+
+(defn get-all-files []
+  (dbc/pull-all-having-key :file/id))
+
+(comment
+  (get-all-files)
+ )
+
+(defn get-files-by-post-id [post-id]
+  (let [qr '{:find [(pull ?file [*])]
+             :in [[?post-id]]
+             :where [[?file :file/id]
+                     [?file :file/post-id ?post-id]]}
+        raw (dbc/query qr [post-id])]
+    (map first raw)))
+
+(comment
+  (get-files-by-post-id #uuid "35b55225-950e-4300-8aed-0627c8b83c40"))
+
+(defn get-files-by-place-id [place-id]
+  (let [qr '{:find [(pull ?file [*])]
+             :in [[?place-id]]
+             :where [[?file :file/post-id ?post-id]
+                     [?post :post/id ?post-id]
+                     [?post :post/place-id ?place-id]]}
+        raw (dbc/query qr [place-id])]
+    (map first raw)))
+
+(defn delete-file-by-objk [objk]
+  (let [qr '{:find [?file-id]
+             :in [[?objk]]
+             :where [[?file :file/id ?file-id]
+                     [?file :file/objk ?objk]]}
+        file-id (ffirst (dbc/query qr [objk]))]
+    (dbc/delete! file-id)))
+
+(comment
+  (delete-file-by-objk "18a4b3a4-62e9-41bc-9af8-cf5bdec7f82c")
+  :=> #:xtdb.api{:tx-id 1805,
+                 :tx-time #inst "2024-02-29T14:46:41.971-00:00"})

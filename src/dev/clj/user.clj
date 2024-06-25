@@ -1,7 +1,7 @@
 (ns user 
   (:require
    [integrant.repl :as ir]
-   [tia.core :as tc]))
+   [arcaneflare.core :as tc]))
 
 (ir/set-prep! 
  (constantly tc/config))
@@ -54,8 +54,8 @@
 (defn restart-db
   "Restarts database."
   []
-  (mount/stop #'tia.db.core/db)
-  (mount/start #'tia.db.core/db))
+  (mount/stop #'arcaneflare.db.core/db)
+  (mount/start #'arcaneflare.db.core/db))
 
 (def migrate! mig/migrate!)
 

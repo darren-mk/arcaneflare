@@ -1,0 +1,14 @@
+(ns arcaneflare.pages.post
+  (:require
+   [arcaneflare.components.inputs :as comp-input]
+   [arcaneflare.data :as d]
+   [arcaneflare.layout :as l]))
+
+(defn page [_req]
+  (l/page
+   {:nav {:selection nil}}
+   (comp-input/root {})))
+
+(def routes
+  [(:post d/uri)
+   ["" {:get page}]])

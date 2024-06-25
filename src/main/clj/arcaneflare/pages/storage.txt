@@ -1,0 +1,15 @@
+(ns arcaneflare.pages.storage
+  (:require
+   #_[arcaneflare.storage :as storage]
+   #_[arcaneflare.layout :as l]))
+
+#_
+(defn page [_request]
+  (l/plain
+   (str "Storage connection: "
+        (-> (storage/get-buckets)
+            first :name))))
+
+#_
+(def routes
+  ["/storage" {:get page}])

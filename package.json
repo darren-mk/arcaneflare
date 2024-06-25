@@ -1,9 +1,9 @@
 {
-  "name": "tia",
+  "name": "arcaneflare",
   "version": "0.0.1",
   "scripts": {
-    "dev": "npx shadow-cljs watch tia",
-    "build": "npx shadow-cljs release tia",
+    "dev": "npx shadow-cljs watch arcaneflare",
+    "build": "npx shadow-cljs release arcaneflare",
     "server": "ntl dev",
     "clean": "rm -rf target; rm -rf public/js/compiled",
     "repl": "npx shadow-cljs browser-repl"

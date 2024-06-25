@@ -1,0 +1,41 @@
+(ns arcaneflare.pages.place.gallery
+  (:require
+   [arcaneflare.calc :as c]
+   [arcaneflare.db.place :as db-place]
+   [arcaneflare.db.file :as db-file]
+   [arcaneflare.db.common :as db-common]
+   [arcaneflare.pages.place.common :as place-common]
+   [arcaneflare.storage :as storage]))
+
+#_
+(defn uri [handle elems]
+  (-> [c/path :place handle :gallery elems]
+      flatten eval))
+
+(def make-page
+  (pararcaneflarel place-common/paginate :gallery))
+
+(defn card [{:file/keys [post-id objk]}]
+  (let [presigned-url (storage/presign-url objk)
+        {:post/keys [place-id title]} (db-common/pull-by-id post-id)
+        handle (db-place/place-id->handle place-id)]
+    [:div {:class "card" :style "width: 18rem;"}
+     [:img {:src presigned-url}]
+     [:div {:class "card-body"}
+      [:span {:class "badge text-bg-success"}
+       "review"]
+      [:a {:href (c/path :place handle :reviews post-id :read)
+           :class "card-text"}
+       title]]]))
+
+(defn gallery-section [{:keys [place]}]
+  (let [{:place/keys [id]} place
+        medias (db-file/get-files-by-place-id id)]
+    [:div
+     [:div {:style {:display :flex :flex-direction :row :gap :30px}}
+      (for [media medias]
+        (card media))]]))
+
+(def routes
+  ["/gallery"
+   [["" {:get (make-page gallery-section)}]]])

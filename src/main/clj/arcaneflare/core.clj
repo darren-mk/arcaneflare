@@ -2,10 +2,15 @@
   (:require
    [integrant.core :as ig]
    [ring.adapter.jetty :as rj]
-   [reitit.ring :as rr]))
+   [reitit.ring :as rr]
+   [arcaneflare.database.core :as dbc]))
 
 (def config
-  {::handler {}
+  {::dbc/database {:dbtype "postgres"
+                   :dbname "arcaneflare"
+                   :user "dev"
+                   :password "abc"}
+   ::handler {:database (ig/ref ::dbc/database)}
    ::server {:port 3000
              :join? false
              :handler (ig/ref ::handler)}})

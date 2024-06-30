@@ -6,13 +6,13 @@
 (ir/set-prep! 
  (constantly tc/config))
 
-(def start! ir/go)
+(def start ir/go)
 
-(def stop! ir/halt)
+(def stop ir/halt)
 
 (comment
-  (start!)
-  (stop!))
+  (start)
+  (stop))
 
 #_#_#_#_#_#_#_#_#_#_#_
 (alter-var-root

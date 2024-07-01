@@ -3,7 +3,8 @@
    [integrant.core :as ig]
    [next.jdbc :as jdbc]
    [hugsql.core :as hugsql]
-   [hugsql.adapter.next-jdbc :as adapter]))
+   [hugsql.adapter.next-jdbc :as adapter]
+   [taoensso.timbre :as log]))
 
 (def ds
   (atom nil))
@@ -19,12 +20,13 @@
 
 (defmethod ig/init-key ::database
   [_ spec]
-  (println "create datasource for postgres")
+  (log/info "datasource started for postgres")
   (reset! ds (jdbc/get-datasource spec))
   (register-sql sql-files))
 
 (defmethod ig/halt-key! ::database
   [_ _]
+  (log/info "datasource stopped for postgres")
   (reset! ds nil))
 
 (comment

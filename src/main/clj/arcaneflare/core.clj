@@ -3,6 +3,7 @@
    [integrant.core :as ig]
    [ring.adapter.jetty :as rj]
    [reitit.ring :as rr]
+   [taoensso.timbre :as log]
    [arcaneflare.database.core :as dbc]))
 
 (def config
@@ -26,6 +27,7 @@
    :body (str req)})
 
 (defmethod ig/init-key ::handler [_ _]
+  (log/info "handler started on router")
   (rr/ring-handler
    (rr/router
     ["/api"
@@ -34,11 +36,12 @@
 
 (defmethod ig/init-key ::server
   [_ {:keys [port join? handler]}]
-  (println "server running in port" port)
+  (log/info "server started on port" port)
   (rj/run-jetty handler {:port port :join? join?}))
 
 (defmethod ig/halt-key! ::server
   [_ server]
+  (log/info "server stopped")
   (.stop server))
 
 (defn ^:export run [_]

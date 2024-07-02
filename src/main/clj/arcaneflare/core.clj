@@ -4,14 +4,21 @@
    [ring.adapter.jetty :as rj]
    [reitit.ring :as rr]
    [taoensso.timbre :as log]
-   [arcaneflare.database.core :as dbc]))
+   [arcaneflare.database.core :as dbc]
+   [arcaneflare.database.migrate :as dbm]))
 
 (def config
-  {::dbc/database {:dbtype "postgres"
-                   :dbname "arcaneflare"
-                   :user "dev"
-                   :password "abc"}
-   ::handler {:database (ig/ref ::dbc/database)}
+  {::dbc/spec {:dbtype "postgres"
+               :dbname "arcaneflare"
+               :user "dev"
+               :password "abc"}
+   ::dbm/migration {:store :database
+                    :migration-dir "migrations"
+                    :init-in-transaction? false
+                    :migration-table-name "migrations"
+                    :dbspec (ig/ref ::dbc/spec)}
+   ::dbc/database {:dbspec (ig/ref ::dbc/spec)}
+   ::handler {}
    ::server {:port 3000
              :join? false
              :handler (ig/ref ::handler)}})
@@ -26,7 +33,8 @@
    :headers {"Content-Type" "text/html"}
    :body (str req)})
 
-(defmethod ig/init-key ::handler [_ _]
+(defmethod ig/init-key ::handler
+  [_ _]
   (log/info "handler started on router")
   (rr/ring-handler
    (rr/router

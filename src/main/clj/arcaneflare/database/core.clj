@@ -9,6 +9,15 @@
 (def ds
   (atom nil))
 
+(defmethod ig/init-key ::spec
+  [_ dbspec]
+  (log/info "database spec for postgres set up")
+  dbspec)
+
+(defmethod ig/halt-key! ::spec
+  [_ _]
+  (log/info "database spec for postgres removed"))
+
 (def sql-files
   #{"arcaneflare/database/sql/tekadon.sql"})
 
@@ -19,19 +28,12 @@
         file {:adapter adapter}))))
 
 (defmethod ig/init-key ::database
-  [_ spec]
-  (log/info "datasource started for postgres")
-  (reset! ds (jdbc/get-datasource spec))
-  (register-sql sql-files))
+  [_ {:keys [dbspec]}]
+  (reset! ds (jdbc/get-datasource dbspec))
+  (register-sql sql-files)
+  (log/info "datasource started for postgres"))
 
 (defmethod ig/halt-key! ::database
   [_ _]
-  (log/info "datasource stopped for postgres")
-  (reset! ds nil))
-
-(comment
-  (declare testeron)
-  (testeron @ds)
-  :=> [{:?column? 123}])
-
-
+  (reset! ds nil)
+  (log/info "datasource stopped for postgres"))

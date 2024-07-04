@@ -14,7 +14,9 @@
 
 (defonce root-container
   (rdc/create-root
-   (.getElementById js/document "arcaneflare")))
+   (.getElementById
+    js/document
+    "arcaneflare")))
 
 (defonce match
   (r/atom nil))

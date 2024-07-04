@@ -1,8 +1,10 @@
 (ns user 
   (:require
    [integrant.repl :as ir]
+   [clojure.spec.alpha :as s]
    [arcaneflare.core :as tc]
-   [arcaneflare.database.migrate :as dm]))
+   [arcaneflare.database.migrate :as dm]
+   [taoensso.timbre :as log]))
 
 (ir/set-prep! 
  (constantly tc/config))
@@ -16,7 +18,15 @@
 (def rollback!
   dm/rollback!)
 
-(def start ir/go)
+(defn spec-assert [b]
+  (let [msg (str "spec assertion is "
+                 (if b "on" "off"))]
+    (s/check-asserts true)
+    (log/info msg)))
+
+(defn start []
+  (spec-assert true)
+  (ir/go))
 
 (def stop ir/halt)
 

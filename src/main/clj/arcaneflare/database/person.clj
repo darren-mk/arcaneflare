@@ -1,11 +1,13 @@
-(ns arcaneflare.db.person
+(ns arcaneflare.database.person
   (:require
    [arcaneflare.database.core :as dbc]
    [arcaneflare.util :as u]
+   [clojure.spec.alpha :as s]
    [honey.sql :as sql]
    [honey.sql.helpers :as h]))
 
-(defn create! [{:person/keys [username email job]}]
+(defn create! [{:person/keys [username email job] :as person}]
+  (s/assert :person/object person)
   (let [v [(u/uuid) username email [:cast (name job) :jobs]
            false (u/now) (u/now)]]
     (-> (h/insert-into :people)
@@ -14,10 +16,14 @@
         (h/values [v]) sql/format  dbc/execute!)))
 
 (comment
-  (create!
-   {:person/username "kokonut"
-    :person/email "kokonut@abc.com"
-    :person/job :job/owner}))
+  (create! {:person/username "kokonut"
+            :person/email "kokonut@abc.com"
+            :person/job :job/owner})
+  (s/assert :person/object
+            {:person/username 123
+             :person/email "kokonut@abc.com"
+             :person/job :job/owner})
+  (s/valid? :person/username "asdf"))
 
 (defn get-by-email [email]
   (-> (h/select :*)

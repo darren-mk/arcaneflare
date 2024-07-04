@@ -1,16 +1,29 @@
 (ns user 
   (:require
    [integrant.repl :as ir]
-   [arcaneflare.core :as tc]))
+   [arcaneflare.core :as tc]
+   [arcaneflare.database.migrate :as dm]))
 
 (ir/set-prep! 
  (constantly tc/config))
+
+(def create-mg
+  dm/create!)
+
+(def migrate!
+  dm/migrate!)
+
+(def rollback!
+  dm/rollback!)
 
 (def start ir/go)
 
 (def stop ir/halt)
 
 (comment
+  (create-mg :create-people-table)
+  (migrate!)
+  (rollback!)
   (start)
   (stop))
 

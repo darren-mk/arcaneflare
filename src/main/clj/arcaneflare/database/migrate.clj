@@ -8,13 +8,13 @@
 (def config
   (atom nil))
 
-(defn create-migration [phrase]
+(defn create! [phrase]
   (migratus/create
    {:migration-dir "migrations"}
    (name phrase)))
 
 (comment
-  (create-migration :create-foo))
+  (create! :create-foo))
 
 (defn rollback! []
   (if @config

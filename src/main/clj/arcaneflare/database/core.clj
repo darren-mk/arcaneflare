@@ -28,8 +28,13 @@
   (reset! *ds* nil)
   (log/info "datasource stopped for postgres"))
 
-(comment
+(defn execute! [sql]
   (with-open [conn (jdbc/get-connection @*ds*)]
-    (jdbc/execute! conn (-> (h/select ["abc" :raw])
-                            sql/format)))
+    (jdbc/execute! conn sql)))
+
+(comment
+  (-> ["abc" :raw]
+      h/select
+      sql/format
+      execute!)
   :=> [{:raw "abc"}])

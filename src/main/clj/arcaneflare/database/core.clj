@@ -6,7 +6,7 @@
    [honey.sql.helpers :as h]
    [taoensso.timbre :as log]))
 
-(def ^:dynamic *ds*
+(defonce ^:dynamic *ds*
   (atom nil))
 
 (defmethod ig/init-key ::spec

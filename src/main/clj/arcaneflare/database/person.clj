@@ -6,24 +6,18 @@
    [honey.sql :as sql]
    [honey.sql.helpers :as h]))
 
-(defn create! [{:person/keys [username email job] :as person}]
-  (s/assert :person/object person)
+(defn sql-create
+  [{:person/keys [username email job]}]
   (let [v [(u/uuid) username email [:cast (name job) :jobs]
            false (u/now) (u/now)]]
     (-> (h/insert-into :people)
         (h/columns :id :username :email :job
                    :verified :created-at :edited-at)
-        (h/values [v]) sql/format  dbc/execute!)))
+        (h/values [v]) sql/format)))
 
-(comment
-  (create! {:person/username "kokonut"
-            :person/email "kokonut@abc.com"
-            :person/job :job/owner})
-  (s/assert :person/object
-            {:person/username 123
-             :person/email "kokonut@abc.com"
-             :person/job :job/owner})
-  (s/valid? :person/username "asdf"))
+(defn create! [person]
+  (s/assert :person/object person)
+  (dbc/execute! (sql-create person)))
 
 (defn get-by-email [email]
   (-> (h/select :*)

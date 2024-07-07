@@ -5,7 +5,49 @@
    [reitit.ring :as rr]
    [taoensso.timbre :as log]
    [arcaneflare.database.core :as dbc]
-   [arcaneflare.database.migrate :as dbm]))
+   [arcaneflare.database.migrate :as dbm]
+   [arcaneflare.database.person :as db-person]
+   [com.wsscode.pathom3.connect.indexes :as pci]
+   [com.wsscode.pathom3.connect.operation :as pco]
+   [com.wsscode.pathom3.interface.eql :as p.eql]))
+
+(def temperatures
+  {"Recife" 23})
+
+(pco/defresolver temperature-from-city
+  [{:keys [city]}]
+  {:temperature (get temperatures city)})
+
+(pco/defresolver cold?
+  [{:keys [temperature]}]
+  {:cold? (< temperature 20)})
+
+(pco/defresolver person-by-email
+  [{:keys [email]}]
+  {:person (db-person/db-get-one-by-email email)})
+
+(def indexes
+  (pci/register
+   [temperature-from-city
+    cold?
+    person-by-email]))
+
+(def eql-process
+  p.eql/process)
+
+(comment
+  (eql-process
+   indexes
+   {:email "kokonut@abc.com"}
+   [:person])
+  :=> {:person
+       #:person{:id #uuid "da3c8e57-955c-43d3-b60e-bdd1f339e853",
+                :username "kokonut",
+                :email "kokonut@abc.com",
+                :job "owner",
+                :verified false,
+                :created_at #inst "2024-07-04T21:51:28.723000000-00:00",
+                :edited_at #inst "2024-07-04T21:51:28.723000000-00:00"}})
 
 (def config
   {::dbc/spec {:dbtype "postgres"

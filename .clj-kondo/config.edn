@@ -1,0 +1,11 @@
+{:skip-comments false
+ :lint-as {com.wsscode.pathom3.connect.operation/defmutation clojure.core/defn
+           com.wsscode.pathom3.connect.operation/defresolver clojure.core/defn
+           clojure.test.check.clojure-test/defspec clojure.core/def
+           clojure.test.check.properties/for-all clojure.core/let}
+ :linters {:invalid-arity {:level :error}
+           :missing-else-branch {:level :off}
+           :unresolved-symbol {:exclude [match? thrown-match?]}
+           :unresolved-var {:exclude [my-hugsql.functions-ns]}
+           :consistent-alias {:level :error}
+           :unused-namespace {:level :error}}}

@@ -44,19 +44,20 @@
        [view @match]))])
 
 (defn ^:dev/after-load start []
-  (println "start!"))
-
-(defn ^:dev/before-load stop []
-  (println "stop!"))
-
-(defn ^:export init []
   (rtfe/start!
    (rtf/router routes)
    (fn [m] (reset! match m))
    {:use-fragment true})
   (rdc/render
    root-container
-   [current-page]))
+   [current-page])
+  (println "arcaneflare frontend app started."))
+
+(defn ^:dev/before-load stop []
+  (println "arcaneflare frontend app stopped."))
+
+(defn ^:export init []
+  (start))
 
 (comment 
   (start)

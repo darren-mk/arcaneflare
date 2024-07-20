@@ -2,6 +2,7 @@
          "src/dev/clj" "src/dev/cljs"
          "src/test/clj" "src/test/cljs"]
  :deps {org.clojure/clojure {:mvn/version "1.11.3"}
+        orchestra/orchestra {:mvn/version "2021.01.01-1"}
         thheller/shadow-cljs {:mvn/version "2.28.9"}
         re-frame/re-frame {:mvn/version "1.4.3"}
         binaryage/devtools {:mvn/version "1.0.7"}

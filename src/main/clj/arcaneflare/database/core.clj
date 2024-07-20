@@ -2,8 +2,6 @@
   (:require
    [integrant.core :as ig]
    [next.jdbc :as jdbc]
-   [honey.sql :as sql]
-   [honey.sql.helpers :as h]
    [taoensso.timbre :as log]))
 
 (defonce ^:dynamic *ds*

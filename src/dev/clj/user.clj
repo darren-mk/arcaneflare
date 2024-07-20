@@ -1,9 +1,10 @@
 (ns user 
   (:require
-   [integrant.repl :as ir]
-   [clojure.spec.alpha :as s]
    [arcaneflare.core :as tc]
    [arcaneflare.database.migrate :as dm]
+   [clojure.spec.alpha :as s]
+   [orchestra.spec.test :as ost]
+   [integrant.repl :as ir]
    [taoensso.timbre :as log]))
 
 (ir/set-prep! 
@@ -25,17 +26,25 @@
     (log/info msg)))
 
 (defn start []
+  (ost/instrument)
   (spec-assert true)
   (ir/go))
 
-(def stop ir/halt)
+(defn stop []
+  (ost/unstrument)
+  (ir/halt))
+
+(defn restart []
+  (stop)
+  (start))
 
 (comment
   (create-mg :create-people-table)
   (migrate!)
   (rollback!)
   (start)
-  (stop))
+  (stop)
+  (restart))
 
 #_#_#_#_#_#_#_#_#_#_#_
 (alter-var-root

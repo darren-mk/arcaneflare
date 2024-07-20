@@ -1,21 +1,34 @@
 (ns arcaneflare.database.person-test
   (:require
-   [clojure.test :as t]
    [arcaneflare.database.test-core :as tcr]
-   [arcaneflare.database.person :as sut]))
+   [arcaneflare.database.person :as sut]
+   [arcaneflare.util :as u]
+   [clojure.test :as t]
+   [orchestra.spec.test :as ost]))
+
+(ost/instrument)
 
 (t/use-fixtures
   :once
   tcr/migration-fixture)
 
 (def sample-person-a
-  #:person{:username "kokonut"
+  #:person{:id (u/uuid)
+           :username "kokonut"
            :email "kokonut@abc.com"
-           :job :customer :verified true})
+           :job :customer
+           :verified true
+           :created-at (u/now)
+           :edited-at (u/now)})
 
 (def sample-person-b
-  #:person{:username "mohito" :email "mohito@abc.com"
-           :job :provider :verified false})
+  #:person{:id (u/uuid)
+           :username "mohito"
+           :email "mohito@abc.com"
+           :job :provider
+           :verified false
+           :created-at (u/now)
+           :edited-at (u/now)})
 
 (def sample-create-sql
   (sut/create-one sample-person-a))

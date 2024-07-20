@@ -1,15 +1,17 @@
 (ns arcaneflare.core
   (:require
+   [clojure.java.io :as io]
+   [com.wsscode.pathom3.connect.indexes :as pci]
+   [com.wsscode.pathom3.connect.operation :as pco]
+   [com.wsscode.pathom3.interface.eql :as p.eql]
    [integrant.core :as ig]
-   [ring.adapter.jetty :as rj]
    [reitit.ring :as rr]
+   [ring.adapter.jetty :as rj]
+   [ring.middleware.defaults :as rmd]
    [taoensso.timbre :as log]
    [arcaneflare.database.core :as dbc]
    [arcaneflare.database.migrate :as dbm]
-   [arcaneflare.database.person :as db-person]
-   [com.wsscode.pathom3.connect.indexes :as pci]
-   [com.wsscode.pathom3.connect.operation :as pco]
-   [com.wsscode.pathom3.interface.eql :as p.eql]))
+   [arcaneflare.database.person :as db-person]))
 
 (def temperatures
   {"Recife" 23})
@@ -65,24 +67,34 @@
              :join? false
              :handler (ig/ref ::handler)}})
 
-(defn ping-handler [_req]
+(defn ping [_req]
   {:status 200
    :headers {"Content-Type" "text/html"}
-   :body "Hello World"})
+   :body "pong"})
 
-(defn echo-handler [req]
+(defn echo [req]
   {:status 200
    :headers {"Content-Type" "text/html"}
    :body (str req)})
 
+(defn frontend [_]
+  {:status 200
+   :headers {"Content-Type" "text/html"}
+   :body (slurp (io/resource "public/index.html"))})
+
 (defmethod ig/init-key ::handler
   [_ _]
   (log/info "handler started on router")
-  (rr/ring-handler
-   (rr/router
-    ["/api"
-     ["/ping" {:get ping-handler}]
-     ["/echo" {:get echo-handler}]])))
+  (-> (rr/ring-handler
+       (rr/router
+        [["/" {:get frontend}]
+         ["/api"
+          ["/ping" {:get ping}]
+          ["/echo" {:get echo}]]])
+       (rr/routes
+        (rr/create-resource-handler {:path "/"})
+        (rr/create-default-handler)))
+      (rmd/wrap-defaults rmd/site-defaults)))
 
 (defmethod ig/init-key ::server
   [_ {:keys [port join? handler]}]

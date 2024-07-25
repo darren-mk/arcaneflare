@@ -1,35 +1,33 @@
 (ns arcaneflare.database.core
   (:require
-   [integrant.core :as ig]
-   [next.jdbc :as jdbc]
-   [taoensso.timbre :as log]))
+   [clojure.java.io :as io]
+   [mount.core :as m]
+   [taoensso.timbre :as log]
+   [xtdb.api :as xt]))
 
-(defonce ^:dynamic *ds*
-  (atom nil))
+(declare node)
 
-(defmethod ig/init-key ::spec
-  [_ dbspec]
-  (log/info "database spec for postgres set up")
-  dbspec)
-
-(defmethod ig/halt-key! ::spec
-  [_ _]
-  (log/info "database spec for postgres removed"))
-
-(defmethod ig/init-key ::database
-  [_ {:keys [dbspec]}]
-  (reset! *ds* (jdbc/get-datasource dbspec))
-  (log/info "datasource started for postgres"))
-
-(defmethod ig/halt-key! ::database
-  [_ _]
-  (reset! *ds* nil)
-  (log/info "datasource stopped for postgres"))
-
-(defn execute! [ds sql]
-  (with-open [conn (jdbc/get-connection ds)]
-    (jdbc/execute! conn sql)))
-
-(defn execute-one! [ds sql]
-  (with-open [conn (jdbc/get-connection ds)]
-    (jdbc/execute-one! conn sql)))
+(m/defstate ^:dynamic node
+  :start
+  (if-let [db-spec {:host "localhost"
+                    :dbname "arcaneflare"
+                    :user "dev"
+                    :password "abc"}]
+    (do (log/info "DB configs are successfully loaded.")
+        (xt/start-node
+         {:xtdb.jdbc/connection-pool
+          {:dialect {:xtdb/module 'xtdb.jdbc.psql/->dialect}
+           :db-spec db-spec}
+          :xtdb/tx-log
+          {:xtdb/module 'xtdb.jdbc/->tx-log
+           :connection-pool :xtdb.jdbc/connection-pool}
+          :xtdb/document-store
+          {:xtdb/module 'xtdb.jdbc/->document-store
+           :connection-pool :xtdb.jdbc/connection-pool}
+          :xtdb/index-store
+          {:kv-store {:xtdb/module 'xtdb.rocksdb/->kv-store
+                      :db-dir (io/file "/tmp/rocksdb")}}}))
+    (do (log/warn "database connection URL was not found")
+        node))
+  :stop
+  (.close node))

@@ -1,31 +1,17 @@
-(ns arcaneflare.db.common
+(ns arcaneflare.database.common
   (:require
-   [clojure.tools.logging :as log]
-   [arcaneflare.db.core :as dbcr :refer [db]]
-   [arcaneflare.calc :as c]
-   [malli.core :as m]
+   [arcaneflare.database.core :as dbc]
    [xtdb.api :as xt]))
 
 (defn query
   ([ql]
-   (xt/q (xt/db db) ql))
+   (xt/q (xt/db dbc/node) ql))
   ([ql var]
-   (xt/q (xt/db db) ql var)))
+   (xt/q (xt/db dbc/node) ql var)))
 
 (defn put! [m]
   (xt/submit-tx
-   db [[::xt/put m]]))
-
-(defn record! [data]
-  (let [ns-s (c/nsmap->ns data)
-        idk (c/ns->idk ns-s)
-        schema (c/ns->schema ns-s)
-        idv (get data idk)
-        m (assoc data :xt/id idv)]
-    (if (m/validate schema m)
-      (put! m)
-      (log/error "data not validated:"
-                 (m/explain schema m)))))
+   dbc/node [[::xt/put m]]))
 
 (defn pull-by-id [id]
   (let [ql '{:find [(pull ?e [*])]
@@ -33,12 +19,23 @@
              :where [[?e :xt/id id]]}]
     (ffirst (query ql [id]))))
 
+(defn created-at [id]
+  (-> (xt/db dbc/node)
+      (xt/entity-history id :asc)
+      first
+      (get :xtdb.api/tx-time)))
+
+(defn last-edited-at [id]
+  (-> (xt/db dbc/node)
+      (xt/entity-history id :desc)
+      first
+      (get :xtdb.api/tx-time)))
+
 (defn pull-all-having-key [k]
   (let [ql {:find '[(pull ?e [*])]
             :where [['?e k]]}]
     (map first (query ql))))
 
-#_
 (defn pull-all-having-kv [k v]
   (let [ql {:find '[(pull ?e [*])]
             :in [['v]]
@@ -56,25 +53,16 @@
             :where [['?e k '?v]]}]
     (or (ffirst (query ql [v])) 0)))
 
-(defn count-all []
-  (count-all-having-key :xt/id))
-
-(defn upsert!
+(defn update!
   "record data only when the existing
   data is not identical to the new one"
-  [data]
-  (let [id (get data :xt/id)
+  [m]
+  (let [id (get m :xt/id)
         existing (pull-by-id id)]
-    (when (not= existing data)
-      (put! data))))
+    (when (not= existing m)
+      (put! m))))
 
 (defn delete! [id]
-  (xt/submit-tx db [[::xt/delete id]]))
-
-(comment
-  (count-all)
-  (delete! :id)
-  (pull-all-having-key :xt/id)
-  (count-all-having-kv
-   :address/street "50 West 33rd Street")
-  :=> 1)
+  (xt/submit-tx
+   dbc/node
+   [[::xt/delete id]]))

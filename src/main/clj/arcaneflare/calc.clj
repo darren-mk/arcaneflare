@@ -1,8 +1,7 @@
 (ns arcaneflare.calc
   "pure functions for domain logic."
   (:require
-   [clojure.string :as cstr]
-   [malli.core :as m]))
+   [clojure.string :as cstr]))
 
 (defn >s [& ts]
   (->> ts
@@ -55,10 +54,6 @@
                    named)]
     (keyword expanded)))
 
-(m/=> handlify
-      [:=> [:cat :map :string]
-       :keyword])
-
 (def day->num
   {:mon 0
    :tue 1
@@ -75,17 +70,11 @@
                      (-> % :open :day)))
          first)))
 
-(m/=> find-period-f
-      [:=> [:cat :keyword] fn?])
-
 (defn idify [s]
   (->> s
        (remove (fn [c] (= c \ )))
        (apply str)
        cstr/lower-case))
-
-(m/=> idify
-      [:=> [:cat :string] :string])
 
 (defn path [& elems]
   (->> elems

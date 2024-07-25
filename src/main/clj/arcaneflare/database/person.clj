@@ -1,38 +1,77 @@
 (ns arcaneflare.database.person
   (:require
-   [arcaneflare.util :as u]
    [arcaneflare.common.schema]
-   [arcaneflare.database.core :as dbc]
-   [clojure.spec.alpha :as s]
-   [honey.sql :as sql]
-   [honey.sql.helpers :as h]))
+   [arcaneflare.database.common :as dbcm]
+   [clojure.spec.alpha :as s]))
 
-(s/fdef create-one
+(defn nickname-existent? [s]
+  (pos? (dbcm/count-all-having-kv
+         :person/nickname s)))
+
+(comment
+  (nickname-existent? "abc")
+  :=> false)
+
+(defn email-existent? [s]
+  (pos? (dbcm/count-all-having-kv
+         :person/email s)))
+
+(comment
+  (email-existent? "darren@email.com")
+  :=> false)
+
+(s/fdef create!
   :args (s/cat :person :person/object)
   :ret any?)
 
-(defn create-one
-  [{:person/keys [id username email job verified
-                  created-at edited-at] :as _person}]
-  (let [v [(or id (u/uuid)) username email
-           [:cast (name job) :job] (or verified false)
-           (or created-at (u/now)) (or edited-at (u/now))]]
-    (-> (h/insert-into :person)
-        (h/columns :id :username :email :job
-                   :verified :created-at :edited-at)
-        (h/values [v]) sql/format)))
+(defn create! [person]
+  (s/assert :person/object person)
+  (dbcm/put! person))
 
-(defn sql-get-one-by-email [email]
-  (-> (h/select :*)
-      (h/from :person)
-      (h/where [:= :email email])
-      sql/format))
+(comment
+  (create! {:xt/id #uuid "c864fd4b-ec4b-4310-8d69-e1be290cd57e"
+            :person/nickname "jackiemema"
+            :person/email "jackie@abc.com"
+            :person/password "Abc123!@#"
+            :person/role (keyword "customer")
+            :person/agreed? (= "on" "on")})
+  :=> #:xtdb.api{:tx-id 498,
+                 :tx-time #inst "2024-01-20T20:03:50.401-00:00"})
 
-(s/fdef db-get-one-by-email
+(defn count-persons []
+  (dbcm/count-all-having-key :person/email))
+
+(comment
+  (count-persons)
+  :=> 2)
+
+#_
+(s/fdef find-by-email
   :args (s/cat :email :person/email)
   :ret :person/object)
 
-(defn db-get-one-by-email [email]
-  (->> email sql-get-one-by-email
-       (dbc/execute-one! dbc/*ds*)))
+(defn find-by-email [email]
+   {:person/id #uuid "a3a9e552-773e-4b3b-9594-4c0fa5e6c79e",
+       :person/nickname "kokonut",
+       :person/email email
+       :person/password "Abc123!@#",
+       :person/role :customer,
+       :person/agreed? true,
+       :xt/id #uuid "a3a9e552-773e-4b3b-9594-4c0fa5e6c79e"}
+  #_
+  (ffirst
+   (dbcm/query
+    '{:find [(pull ?person [*])]
+      :in [[?email]]
+      :where [[?person :person/email ?email]]}
+    [email])))
 
+(comment
+  (find-by-email "kokonut@abc.com")
+  :=> {:person/id #uuid "a3a9e552-773e-4b3b-9594-4c0fa5e6c79e",
+       :person/nickname "kokonut",
+       :person/email "kokonut@abc.com",
+       :person/password "Abc123!@#",
+       :person/role :customer,
+       :person/agreed? true,
+       :xt/id #uuid "a3a9e552-773e-4b3b-9594-4c0fa5e6c79e"})

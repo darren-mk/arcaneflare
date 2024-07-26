@@ -3,7 +3,7 @@
    [clojure.spec.alpha :as s]
    [clojure.test :as t]
    [orchestra.spec.test :as ost]
-   [arcaneflare.database.api :as a]
+   [arcaneflare.database.interface :as i]
    [arcaneflare.database.email :as sut]))
 
 (s/check-asserts true)
@@ -21,9 +21,9 @@
    :email/verified? false})
 
 (t/deftest integrate-test
-  (with-open [node (a/->node {})]
-    (a/atx node (sut/create! node email))
-    (let [db (a/->db node)]
-      (t/is (= email (a/ent db id)))
+  (with-open [node (i/->node {})]
+    (i/atx node (sut/create! node email))
+    (let [db (i/->db node)]
+      (t/is (= email (i/ent db id)))
       (t/is (false? (sut/new-email-address-avail?
                      db address))))))

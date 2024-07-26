@@ -3,7 +3,7 @@
    [clojure.java.io :as io]
    [mount.core :as m]
    [taoensso.timbre :as log]
-   [arcaneflare.database.api :as a]))
+   [arcaneflare.database.interface :as i]))
 
 (declare node)
 
@@ -14,7 +14,7 @@
                     :user "dev"
                     :password "abc"}]
     (do (log/info "DB configs are successfully loaded.")
-        (a/->node
+        (i/->node
          {:xtdb.jdbc/connection-pool
           {:dialect {:xtdb/module 'xtdb.jdbc.psql/->dialect}
            :db-spec db-spec}

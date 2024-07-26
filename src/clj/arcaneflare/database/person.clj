@@ -1,19 +1,19 @@
 (ns arcaneflare.database.person
   (:require
    [arcaneflare.common.schema]
-   [arcaneflare.database.api :as a]
+   [arcaneflare.database.interface :as i]
    [clojure.spec.alpha :as s]))
 
 (defn new-username-avail? [db s]
-  (zero? (a/count-all-having-kv
+  (zero? (i/count-by-kv
          db :person/username s)))
 
 (defn create! [node person]
   (s/assert :person/object person)
-  (a/put! node person))
+  (i/create-single! node person))
 
 (defn count-people [db]
-  (a/count-all-having-key
+  (i/count-by-k
    db :person/username))
 
 (s/fdef find-by-email
@@ -23,7 +23,7 @@
 (defn find-by-email-address
   [db email-address]
   (ffirst
-   (a/query db
+   (i/query db
     '{:find [(pull ?person [*])]
       :in [[?email-address]]
       :where [[?person :person/email-id ?email-id]

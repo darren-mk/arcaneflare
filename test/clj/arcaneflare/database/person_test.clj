@@ -2,7 +2,7 @@
   (:require
    [clojure.spec.alpha :as s]
    [clojure.test :as t]
-   [arcaneflare.database.api :as a]
+   [arcaneflare.database.interface :as i]
    [arcaneflare.database.email :as eml]
    [arcaneflare.database.person :as sut]
    [orchestra.spec.test :as ost]))
@@ -31,11 +31,11 @@
    :person/role :role/customer})
 
 (t/deftest integrate-test
-  (with-open [node (a/->node {})]
-    (a/atx node (sut/create! node person))
-    (a/atx node (eml/create! node email))
-    (let [db (a/->db node)]
-      (t/is (= person (a/ent db id)))
+  (with-open [node (i/->node {})]
+    (i/atx node (sut/create! node person))
+    (i/atx node (eml/create! node email))
+    (let [db (i/->db node)]
+      (t/is (= person (i/ent db id)))
       (t/is (false? (sut/new-username-avail? db username)))
       (t/is (= 1 (sut/count-people db)))
       (t/is (= person (sut/find-by-email-address db email-address))))))

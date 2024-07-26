@@ -1,13 +1,17 @@
 (ns user
   (:require
+   [clojure.tools.namespace.repl :as tn]
    [mount.core :as m]
    [clojure.spec.alpha :as s]
-   [orchestra.spec.test :as ost]))
+   [orchestra.spec.test :as ost]
+   [arcaneflare.core :as c]
+   [arcaneflare.database.core :as dbc]))
 
 (defn start []
   (s/check-asserts true)
   (ost/instrument)
-  (m/start))
+  (m/start #'dbc/node
+           #'c/server))
 
 (defn stop []
   (s/check-asserts false)
@@ -15,6 +19,7 @@
   (m/stop))
 
 (defn restart []
+  (tn/refresh-all)
   (stop)
   (start))
 
@@ -22,4 +27,3 @@
   (start)
   (stop)
   (restart))
-

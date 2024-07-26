@@ -23,7 +23,7 @@
 
 (pco/defresolver person-by-email
   [{:keys [email]}]
-  {:person (db-person/find-by-email email)})
+  {:person (db-person/find-by-email-address email)})
 
 (def indexes
   (pci/register

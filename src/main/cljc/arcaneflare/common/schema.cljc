@@ -24,7 +24,10 @@
   uuid?)
 
 (s/def :person/role
-  #{:customer :provider :owner :staff})
+  #{:role/customer
+    :role/provider
+    :role/owner
+    :role/staff})
 
 (s/def :person/object
   (s/keys :req [:xt/id

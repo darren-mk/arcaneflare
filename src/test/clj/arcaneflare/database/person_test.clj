@@ -1,65 +1,41 @@
 (ns arcaneflare.database.person-test
   (:require
-   #_#_#_#_#_
-   [arcaneflare.database.test-core :as tcr]
-   [arcaneflare.database.person :as sut]
-   [arcaneflare.util :as u]
+   [clojure.spec.alpha :as s]
    [clojure.test :as t]
+   [arcaneflare.database.api :as a]
+   [arcaneflare.database.email :as eml]
+   [arcaneflare.database.person :as sut]
    [orchestra.spec.test :as ost]))
 
-#_#_#_#_#_#_#_#_#_
-(ost/instrument)
+(s/check-asserts true)
+(ost/instrument 'sut)
 
-(t/use-fixtures
-  :once
-  tcr/migration-fixture)
+(def email-address
+  "ringo@eml.com")
 
-(def sample-person-a
-  #:person{:id (u/uuid)
-           :username "kokonut"
-           :email "kokonut@abc.com"
-           :job :customer
-           :verified true
-           :created-at (u/now)
-           :edited-at (u/now)})
+(def email
+  {:xt/id #uuid "c591d52f-22d0-45b6-9fa1-2b9a0b93d641"
+   :email/address email-address
+   :email/verified? false})
 
-(def sample-person-b
-  #:person{:id (u/uuid)
-           :username "mohito"
-           :email "mohito@abc.com"
-           :job :provider
-           :verified false
-           :created-at (u/now)
-           :edited-at (u/now)})
+(def id
+  #uuid "6673c394-f674-4601-b587-415f50b07fea")
 
-(def sample-create-sql
-  (sut/create-one sample-person-a))
+(def username
+  "ringo")
 
-(t/deftest sql-create-test
-  (t/is (= (str "INSERT INTO person (id, username, email, job, "
-                "verified, created_at, edited_at) VALUES "
-                "(?, ?, ?, CAST(? AS JOB), TRUE, ?, ?)")
-           (first sample-create-sql)))
-  (t/is (= 7 (count sample-create-sql))))
+(def person
+  {:xt/id id
+   :person/username username
+   :person/email-id #uuid "c591d52f-22d0-45b6-9fa1-2b9a0b93d641"
+   :person/role :role/customer})
 
-(t/deftest db-create-test
-  (tcr/execute! tcr/test-db-spec sample-create-sql))
-
-(t/deftest sql-get-one-by-email-test
-  (t/is (= ["SELECT * FROM person WHERE email = ?"
-            "kokonut@abc.com"]
-           (sut/sql-get-one-by-email "kokonut@abc.com"))))
-
-(t/deftest get-one-by-email-test
-  (->> sample-person-b
-       sut/create-one
-       (tcr/execute-one! tcr/test-db-spec))
-  (let [sql (-> (get sample-person-b :person/email)
-                sut/sql-get-one-by-email)]
-    (t/is (= (-> (tcr/execute-one! tcr/test-db-spec sql)
-                 (select-keys [:person/username :person/email
-                               :person/job :person/verified]))
-             #:person{:username "mohito"
-                      :email "mohito@abc.com"
-                      :job "provider"
-                      :verified false}))))
+(t/deftest integrate-test
+  (with-open [node (a/->node {})]
+    (a/atx node (sut/create! node person))
+    (a/atx node (eml/create! node email))
+    (let [db (a/->db node)]
+      (t/is (= person (a/ent db id)))
+      (t/is (false? (sut/new-username-avail? db username)))
+      (t/is (= 1 (sut/count-people db)))
+      (t/is (= person (sut/find-by-email-address db email-address ))))))

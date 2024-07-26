@@ -3,6 +3,7 @@
          "src/test/clj" "src/test/cljs"
          "resources"]
  :deps {org.clojure/clojure {:mvn/version "1.11.3"}
+        org.clojure/tools.namespace {:mvn/version "1.5.0"}
         orchestra/orchestra {:mvn/version "2021.01.01-1"}
         mount/mount {:mvn/version "0.1.18"}
         thheller/shadow-cljs {:mvn/version "2.28.9"}

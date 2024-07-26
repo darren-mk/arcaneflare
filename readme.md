@@ -1,6 +1,10 @@
-# set up for dev env
-## database
-### main
+# arcaneflare
+
+## development
+
+### database
+
+#### main
 $ docker run \
 	--name arcaneflare-local-db \
     -p 5432:5432 \
@@ -8,7 +12,7 @@ $ docker run \
     -e POSTGRES_USER=dev \
 	-e POSTGRES_PASSWORD=abc \
 	-d postgres
-### test
+#### test
 $ docker run \
 	--name arcaneflare-test-local-db \
     -p 5433:5432 \
@@ -16,3 +20,10 @@ $ docker run \
     -e POSTGRES_USER=dev \
 	-e POSTGRES_PASSWORD=abc \
 	-d postgres
+
+## running test 
+
+### local
+```
+clj -X:test
+```

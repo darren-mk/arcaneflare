@@ -38,4 +38,4 @@
       (t/is (= person (a/ent db id)))
       (t/is (false? (sut/new-username-avail? db username)))
       (t/is (= 1 (sut/count-people db)))
-      (t/is (= person (sut/find-by-email-address db email-address ))))))
+      (t/is (= person (sut/find-by-email-address db email-address))))))

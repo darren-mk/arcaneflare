@@ -4,10 +4,6 @@
    [arcaneflare.database.api :as a]
    [clojure.spec.alpha :as s]))
 
-(s/fdef new-username-avail?
-  :args (s/cat :s :person/username)
-  :ret boolean?)
-
 (defn new-username-avail? [db s]
   (zero? (a/count-all-having-kv
          db :person/username s)))

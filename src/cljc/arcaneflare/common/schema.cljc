@@ -52,7 +52,7 @@
 (s/def :country/acronym
   string?)
 
-(s/def country/object
+(s/def :country/object
   (s/keys :req [:xt/id
                 :country/label
                 :country/acronym]))
@@ -66,7 +66,7 @@
 (s/def :state/country-id
   uuid?)
 
-(s/def state/object
+(s/def :state/object
   (s/keys :req [:xt/id
                 :state/label
                 :state/acronym
@@ -75,31 +75,23 @@
 (s/def :district/label
   string?)
 
-(s/def :district/acronym
-  string?)
-
 (s/def :district/state-id
   uuid?)
 
-(s/def district/object
+(s/def :district/object
   (s/keys :req [:xt/id
                 :district/label
-                :district/acronym
                 :district/state-id]))
 
 (s/def :city/label
   string?)
 
-(s/def :city/acronym
-  string?)
-
 (s/def :city/district-id
   uuid?)
 
-(s/def city/object
+(s/def :city/object
   (s/keys :req [:xt/id
                 :city/label
-                :city/acronym
                 :city/district-id]))
 
 (s/def :address/street
@@ -113,7 +105,7 @@
 (s/def :address/city-id
   uuid?)
 
-(s/def address/object
+(s/def :address/object
   (s/keys :req [:xt/id
                 :address/street
                 :address/zip

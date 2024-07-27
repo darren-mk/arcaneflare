@@ -14,3 +14,9 @@
 (defn create! [node email]
   (s/assert :email/object email)
   (i/create-single! node email))
+
+(defn verify! [node email]
+  (s/assert :email/object email)
+  (let [old email
+        new (assoc email :email/verified? true)]
+    (i/update-single! node old new)))

@@ -15,11 +15,8 @@
 (def ->id
   #(get % :xt/id))
 
-(defn query
-  ([db ql]
-   (xt/q db ql))
-  ([db ql var]
-   (xt/q db ql var)))
+(def query
+  xt/q)
 
 (def ent
   xt/entity)

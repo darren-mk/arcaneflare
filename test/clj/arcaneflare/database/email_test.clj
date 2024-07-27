@@ -20,10 +20,19 @@
    :email/address address
    :email/verified? false})
 
-(t/deftest integrate-test
+(t/deftest new-email-address-avail?-test
   (with-open [node (i/->node {})]
     (i/atx node (sut/create! node email))
     (let [db (i/->db node)]
       (t/is (= email (i/ent db id)))
       (t/is (false? (sut/new-email-address-avail?
                      db address))))))
+
+(t/deftest verify!-test
+  (with-open [node (i/->node {})]
+    (i/atx node (sut/create! node email))
+    (i/atx node (sut/verify! node email))
+    (let [db (i/->db node)
+          read (i/ent db id)]
+      (t/is (not= email read))
+      (t/is (true? (get read :email/verified?))))))

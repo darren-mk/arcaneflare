@@ -2,6 +2,18 @@
 
 ## development
 
+### install dependencies
+```
+toolbox create arcaneflare
+toolbox enter arcaneflare
+source resources/scripts/toolbox/install-deps.sh
+```
+
+### run application from cli
+```
+clj -X arcaneflare.core/run
+```
+
 ### database
 
 #### main

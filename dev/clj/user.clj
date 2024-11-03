@@ -10,7 +10,7 @@
 (defn start []
   (s/check-asserts true)
   (ost/instrument)
-  (m/start #'dbc/node
+  (m/start #'dbc/conn
            #'c/server))
 
 (defn stop []

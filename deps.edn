@@ -12,10 +12,7 @@
         ring/ring-jetty-adapter {:mvn/version "1.12.2"}
         ring/ring-defaults {:mvn/version "0.5.0"}
         metosin/reitit {:mvn/version "0.7.0"}
-        org.postgresql/postgresql {:mvn/version "42.7.3"}
-        com.xtdb/xtdb-core {:mvn/version "1.24.3"}
-        com.xtdb/xtdb-rocksdb {:mvn/version "1.24.3"}
-        com.xtdb/xtdb-jdbc {:mvn/version "1.24.3"}
+        com.datomic/local {:mvn/version "1.0.285"}
         tick/tick {:mvn/version "0.7.5"}
         com.taoensso/timbre {:mvn/version "6.5.0"}
         com.fzakaria/slf4j-timbre {:mvn/version "0.4.1"}

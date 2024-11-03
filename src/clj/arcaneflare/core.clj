@@ -7,8 +7,7 @@
    [com.wsscode.pathom3.interface.eql :as p.eql]
    [reitit.ring :as rr]
    [ring.adapter.jetty :as rj]
-   [ring.middleware.defaults :as rmd]
-   [arcaneflare.database.person :as db-person]))
+   [ring.middleware.defaults :as rmd]))
 
 (def temperatures
   {"Recife" 23})
@@ -23,7 +22,7 @@
 
 (pco/defresolver person-by-email
   [{:keys [email]}]
-  {:person (db-person/find-by-email-address email)})
+  {:person {:a 1}})
 
 (def indexes
   (pci/register

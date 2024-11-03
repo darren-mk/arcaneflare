@@ -4,14 +4,12 @@
    [mount.core :as m]
    [clojure.spec.alpha :as s]
    [orchestra.spec.test :as ost]
-   [arcaneflare.core :as c]
-   [arcaneflare.database.core :as dbc]))
+   [arcaneflare.core :as c]))
 
 (defn start []
   (s/check-asserts true)
   (ost/instrument)
-  (m/start #'dbc/node
-           #'c/server))
+  (m/start #'c/server))
 
 (defn stop []
   (s/check-asserts false)

@@ -1,25 +1,7 @@
 (ns arcaneflare.database.base
   (:require
+   [arcaneflare.database.schema :as schema]
    [datomic.client.api :as d]))
-
-(defonce schema
-  [{:db/ident :person/id
-    :db/valueType :db.type/uuid
-    :db/cardinality :db.cardinality/one
-    :db/unique :db.unique/identity}
-   {:db/ident :person/email
-    :db/valueType :db.type/string
-    :db/cardinality :db.cardinality/one
-    :db/unique :db.unique/identity}
-   {:db/ident :person/username
-    :db/valueType :db.type/string
-    :db/cardinality :db.cardinality/one}
-   {:db/ident :person/password
-    :db/valueType :db.type/string
-    :db/cardinality :db.cardinality/one}
-   {:db/ident :person/role
-    :db/valueType :db.type/keyword
-    :db/cardinality :db.cardinality/one}])
 
 (defonce system
   "arcaneflare")
@@ -46,7 +28,7 @@
    client db-info))
 
 (d/transact
- conn {:tx-data schema})
+ conn {:tx-data schema/root})
 
 (defn ->db []
   (d/db conn)) 

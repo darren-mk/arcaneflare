@@ -1,4 +1,4 @@
-(ns arcaneflare.util
+(ns arcaneflare.utils
   "utility functions that involve side effects
   or that are not regarding domain logic."
   (:require

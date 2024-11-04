@@ -1,6 +1,6 @@
 (ns arcaneflare.util-test
   (:require
-   [arcaneflare.util :as sut]
+   [arcaneflare.utils :as sut]
    [clojure.test :as t]
    [orchestra.spec.test :as ost]))
 

@@ -1,20 +1,25 @@
-(ns arcaneflare.database.core
+(ns arcaneflare.database.base
   (:require
    [datomic.client.api :as d]))
 
-(def schema
-  [{:db/ident :movie/title
+(defonce schema
+  [{:db/ident :person/id
+    :db/valueType :db.type/uuid
+    :db/cardinality :db.cardinality/one
+    :db/unique :db.unique/identity}
+   {:db/ident :person/email
     :db/valueType :db.type/string
     :db/cardinality :db.cardinality/one
-    :db/doc "The title of the movie"}
-   {:db/ident :movie/genre
+    :db/unique :db.unique/identity}
+   {:db/ident :person/username
     :db/valueType :db.type/string
-    :db/cardinality :db.cardinality/one
-    :db/doc "The genre of the movie"}
-   {:db/ident :movie/release-year
-    :db/valueType :db.type/long
-    :db/cardinality :db.cardinality/one
-    :db/doc "The year the movie was released in theaters"}])
+    :db/cardinality :db.cardinality/one}
+   {:db/ident :person/password
+    :db/valueType :db.type/string
+    :db/cardinality :db.cardinality/one}
+   {:db/ident :person/role
+    :db/valueType :db.type/keyword
+    :db/cardinality :db.cardinality/one}])
 
 (defonce system
   "arcaneflare")

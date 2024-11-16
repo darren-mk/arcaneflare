@@ -1,5 +1,6 @@
 (ns arcaneflare.database.person
   (:require
+   [clojure.spec.alpha :as s]
    [datomic.client.api :as d]))
 
 (def find-email-qr
@@ -20,5 +21,6 @@
       count zero?))
 
 (defn create! [conn person]
+  (s/assert :person/object person)
   (d/transact
    conn {:tx-data [person]}))

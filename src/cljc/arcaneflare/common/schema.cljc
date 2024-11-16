@@ -1,38 +1,22 @@
 (ns arcaneflare.common.schema
   (:require [clojure.spec.alpha :as s]))
 
-(s/def :xt/id
-  uuid?)
-
-(s/def :email/address
+(s/def :person/id uuid?)
+(s/def :person/email
   (let [rgx #"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,63}$"]
-    (s/and string?
-           #(re-matches rgx %))))
-
-(s/def :email/verified?
-  boolean?)
-
-(s/def :email/object
-  (s/keys :req [:xt/id
-                :email/address
-                :email/verified?]))
-
-(s/def :person/username
-  string?)
-
-(s/def :person/email-id
-  uuid?)
-
+    (s/and string? #(re-matches rgx %))))
+(s/def :person/username string?)
+(s/def :person/password string?)
 (s/def :person/role
   #{:role/customer
     :role/provider
     :role/owner
     :role/staff})
-
 (s/def :person/object
-  (s/keys :req [:xt/id
+  (s/keys :req [:person/id
+                :person/email
                 :person/username
-                :person/email-id
+                :person/password
                 :person/role]))
 
 (s/def :script/number

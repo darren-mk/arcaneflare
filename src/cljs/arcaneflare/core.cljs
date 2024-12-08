@@ -2,15 +2,13 @@
   (:require
    [reagent.core :as r]
    [reagent.dom.client :as rdc]
+   [reagent-mui.colors :as clr]
+   [reagent-mui.material.css-baseline :as cb]
+   [reagent-mui.styles :as styles]
    [reitit.frontend :as rtf]
    [reitit.frontend.easy :as rtfe]
-   [arcaneflare.page.home :as home-pg]
-   [arcaneflare.page.login :as login-pg]
-   [arcaneflare.page.signup :as signup-pg]
-   [arcaneflare.page.place :as place-pg]
-   [arcaneflare.page.review :as review-pg]
-   [arcaneflare.page.discussion :as discussion-pg]
-   [arcaneflare.page.preference :as preference-pg]))
+   [arcaneflare.component.nav :as nav]
+   [arcaneflare.page.home :as home-pg]))
 
 (defonce root-container
   (rdc/create-root
@@ -23,25 +21,22 @@
 
 (def routes
   [["/" {:name :page/landing
-         :view home-pg/node}]
-   ["/login" {:name :page/login
-              :view login-pg/node}]
-   ["/signup" {:name :page/signup
-               :view signup-pg/node}]
-   ["/place" {:name :page/place
-              :view place-pg/node}]
-   ["/review" {:name :page/review
-               :view review-pg/node}]
-   ["/discussion" {:name :page/discussion
-                   :view discussion-pg/node}]
-   ["/preference" {:name :page/preference
-                   :view preference-pg/node}]])
+         :view home-pg/node}]])
+
+(def custom-theme
+  {:palette {:primary clr/yellow
+             :secondary clr/green}})
 
 (defn current-page [] 
-  [:div
-   (when @match
-     (let [view (-> @match :data :view)]
-       [view @match]))])
+  [:<>
+   [cb/css-baseline]
+   [styles/theme-provider
+    (styles/create-theme custom-theme)
+    [:div ;; some frame design
+     [nav/node]
+     (when @match
+       (let [view (-> @match :data :view)]
+         [view @match]))]]])
 
 (defn ^:dev/after-load start []
   (rtfe/start!

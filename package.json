@@ -9,6 +9,7 @@
     "repl": "npx shadow-cljs browser-repl"
   },
   "devDependencies": {
+    "cypress": "^13.16.1",
     "shadow-cljs": "2.28.9"
   },
   "dependencies": {

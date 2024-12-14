@@ -7,6 +7,7 @@
         orchestra/orchestra {:mvn/version "2021.01.01-1"}
         mount/mount {:mvn/version "0.1.18"}
         thheller/shadow-cljs {:mvn/version "2.28.9"}
+        cider/cider-nrepl {:mvn/version "0.50.3"}
         re-frame/re-frame {:mvn/version "1.4.3"}
         binaryage/devtools {:mvn/version "1.0.7"}
         ring/ring-jetty-adapter {:mvn/version "1.12.2"}

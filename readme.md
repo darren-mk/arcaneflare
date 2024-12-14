@@ -33,9 +33,14 @@ $ docker run \
 	-e POSTGRES_PASSWORD=abc \
 	-d postgres
 
-## running test 
+## running test
 
-### local
+### backend
 ```
 clj -X:test
 ```
+
+### frontend
+ 
+#### cypress
+```npm run cy```

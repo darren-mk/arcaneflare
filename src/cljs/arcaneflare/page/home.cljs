@@ -1,10 +1,7 @@
-(ns arcaneflare.page.home
-  (:require
-   [reagent-mui.material.button :refer [button]]))
+(ns arcaneflare.page.home)
 
 (defn node []
   [:div
-   [button {:variant :outlined
-            :color :secondary}
+   [:button
     "yo, mui!"]
    [:p "home page"]])

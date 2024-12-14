@@ -7,7 +7,7 @@
         "server": "ntl dev",
         "clean": "rm -rf target; rm -rf public/js/compiled",
         "repl": "npx shadow-cljs browser-repl",
-        "cy:open": "cypress open"
+        "cy": "npx concurrently \"npm run dev\" \"cypress open\""
     },
     "devDependencies": {
         "cypress": "^13.16.1",

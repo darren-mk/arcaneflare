@@ -5,6 +5,11 @@
    :output-dir "resources/public/js/compiled"
    :asset-path "/js/compiled"
    :modules {:main {:entries [arcaneflare.core]}}
+   :dev {:build-hooks [(teknql.tailwind/start-watch!)]}
+   :release {:build-hooks [(teknql.tailwind/compile-release!)]}
+   :tailwind/output "resources/public/css/compiled/style.css"
+   :tailwind/files {:base-path "."
+                    :tailwind.css "./resources/public/css/main.css"}
    :devtools {:before-load arcaneflare.core/stop
               :after-load arcaneflare.core/start
               :http-root "resources/public"

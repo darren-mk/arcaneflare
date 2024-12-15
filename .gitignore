@@ -19,7 +19,8 @@ profiles.clj
 .cpcache/
 node_modules/
 log/
-resources/public/js/
+resources/public/js/compiled/
+resources/public/css/compiled/
 .DS_Store
 .env
 .github

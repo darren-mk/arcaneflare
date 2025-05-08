@@ -4,9 +4,7 @@
   "scripts": {
     "dev": "npx shadow-cljs watch arcaneflare",
     "build": "npx shadow-cljs release arcaneflare",
-    "server": "ntl dev",
-    "clean": "rm -rf target; rm -rf public/js/compiled",
-    "repl": "npx shadow-cljs browser-repl"
+    "clean": "rm -rf target resources/public/js node_modules .shadow-cljs .cpcache"
   },
   "devDependencies": {
     "shadow-cljs": "2.28.9"

@@ -2,9 +2,6 @@
   (:require
    [reagent.core :as r]
    [reagent.dom.client :as rdc]
-   [reagent-mui.colors :as clr]
-   [reagent-mui.material.css-baseline :as cb]
-   [reagent-mui.styles :as styles]
    [reitit.frontend :as rtf]
    [reitit.frontend.easy :as rtfe]
    [arcaneflare.component.nav :as nav]
@@ -23,20 +20,12 @@
   [["/" {:name :page/landing
          :view home-pg/node}]])
 
-(def custom-theme
-  {:palette {:primary clr/yellow
-             :secondary clr/green}})
-
-(defn current-page [] 
-  [:<>
-   [cb/css-baseline]
-   [styles/theme-provider
-    (styles/create-theme custom-theme)
-    [:div ;; some frame design
-     [nav/node]
-     (when @match
-       (let [view (-> @match :data :view)]
-         [view @match]))]]])
+(defn current-page []
+  [:div
+   [nav/node]
+   (when @match
+     (let [view (-> @match :data :view)]
+       [view @match]))])
 
 (defn ^:dev/after-load start []
   (rtfe/start!
@@ -54,6 +43,6 @@
 (defn ^:export init []
   (start))
 
-(comment 
+(comment
   (start)
   (stop))

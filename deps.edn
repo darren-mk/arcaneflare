@@ -16,10 +16,9 @@
         tick/tick {:mvn/version "0.7.5"}
         com.taoensso/timbre {:mvn/version "6.5.0"}
         com.fzakaria/slf4j-timbre {:mvn/version "0.4.1"}
-        com.wsscode/pathom3 {:mvn/version "2023.08.22-alpha"}
-        arttuka/reagent-material-ui {:mvn/version "5.11.12-0"}}
+        com.wsscode/pathom3 {:mvn/version "2023.08.22-alpha"}}
  :aliases {:test {:extra-paths ["test"]
-                  :extra-deps {io.github.cognitect-labs/test-runner 
+                  :extra-deps {io.github.cognitect-labs/test-runner
                                {:git/tag "v0.5.1" :git/sha "dfb30dd"}}
                   :main-opts ["-m" "cognitect.test-runner"]
                   :exec-fn cognitect.test-runner.api/test}}}

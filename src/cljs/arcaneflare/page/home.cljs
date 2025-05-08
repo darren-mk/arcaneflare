@@ -2,6 +2,7 @@
 
 (defn node []
   [:div
-   [:button
-    "yo, mui!"]
+   [:button.button.is-primary
+    {:on-click #(js/alert "hello world")}
+    "yay, Bulma"]
    [:p "home page"]])

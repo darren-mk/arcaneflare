@@ -4,7 +4,7 @@
    [reagent.dom.client :as rdc]
    [reitit.frontend :as rtf]
    [reitit.frontend.easy :as rtfe]
-   [arcaneflare.component.nav :as nav]
+   [arcaneflare.component.header :as header]
    [arcaneflare.page.home :as home-pg]))
 
 (defonce root-container
@@ -22,7 +22,7 @@
 
 (defn current-page []
   [:div
-   [nav/node]
+   [header/navbar]
    (when @match
      (let [view (-> @match :data :view)]
        [view @match]))])

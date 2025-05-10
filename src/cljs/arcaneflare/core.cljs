@@ -21,7 +21,7 @@
          :view home-pg/node}]])
 
 (defn current-page []
-  [:div
+  [:div.container.is-fullhd
    [header/navbar]
    (when @match
      (let [view (-> @match :data :view)]

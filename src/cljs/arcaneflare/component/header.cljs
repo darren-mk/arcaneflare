@@ -40,12 +40,42 @@
   [:a.button.is-primary {:href "/add-club"}
    [:strong "Add a Club"]])
 
+(def internal-theme
+  (r/atom :dark))
+
+(defn html-tag []
+  (.getElementById
+   js/document "html"))
+
+(defn read-theme []
+  (let [html-tag (html-tag)
+        current-theme (when html-tag
+                        (.getAttribute
+                         html-tag "data-theme"))]
+    (keyword (or current-theme @internal-theme))))
+
+(defn toggle-theme []
+  (let [html-tag (html-tag)
+        current-theme (read-theme)
+        new-theme (case current-theme
+                    :light :dark
+                    :dark :light)]
+    (reset! internal-theme new-theme)
+    (.setAttribute
+     html-tag "data-theme"
+     (name new-theme))))
+
 (defn theme-toggle-btn []
-  [:button.button
-   [:span.icon [:i.fas.fa-adjust]]])
+  [:span.icon {:on-click toggle-theme}
+   (case @internal-theme
+    :dark [:i.fas.fa-lg.fa-moon
+           {:style {:color "hsl(256, 89%, 65%)"}}]
+    :light [:i.fas.fa-lg.fa-sun
+            {:style {:color "hsl(42, 100%, 53%)"}}])])
 
 (defn navbar []
-  [:nav.navbar {:role "navigation"
+  [:nav.navbar {:data-theme "dark"
+                :role "navigation"
                 :aria-label "main navigation"}
    [modal-for-mobile]
    [:div.navbar-brand

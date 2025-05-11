@@ -10,6 +10,12 @@
    [arcaneflare.pages.login :as login-pg]
    [arcaneflare.pages.signup :as signup-pg]
    [arcaneflare.pages.location :as location-pg]
+   [arcaneflare.pages.clubs :as clubs-pg]
+   [arcaneflare.pages.club :as club-pg]
+   [arcaneflare.pages.performers :as performers-pg]
+   [arcaneflare.pages.performer :as performer-pg]
+   [arcaneflare.pages.threads :as threads-pg]
+   [arcaneflare.pages.thread :as thread-pg]
    [arcaneflare.state :as state]))
 
 (defonce root-container
@@ -26,7 +32,14 @@
    ["/account" {:name :page/account :view account-pg/node}]
    ["/login" {:name :page/login :view login-pg/node}]
    ["/signup" {:name :page/signup :view signup-pg/node}]
-   ["/location" {:name :page/location :view location-pg/node}]])
+   ["/location" {:name :page/location :view location-pg/node}]
+   ["/clubs" {:name :page/clubs :view clubs-pg/node}]
+   ["/clubs/:handle" {:name :page/club :view club-pg/node}]
+   ["/performers" {:name :page/performers :view performers-pg/node}]
+   ["/performers/:handle" {:name :page/performer :view performer-pg/node}]
+   ["/threads" {:name :page/threads :view threads-pg/node}]
+   ["/threads/:handle" {:name :page/thread :view thread-pg/node
+                        :parameters {:path {:handle string?}}}]])
 
 (defn current-page []
   [:div.container.is-fullhd

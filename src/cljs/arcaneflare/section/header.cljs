@@ -32,7 +32,9 @@
     :aria-expanded true
     :data-target "navbarMain"
     :on-click toggle-modal}
-   (for [_ (range 4)] [:span {:aria-hidden true}])])
+   (for [i (range 4)]
+     [:span {:key i
+             :aria-hidden true}])])
 
 (defn logo []
   [:strong "SCR"])
@@ -63,15 +65,34 @@
     [:i.fa-lg.fa-regular.fa-circle-user
      {:style {:color "hsl(256, 89%, 65%)"}}]]])
 
+(defn brand []
+  [:div.navbar-brand
+   [:a.navbar-item {:href "/#/"} [logo]]
+   (when-not @is-modal-open? [burger])])
+
+(defn clubs []
+  [:a {:href "/#/clubs"}
+   "Clubs"])
+
+(defn performers []
+  [:a {:href "/#/performers"}
+   "Performers"])
+
+(defn threads []
+  [:a {:href "/#/threads"}
+   "Threads"])
+
 (defn navbar []
   [:nav.navbar.mt-1.mb-6
    {:role "navigation"
     :aria-label "main navigation"}
    [modal-for-mobile]
-   [:div.navbar-brand
-    [:a.navbar-item {:href "/#/"} [logo]]
-    (when-not @is-modal-open? [burger])]
+   [brand]
    [:div.navbar-menu
+    [:div.navbar-start
+     [:div.navbar-item [clubs]]
+     [:div.navbar-item [performers]]
+     [:div.navbar-item [threads]]]
     [:div.navbar-end
      [:div.navbar-item [location-nav-item]]
      [:div.navbar-item [theme-toggle-btn]]

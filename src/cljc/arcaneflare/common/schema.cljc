@@ -135,7 +135,7 @@
   [:re #"^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.* ).{8,16}$"])
 
 (def roles
-  [:enum :customer :dancer
+  [:enum :customer :performer
    :provider :owner :staff])
 
 (def person

@@ -2,8 +2,9 @@
   (:require
    [clojure.string :as cstr]))
 
-(defn node []
-  (let [performers [{:name "Luna Love"
+(defn node [{:keys [query-params]}]
+  (let [page (get query-params :page 1)
+        performers [{:name "Luna Love"
                      :club "Red Velvet"
                      :specialty "Pole Dancing"
                      :rating 4.5}
@@ -14,7 +15,7 @@
 
     [:section.section
      [:div.container
-      [:h1.title "Featured Performers"]
+      [:h1.title "Featured Performers" page]
 
       [:div.columns.is-multiline
        (for [{:keys [name] :as performer} performers]

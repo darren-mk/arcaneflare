@@ -15,9 +15,11 @@
      [:p.has-text-weight-bold.mt-2
       (str "⭐ " (:rating club))]]]])
 
-(defn club-listing-page []
-  (let [clubs @state/clubs]
+(defn node [{:keys [query-params]}]
+  (let [page (get query-params :page 1)
+        clubs @state/clubs]
     [:section.section
+     [:h1 "page: " page]
      [:div.container
       ;; === Filter Bar ===
       [:div.columns.is-multiline.mb-5
@@ -39,7 +41,3 @@
       [:div.columns.is-multiline
        (for [club clubs]
          [club-card club])]]]))
-
-(defn node []
-  [:div
-   [club-listing-page]])

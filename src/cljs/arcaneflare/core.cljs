@@ -33,12 +33,19 @@
    ["/login" {:name :page/login :view login-pg/node}]
    ["/signup" {:name :page/signup :view signup-pg/node}]
    ["/location" {:name :page/location :view location-pg/node}]
-   ["/clubs" {:name :page/clubs :view clubs-pg/node}]
+   ["/clubs" {:name :page/clubs :view clubs-pg/node
+              :parameters {:query {:page int?}}}]
    ["/clubs/:handle" {:name :page/club :view club-pg/node}]
-   ["/performers" {:name :page/performers :view performers-pg/node}]
-   ["/performers/:handle" {:name :page/performer :view performer-pg/node}]
-   ["/threads" {:name :page/threads :view threads-pg/node}]
-   ["/threads/:handle" {:name :page/thread :view thread-pg/node
+   ["/performers" {:name :page/performers
+                   :view performers-pg/node
+                   :parameters {:query {:page int?}}}]
+   ["/performers/:handle" {:name :page/performer
+                           :view performer-pg/node}]
+   ["/threads" {:name :page/threads
+                :view threads-pg/node
+                :parameters {:query {:page int?}}}]
+   ["/threads/:handle" {:name :page/thread
+                        :view thread-pg/node
                         :parameters {:path {:handle string?}}}]])
 
 (defn current-page []

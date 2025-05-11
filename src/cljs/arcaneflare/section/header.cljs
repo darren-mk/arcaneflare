@@ -41,11 +41,11 @@
 
 (defn theme-toggle-btn []
   [:span.icon {:on-click state/toggle-theme}
-   (case @state/theme
-     :dark [:i.fas.fa-lg.fa-moon
-            {:style {:color "hsl(256, 89%, 65%)"}}]
-     :light [:i.fas.fa-lg.fa-sun
-             {:style {:color "hsl(42, 100%, 53%)"}}])])
+   (case (state/get-theme)
+    :dark [:i.fas.fa-lg.fa-moon
+           {:style {:color "hsl(256, 89%, 65%)"}}]
+    :light [:i.fas.fa-lg.fa-sun
+            {:style {:color "hsl(42, 100%, 53%)"}}])])
 
 (defn location-nav-item []
   [:a {:href "/#/location"}

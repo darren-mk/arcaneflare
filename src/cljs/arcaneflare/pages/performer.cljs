@@ -1,7 +1,7 @@
 (ns arcaneflare.pages.performer)
 
 (defn node [{:keys [path-params]}]
-  (let [{:keys [handle]} path-params
+  (let [{:keys [_handle]} path-params
         dancer {:name "Naomi Gretchen"
                 :rating 4.8
                 :image "https://via.placeholder.com/300x300?text=Naomi"

@@ -1,7 +1,7 @@
 (ns arcaneflare.pages.club)
 
 (defn node [{:keys [path-params]}]
-  (let [{:keys [handle]} path-params
+  (let [{:keys [#_handle]} path-params
         club {:name "Red Velvet"
               :rating 4.2
               :location "123 Sunset Blvd, Las Vegas, NV"

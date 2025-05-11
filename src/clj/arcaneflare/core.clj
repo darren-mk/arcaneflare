@@ -21,7 +21,7 @@
   {:cold? (< temperature 20)})
 
 (pco/defresolver person-by-email
-  [{:keys [email]}]
+  [{:keys [_email]}]
   {:person {:a 1}})
 
 (def indexes

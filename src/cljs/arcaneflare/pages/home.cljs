@@ -1,4 +1,4 @@
-(ns arcaneflare.page.home)
+(ns arcaneflare.pages.home)
 
 (defn node []
   [:div

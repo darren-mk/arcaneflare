@@ -4,8 +4,13 @@
    [reagent.dom.client :as rdc]
    [reitit.frontend :as rtf]
    [reitit.frontend.easy :as rtfe]
-   [arcaneflare.component.header :as header]
-   [arcaneflare.page.home :as home-pg]))
+   [arcaneflare.section.header :as header]
+   [arcaneflare.pages.home :as home-pg]
+   [arcaneflare.pages.account :as account-pg]
+   [arcaneflare.pages.login :as login-pg]
+   [arcaneflare.pages.signup :as signup-pg]
+   [arcaneflare.pages.location :as location-pg]
+   [arcaneflare.state :as state]))
 
 (defonce root-container
   (rdc/create-root
@@ -17,8 +22,11 @@
   (r/atom nil))
 
 (def routes
-  [["/" {:name :page/landing
-         :view home-pg/node}]])
+  [["/" {:name :page/landing :view home-pg/node}]
+   ["/account" {:name :page/account :view account-pg/node}]
+   ["/login" {:name :page/login :view login-pg/node}]
+   ["/signup" {:name :page/signup :view signup-pg/node}]
+   ["/location" {:name :page/location :view location-pg/node}]])
 
 (defn current-page []
   [:div.container.is-fullhd
@@ -30,7 +38,9 @@
 (defn ^:dev/after-load start []
   (rtfe/start!
    (rtf/router routes)
-   (fn [m] (reset! match m))
+   (fn [m]
+     (state/coerce-theme)
+     (reset! match m))
    {:use-fragment true})
   (rdc/render
    root-container

@@ -8,3 +8,8 @@
 
 (defn delete [k]
   (.removeItem js/localStorage k))
+
+(comment
+  (save :greet "hello") :=> nil
+  (read :greet) :=> "hello"
+  (delete :greet) :=> nil)

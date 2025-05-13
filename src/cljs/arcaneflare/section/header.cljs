@@ -1,7 +1,8 @@
 (ns arcaneflare.section.header
   (:require
    [reagent.core :as r]
-   [arcaneflare.state :as state]))
+   [arcaneflare.state :as state]
+   [arcaneflare.theme :as theme]))
 
 (defonce is-modal-open?
   (r/atom false))
@@ -40,8 +41,8 @@
   [:strong "SCR"])
 
 (defn theme-toggle-btn []
-  [:span.icon {:on-click state/toggle-theme}
-   (case (state/get-theme)
+  [:span.icon {:on-click theme/toggle}
+   (case (theme/bring)
     :dark [:i.fas.fa-lg.fa-moon
            {:style {:color "hsl(256, 89%, 65%)"}}]
     :light [:i.fas.fa-lg.fa-sun

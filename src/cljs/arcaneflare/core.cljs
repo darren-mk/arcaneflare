@@ -16,7 +16,7 @@
    [arcaneflare.pages.performer :as performer-pg]
    [arcaneflare.pages.threads :as threads-pg]
    [arcaneflare.pages.thread :as thread-pg]
-   [arcaneflare.state :as state]))
+   [arcaneflare.theme :as theme]))
 
 (defonce root-container
   (rdc/create-root
@@ -59,7 +59,7 @@
   (rtfe/start!
    (rtf/router routes)
    (fn [m]
-     (state/coerce-theme)
+     (theme/coerce)
      (reset! match m))
    {:use-fragment true})
   (rdc/render

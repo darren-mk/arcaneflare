@@ -22,7 +22,7 @@
   #{:googleMapsUri :internationalPhoneNumber
     :displayName :websiteUri :businessStatus
     :id :formattedAddress
-    
+
     :addressComponents
     :adrFormatAddress
     :shortFormattedAddress})
@@ -3374,7 +3374,7 @@
   ;;         :types ["postal_code"],
   ;;         :languageCode "en-US"}]}]}
 
-  
+
   ;; => {:places
   ;;     [{:googleMapsUri "https://maps.google.com/?cid=692564365649707855",
   ;;       :internationalPhoneNumber "+1 702-366-1141",
@@ -3838,7 +3838,7 @@
   ;;       :businessStatus "OPERATIONAL",
   ;;       :id "ChIJV1rlcgfDyIAR0lHAxrlktBw",
   ;;       :websiteUri
-  ;;       "https://www.thepepperminthippo.com/locations/las-vegas-nv/",
+  ;;       "https://www.thepepperminthippo.com/areas/las-vegas-nv/",
   ;;       :shortFormattedAddress "1531 Las Vegas Blvd S, Las Vegas",
   ;;       :formattedAddress
   ;;       "1531 Las Vegas Blvd S, Las Vegas, NV 89104, USA",
@@ -4173,7 +4173,7 @@
   ;;       :businessStatus "OPERATIONAL",
   ;;       :id "ChIJ4SBNjgLDyIAR_btXmW1BUK8",
   ;;       :websiteUri
-  ;;       "https://chicasbonitaslocations.vdigitalservices.com/?utm_source=gmb&utm_medium=referral",
+  ;;       "https://chicasbonitasareas.vdigitalservices.com/?utm_source=gmb&utm_medium=referral",
   ;;       :shortFormattedAddress "1818 Las Vegas Blvd N, North Las Vegas",
   ;;       :formattedAddress
   ;;       "1818 Las Vegas Blvd N, North Las Vegas, NV 89030, USA",
@@ -5208,7 +5208,7 @@
   ;;         :languageCode "en-US"}]}]}
 
 
-  
+
   ;; => {:places
   ;;     [{:id "ChIJlRqurI3DyIARTwOlBp97nAk",
   ;;       :internationalPhoneNumber "+1 702-366-1141",
@@ -5306,7 +5306,7 @@
   ;;       "1531 Las Vegas Blvd S, Las Vegas, NV 89104, USA",
   ;;       :googleMapsUri "https://maps.google.com/?cid=2068388877936120274",
   ;;       :websiteUri
-  ;;       "https://www.thepepperminthippo.com/locations/las-vegas-nv/",
+  ;;       "https://www.thepepperminthippo.com/areas/las-vegas-nv/",
   ;;       :businessStatus "OPERATIONAL",
   ;;       :displayName {:text "Peppermint Hippo", :languageCode "en"}}
   ;;      {:id "ChIJpWNdAA_FyIARdGf5mzkghbs",
@@ -5369,7 +5369,7 @@
   ;;       :googleMapsUri
   ;;       "https://maps.google.com/?cid=12632668893754145789",
   ;;       :websiteUri
-  ;;       "https://chicasbonitaslocations.vdigitalservices.com/?utm_source=gmb&utm_medium=referral",
+  ;;       "https://chicasbonitasareas.vdigitalservices.com/?utm_source=gmb&utm_medium=referral",
   ;;       :businessStatus "OPERATIONAL",
   ;;       :displayName {:text "Chicas Bonitas", :languageCode "en"}}
   ;;      {:id "ChIJlbxGv7DFyIARnSi5v_b_MQ0",
@@ -5390,7 +5390,7 @@
   ;;       :displayName {:text "LVLV Gentlemen's Club", :languageCode "en"}}]}
 
 
-  
+
   ;; => {:places
   ;;     [{:id "ChIJ1SiUt9dYwokRvBBCh0qdA2I",
   ;;       :internationalPhoneNumber "+1 718-937-6969",

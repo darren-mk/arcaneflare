@@ -48,13 +48,13 @@
     :light [:i.fas.fa-lg.fa-sun
             {:style {:color "hsl(42, 100%, 53%)"}}])])
 
-(defn location-nav-item []
-  [:a {:href "/#/location"}
+(defn area-nav-item []
+  [:a {:href "/#/area"}
    [:span.icon.is-large
-    {:on-click (fn [] (if (seq @state/location)
-                        (reset! state/location nil)
-                        (reset! state/location #{"yo"})))}
-    (if (seq @state/location)
+    {:on-click (fn [] (if (seq @state/areas-chosen)
+                        (reset! state/areas-chosen nil)
+                        (reset! state/areas-chosen #{"yo"})))}
+    (if (seq @state/areas-chosen)
       [:i.fa-lg.fa-solid.fa-street-view
        {:style {:color "hsl(42, 100%, 53%)"}}]
       [:i.fa-lg.fa-solid.fa-earth-americas
@@ -87,14 +87,15 @@
   [:nav.navbar.mt-1.mb-6
    {:role "navigation"
     :aria-label "main navigation"}
-   [modal-for-mobile]
-   [brand]
-   [:div.navbar-menu
-    [:div.navbar-start
-     [:div.navbar-item [clubs]]
-     [:div.navbar-item [performers]]
-     [:div.navbar-item [threads]]]
-    [:div.navbar-end
-     [:div.navbar-item [location-nav-item]]
-     [:div.navbar-item [theme-toggle-btn]]
-     [:div.navbar-item [profile]]]]])
+   [:div.container
+    [modal-for-mobile]
+    [brand]
+    [:div.navbar-menu
+     [:div.navbar-start
+      [:div.navbar-item [clubs]]
+      [:div.navbar-item [performers]]
+      [:div.navbar-item [threads]]]
+     [:div.navbar-end
+      [:div.navbar-item [area-nav-item]]
+      [:div.navbar-item [theme-toggle-btn]]
+      [:div.navbar-item [profile]]]]]])

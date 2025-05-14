@@ -62,13 +62,13 @@
   ([uri]
    {:status 301
     :headers {d/content-type d/text-html
-              d/location uri}
+              d/area uri}
     :body nil})
   ([uri session-id]
    (let [session-str (calc/session-stringify session-id)]
      {:status 301
       :headers {d/content-type d/text-html
-                d/location uri
+                d/area uri
                 d/set-cookie session-str}
       :body nil})))
 

@@ -4,7 +4,7 @@
   (let [{:keys [#_handle]} path-params
         club {:name "Red Velvet"
               :rating 4.2
-              :location "123 Sunset Blvd, Las Vegas, NV"
+              :area "123 Sunset Blvd, Las Vegas, NV"
               :image "https://via.placeholder.com/600x300?text=Red+Velvet"
               :tags ["VIP" "Open Late" "Couples Welcome"]
               :description "Red Velvet is a high-end club known for its luxurious interior, consistent stage shows, and friendly staff."}
@@ -28,10 +28,10 @@
       [:figure.image.is-16by9
        [:img {:src (:image club) :alt (:name club)}]]
 
-      ;; === Location & Tags
+      ;; === area & Tags
       [:div.mt-4
-       [:p.has-text-weight-semibold "Location:"]
-       [:p (:location club)]
+       [:p.has-text-weight-semibold "area:"]
+       [:p (:area club)]
        [:div.tags.mt-2
         (for [tag (:tags club)]
           [:span.tag.is-primary tag])]]

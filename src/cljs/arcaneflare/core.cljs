@@ -9,7 +9,7 @@
    [arcaneflare.pages.account :as account-pg]
    [arcaneflare.pages.login :as login-pg]
    [arcaneflare.pages.signup :as signup-pg]
-   [arcaneflare.pages.location :as location-pg]
+   [arcaneflare.pages.area :as area-pg]
    [arcaneflare.pages.clubs :as clubs-pg]
    [arcaneflare.pages.club :as club-pg]
    [arcaneflare.pages.performers :as performers-pg]
@@ -32,7 +32,7 @@
    ["/account" {:name :page/account :view account-pg/node}]
    ["/login" {:name :page/login :view login-pg/node}]
    ["/signup" {:name :page/signup :view signup-pg/node}]
-   ["/location" {:name :page/location :view location-pg/node}]
+   ["/area" {:name :page/area :view area-pg/node}]
    ["/clubs" {:name :page/clubs :view clubs-pg/node
               :parameters {:query {:page int?}}}]
    ["/clubs/:handle" {:name :page/club :view club-pg/node}]

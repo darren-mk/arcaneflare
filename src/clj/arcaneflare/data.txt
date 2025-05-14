@@ -26,8 +26,8 @@
    :data-bs-core :modern
    :data-bs-theme :dark})
 
-(def location
-  "Location")
+(def area
+  "area")
 
 (def content-type
   "Content-Type")

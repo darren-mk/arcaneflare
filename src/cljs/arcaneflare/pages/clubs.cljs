@@ -17,7 +17,7 @@
 
 (defn node [{:keys [query-params]}]
   (let [page (get query-params :page 1)
-        clubs @state/clubs]
+        clubs @state/clubs-loaded]
     [:section.section
      [:h1 "page: " page]
      [:div.container

@@ -1,6 +1,6 @@
 (ns arcaneflare.pages.clubs
   (:require
-   [arcaneflare.state :as state]))
+   [arcaneflare.state.loaded :as loaded-state]))
 
 (defn club-card [club]
   [:div.column.is-full-mobile.is-half-tablet.is-one-third-desktop
@@ -17,7 +17,7 @@
 
 (defn node [{:keys [query-params]}]
   (let [page (get query-params :page 1)
-        clubs @state/clubs-loaded]
+        clubs @loaded-state/clubs]
     [:section.section
      [:h1 "page: " page]
      [:div.container
@@ -31,7 +31,8 @@
           [:option "Las Vegas"]]]]
        [:div.column.is-one-third
         [:div.control
-         [:input.input {:type "text" :placeholder "Search tags..."}]]]
+         [:input.input {:type "text"
+                        :placeholder "Search tags..."}]]]
        [:div.column.is-one-third
         [:div.select.is-fullwidth
          [:select

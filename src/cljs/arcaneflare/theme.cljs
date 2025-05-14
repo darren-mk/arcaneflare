@@ -1,6 +1,6 @@
 (ns arcaneflare.theme
   (:require
-   [arcaneflare.state :as state]
+   [arcaneflare.state.controlled :as state]
    [arcaneflare.local :as local]))
 
 (defn locally []

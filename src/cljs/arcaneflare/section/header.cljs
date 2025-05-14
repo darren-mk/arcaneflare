@@ -1,7 +1,7 @@
 (ns arcaneflare.section.header
   (:require
    [reagent.core :as r]
-   [arcaneflare.state :as state]
+   [arcaneflare.state.controlled :as state]
    [arcaneflare.theme :as theme]))
 
 (defonce is-modal-open?
@@ -51,10 +51,10 @@
 (defn area-nav-item []
   [:a {:href "/#/area"}
    [:span.icon.is-large
-    {:on-click (fn [] (if (seq @state/areas-chosen)
-                        (reset! state/areas-chosen nil)
-                        (reset! state/areas-chosen #{"yo"})))}
-    (if (seq @state/areas-chosen)
+    {:on-click (fn [] (if (seq @state/areas)
+                        (reset! state/areas nil)
+                        (reset! state/areas #{"yo"})))}
+    (if (seq @state/areas)
       [:i.fa-lg.fa-solid.fa-street-view
        {:style {:color "hsl(42, 100%, 53%)"}}]
       [:i.fa-lg.fa-solid.fa-earth-americas

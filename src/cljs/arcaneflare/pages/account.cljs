@@ -1,10 +1,10 @@
 (ns arcaneflare.pages.account
   (:require
-   [arcaneflare.state :as state]))
+   [arcaneflare.state.controlled :as state]))
 
 (defn node []
   (let [{:user/keys [name description]}
-        @state/account-synced]
+        @state/user]
     [:section.section
      [:div.container
 

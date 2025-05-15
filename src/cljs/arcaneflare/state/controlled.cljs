@@ -6,7 +6,7 @@
    [reagent.core :as r]))
 
 (defonce theme
-  (r/atom nil))
+  (r/atom :dark))
 
 (defonce areas
   (r/atom #{}))

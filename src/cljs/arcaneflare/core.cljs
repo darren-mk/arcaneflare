@@ -59,7 +59,7 @@
   (rtfe/start!
    (rtf/router routes)
    (fn [m]
-     (theme/coerce)
+     (theme/ensure)
      (reset! match m))
    {:use-fragment true})
   (rdc/render

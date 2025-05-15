@@ -14,14 +14,14 @@
   (.getElementById
    js/document "html"))
 
-(defn push [k]
+(defn fill [k]
   (.setAttribute
    (tag)
    "data-theme"
    (name k)))
 
-(defn coerce []
-  (push (bring)))
+(defn ensure []
+  (fill (bring)))
 
 (defn toggle []
   (let [current (bring)
@@ -30,4 +30,4 @@
                     :dark :light)]
     (local/save :theme (name new-theme))
     (reset! state/theme new-theme)
-    (push new-theme)))
+    (fill new-theme)))

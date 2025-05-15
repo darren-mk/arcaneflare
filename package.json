@@ -1,10 +1,12 @@
 {
   "name": "arcaneflare",
   "version": "0.0.1",
+  "license": "UNLICENSED",
   "scripts": {
-    "clean": "rm -rf target resources/public/js node_modules .shadow-cljs .cpcache",
-    "dev": "yarn install; npx shadow-cljs watch arcaneflare",
-    "build": "yarn clean; yarn install; npx shadow-cljs release arcaneflare"
+    "clean": "rm -rf .lsp .calva out target resources/public/js node_modules .shadow-cljs .cpcache",
+    "dev": "yarn clean; yarn install; npx shadow-cljs watch app",
+    "build": "yarn clean; yarn install; npx shadow-cljs release app",
+    "node-test": "yarn clean; yarn install; npx shadow-cljs compile node-test && node out/node-tests.js"
   },
   "devDependencies": {
     "shadow-cljs": "2.28.9"

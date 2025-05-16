@@ -2,78 +2,58 @@
   (:require
    [mount.core :as m]
    [clojure.java.io :as io]
-   [com.wsscode.pathom3.connect.indexes :as pci]
-   [com.wsscode.pathom3.connect.operation :as pco]
-   [com.wsscode.pathom3.interface.eql :as p.eql]
    [reitit.ring :as rr]
    [ring.adapter.jetty :as rj]
-   [ring.middleware.defaults :as rmd]))
-
-(def temperatures
-  {"Recife" 23})
-
-(pco/defresolver temperature-from-city
-  [{:keys [city]}]
-  {:temperature (get temperatures city)})
-
-(pco/defresolver cold?
-  [{:keys [temperature]}]
-  {:cold? (< temperature 20)})
-
-(pco/defresolver person-by-email
-  [{:keys [_email]}]
-  {:person {:a 1}})
-
-(def indexes
-  (pci/register
-   [temperature-from-city
-    cold?
-    person-by-email]))
-
-(def eql-process
-  p.eql/process)
-
-(comment
-  (eql-process
-   indexes
-   {:email "kokonut@abc.com"}
-   [:person])
-  :=> {:person
-       #:person{:id #uuid "da3c8e57-955c-43d3-b60e-bdd1f339e853",
-                :username "kokonut",
-                :email "kokonut@abc.com",
-                :job "owner",
-                :verified false,
-                :created_at #inst "2024-07-04T21:51:28.723000000-00:00",
-                :edited_at #inst "2024-07-04T21:51:28.723000000-00:00"}})
+   [ring.middleware.defaults :as rmd]
+   [arcaneflare.middleware :as mw]))
 
 (defn ping [_req]
   {:status 200
-   :headers {"Content-Type" "text/html"}
+   :headers {"Content-Type" "text/plain"}
    :body "pong"})
 
-( defn echo [req]
+(defn echo [req]
   {:status 200
-   :headers {"Content-Type" "text/html"}
+   :headers {"Content-Type" "text/plain"}
    :body (str req)})
 
 (defn frontend [_]
   {:status 200
    :headers {"Content-Type" "text/html"}
-   :body (slurp (io/resource "public/index.html"))})
+   :body (-> "public/index.html"
+             io/resource slurp)})
+
+(defn hello [s]
+  {:msg (str "hello, " s)})
+
+(def m
+  {:api/hello hello})
+
+(defn api [fk & args]
+  (apply (get m fk) args))
+
+(defn tunnel [{:keys [body]}]
+  (let [body' (-> body read-string
+                  last read-string)]
+    {:status 200
+     :headers {"Content-Type" "text/plain"}
+     :body (apply api body')}))
 
 (def router
   (rmd/wrap-defaults
    (rr/ring-handler
     (rr/router
      [["/" {:get frontend}]
-      ["/api"
+      ["/api" {:middleware [mw/capture-req-body
+                            mw/stringify-resp-body]}
+       ["/tunnel" {:post tunnel}]
        ["/ping" {:get ping}]
        ["/echo" {:get echo}]]])
     (rr/routes
      (rr/create-resource-handler {:path "/"})
      (rr/create-default-handler)))
-   rmd/site-defaults))
+   (-> rmd/site-defaults
+       (assoc-in [:security :anti-forgery] false))))
 
 (declare server)
 

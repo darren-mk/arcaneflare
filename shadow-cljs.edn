@@ -1,5 +1,6 @@
 {:source-paths ["src/cljs" "src/cljc" "dev/cljs" "test/cljs"]
  :dependencies [[binaryage/devtools "1.0.7"]
+                [cljs-ajax "0.8.4"]
                 [metosin/reitit "0.7.0"]
                 [reagent "1.3.0"]]
  :builds {:app {:target :browser
@@ -9,7 +10,7 @@
                 :devtools {:before-load arcaneflare.core/stop
                            :after-load arcaneflare.core/start
                            :http-root "resources/public"
-                           :http-port 8000
+                           :http-port 3000
                            :preloads [devtools.preload]
                            :repl-init-ns user
                            :repl-pprint true}}

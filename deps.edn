@@ -8,6 +8,7 @@
         org.clojure/tools.namespace {:mvn/version "1.5.0"}
         org.postgresql/postgresql {:mvn/version "42.3.1"}
         metosin/reitit {:mvn/version "0.7.0"}
+        migratus/migratus {:mvn/version "1.6.4"}
         mount/mount {:mvn/version "0.1.18"}
         ring/ring-jetty-adapter {:mvn/version "1.12.2"}
         ring/ring-defaults {:mvn/version "0.5.0"}

@@ -4,7 +4,17 @@
    [mount.core :as m]
    [clojure.spec.alpha :as s]
    [orchestra.spec.test :as ost]
-   [arcaneflare.core :as c]))
+   [arcaneflare.core :as c]
+   [arcaneflare.database.migration :as migration]))
+
+(def create-migration
+  #'migration/create)
+
+(def run-migration
+  #'migration/run)
+
+(def rollback-migration
+  #'migration/rollback)
 
 (defn start []
   (s/check-asserts true)
@@ -22,6 +32,9 @@
   (start))
 
 (comment
+  (create-migration)
+  (run-migration)
+  (rollback-migration)
   (start)
   (stop)
   (restart))

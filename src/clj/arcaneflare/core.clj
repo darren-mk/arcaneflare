@@ -7,37 +7,38 @@
    [ring.middleware.defaults :as rmd]
    [arcaneflare.middleware :as mw]))
 
-(defn ping [_req]
+(defn okay [text-type body]
   {:status 200
-   :headers {"Content-Type" "text/plain"}
-   :body "pong"})
+   :headers {"Content-Type"
+             (case text-type
+               :plain "text/plain"
+               :html "text/html")}
+   :body body})
+
+(defn ping [_req]
+  (okay :plain "pong"))
 
 (defn echo [req]
-  {:status 200
-   :headers {"Content-Type" "text/plain"}
-   :body (str req)})
+  (okay :plain (str req)))
 
 (defn frontend [_]
-  {:status 200
-   :headers {"Content-Type" "text/html"}
-   :body (-> "public/index.html"
-             io/resource slurp)})
+  (okay :html
+        (-> "public/index.html"
+            io/resource slurp)))
 
 (defn hello [s]
   {:msg (str "hello, " s)})
 
-(def m
+(def tmap
   {:api/hello hello})
 
 (defn api [fk & args]
-  (apply (get m fk) args))
+  (apply (get tmap fk) args))
 
 (defn tunnel [{:keys [body]}]
   (let [body' (-> body read-string
                   last read-string)]
-    {:status 200
-     :headers {"Content-Type" "text/plain"}
-     :body (apply api body')}))
+    (okay :plain (apply api body'))))
 
 (def router
   (rmd/wrap-defaults

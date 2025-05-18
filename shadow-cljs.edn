@@ -10,7 +10,7 @@
                 :devtools {:before-load arcaneflare.core/stop
                            :after-load arcaneflare.core/start
                            :http-root "resources/public"
-                           :http-port 3000
+                           :http-port 8000
                            :preloads [devtools.preload]
                            :repl-init-ns user
                            :repl-pprint true}}

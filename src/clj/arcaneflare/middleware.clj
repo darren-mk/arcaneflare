@@ -1,6 +1,6 @@
 (ns arcaneflare.middleware
   (:require
-   #_[ring.middleware.cors :as cors]
+   [ring.middleware.cors :as cors]
    [ring.util.request :as rur]
    #_[clojure.tools.logging :as log]
    #_[arcaneflare.layout :refer [error-page]]
@@ -53,12 +53,12 @@
            (dissoc :session)))
       wrap-internal-error))
 
-#_
 (defn wrap-cors [handler]
   (cors/wrap-cors
    handler
    :access-control-allow-origin [#".*"]
-   :access-control-allow-methods [:get :put :post :delete]))
+   :access-control-allow-methods
+   [:get :put :post :delete :options]))
 
 (defn capture-req-body [handler]
   (fn [req]
@@ -76,6 +76,7 @@
         (assoc resp :body (str body))
         resp))))
 
+#_
 (defn handle-exception [handler]
   (fn [req]
     (try

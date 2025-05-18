@@ -1,0 +1,26 @@
+[{:id #uuid "d5f1c09d-7459-4cf4-bb7e-d20de74ac089"
+  :name "Sapphire Las Vegas"
+  :handle "d5f1c09d-sapphire-las-vegas"
+  :address "3025 Sammy Davis Jr Dr, Las Vegas, NV 89109"
+  :city "Las Vegas"
+  :district "The Strip"
+  :state "NV"
+  :zipcode "89109"
+  :country "USA"
+  :county "Clark"
+  :region "Southwest"
+  :lat 36.1335
+  :lon -115.1797}
+ {:id #uuid "aa19dfc4-f9ab-4fa4-8f1e-0e879d65fc98"
+  :name "Hustler Club New York"
+  :handle "aa19dfc4-hustler-club-new-york"
+  :address "641 W 51st St, New York, NY 10019"
+  :city "New York"
+  :district "Manhattan"
+  :state "NY"
+  :zipcode "10019"
+  :country "USA"
+  :county "New York"
+  :region "Northeast"
+  :lat 40.7679
+  :lon -73.9946}]

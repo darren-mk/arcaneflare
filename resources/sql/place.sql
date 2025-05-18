@@ -4,27 +4,33 @@ select * from place where id = :id;
 -- :name get-place-by-handle :? :1
 select * from place where handle = :handle;
 
+-- :name get-full-list :? :*
+select id, handle, name
+from place
+order by name;
+
 -- :name insert-place! :! :n
 insert into place (
-  id, name, handle, address, city,
-  district, state, zipcode, country,
-  county, region, lat, lon)
+  id, name, handle, address, city, district, state,
+  zipcode, country, county, region, lat, lon, phone_number,
+  website_url, twitter_url, instagram_url, facebook_url)
 values (
-  :id, :name, :handle, :address, :city,
-  :district, :state, :zipcode, :country,
-  :county, :region, :lat, :lon);
+  :id, :name, :handle, :address, :city, :district, :state,
+  :zipcode, :country, :county, :region, :lat, :lon, :phone_number,
+  :website_url, :twitter_url, :instagram_url, :facebook_url)
 
 -- :name upsert-place! :! :n
 insert into place (
-  id, name, handle, address, city,
-  district, state, zipcode, country,
-  county, region, lat, lon)
+  id, name, handle, address, city, district, state,
+  zipcode, country, county, region, lat, lon, phone_number,
+  website_url, twitter_url, instagram_url, facebook_url)
 values (
-  :id, :name, :handle, :address, :city,
-  :district, :state, :zipcode, :country,
-  :county, :region, :lat, :lon)
+  :id, :name, :handle, :address, :city, :district, :state,
+  :zipcode, :country, :county, :region, :lat, :lon, :phone_number,
+  :website_url, :twitter_url, :instagram_url, :facebook_url)
 on conflict (id) do update set
   name = excluded.name,
+  handle = excluded.handle,
   address = excluded.address,
   city = excluded.city,
   district = excluded.district,
@@ -34,4 +40,9 @@ on conflict (id) do update set
   county = excluded.county,
   region = excluded.region,
   lat = excluded.lat,
-  lon = excluded.lon;
+  lon = excluded.lon,
+  phone_number = excluded.phone_number,
+  website_url = excluded.website_url,
+  twitter_url = excluded.twitter_url,
+  instagram_url = excluded.instagram_url,
+  facebook_url = excluded.facebook_url;

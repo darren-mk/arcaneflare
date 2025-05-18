@@ -26,20 +26,24 @@
    #(js/alert (:msg %))
    identity)
   (tunnel
-   [:api.public.place/get-single-by
+   [:api.public.place/single-by
     [{:handle "d5f1c09d-sapphire-las-vegas"}]]
    #(println %)
    identity)
+   (tunnel
+   [:api.public.place/full-list]
+   #(println %)
+   identity)
   (tunnel
-   [:api.private.place/upsert 
-        [{:address "641 W 51 st St New York NY 10019"
-          :name " Hustler!!!", :city "New York", 
-          :county "New York", :state "NY", 
-          :zipcode "10019", :region "Northeast", 
-          :id #uuid "aa19dfc4-f9ab-4fa4-8f1e-0e879d65fc98"
-          :lon -73.9946, :handle "aa19dfc4-hustler-club-new-york",
-          :lat 40.7679, :country "USA", 
-          :district "Manhattan"}] 
-        "sometoken"]
+   [:api.private.place/upsert!
+    [{:address "641 W 51 st St New York NY 10019"
+      :name " Hustler!!!", :city "New York",
+      :county "New York", :state "NY",
+      :zipcode "10019", :region "Northeast",
+      :id #uuid "aa19dfc4-f9ab-4fa4-8f1e-0e879d65fc98"
+      :lon -73.9946, :handle "aa19dfc4-hustler-club-new-york",
+      :lat 40.7679, :country "USA",
+      :district "Manhattan"}]
+    "sometoken"]
    #(println %)
    identity))

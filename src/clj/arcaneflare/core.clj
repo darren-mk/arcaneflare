@@ -34,9 +34,10 @@
 
 (def tmap
   {:api.public.test/hello hello
-   :api.private.place/insert db.place/insert!
-   :api.private.place/upsert db.place/upsert!
-   :api.public.place/get-single-by db.place/get-single-by})
+   :api.private.place/insert! db.place/insert!
+   :api.private.place/upsert! db.place/upsert!
+   :api.public.place/single-by db.place/single-by
+   :api.public.place/full-list db.place/full-list})
 
 (defn public-api? [k]
   (-> k namespace
@@ -52,25 +53,9 @@
            token (apply f args)))))
 
 (defn tunnel [{:keys [body]}]
-  (println "@@@@ body" body)
   (let [body' (-> body read-string
                   last read-string)]
-    (println "@@@@ body'" body')
     (okay :plain (apply api body'))))
-
-(apply api  [:api.public.test/hello ["kim"]])
-(apply api
-       [:api.private.place/upsert
-        [{:address "641 W 51 st St New York NY 10019"
-          :name " Hustler!!!", :city "New York",
-          :county "New York", :state "NY",
-          :zipcode "10019", :region "Northeast",
-          :id #uuid "aa19dfc4-f9ab-4fa4-8f1e-0e879d65fc98"
-          :lon -73.9946, :handle "aa19dfc4-hustler-club-new-york",
-          :lat 40.7679, :country "USA",
-          :district "Manhattan"}]
-        "sometoken"])
-
 
 (def router
   (rmd/wrap-defaults

@@ -6,10 +6,11 @@
    [arcaneflare.database.base :as db.base]))
 
 (hugsql/def-db-fns "sql/place.sql")
-(declare insert-place!)
 (declare upsert-place!)
+(declare insert-place!)
 (declare get-place-by-id)
 (declare get-place-by-handle)
+(declare get-full-list)
 
 (defn insert! [m]
   (insert-place!
@@ -28,35 +29,23 @@
   (doseq [p (load-seeds)]
     (upsert! p)))
 
-(defn get-single-by [{:keys [id handle]}]
+(defn single-by [{:keys [id handle]}]
   (cond id (get-place-by-id
             db.base/db {:id id})
         handle (get-place-by-handle
                 db.base/db {:handle handle})))
 
-(comment
-  (upsert!
-   {:id #uuid "d5f1c09d-7459-4cf4-bb7e-d20de74ac089"
-    :name "Sapphire Las Vegas"
-    :handle "d5f1c09d-sapphire-las-vegas"
-    :address "3025 Sammy Davis Jr Dr, Las Vegas, NV 89109"
-    :city "Las Vegas"
-    :district "The Strip"
-    :state "NV"
-    :zipcode "89109"
-    :country "USA"
-    :county "Clark"
-    :region "Southwest"
-    :lat 36.1335
-    :lon -115.1797}))
+(defn full-list []
+  (vector (get-full-list db.base/db)))
 
 (comment
-  (upsert-seeds!))
+  (time
+   (upsert-seeds!)))
 
 (comment
-  (get-single-by
+  (single-by
    {:id #uuid "d5f1c09d-7459-4cf4-bb7e-d20de74ac089"})
-  (get-single-by
+  (single-by
    {:handle "d5f1c09d-sapphire-las-vegas"})
   (get-place-by-id
    db.base/db {:id #uuid "d5f1c09d-7459-4cf4-bb7e-d20de74ac089"}))

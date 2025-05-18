@@ -2,12 +2,12 @@
   (:require
    [mount.core :as m]
    [clojure.java.io :as io]
-
    [reitit.ring :as rr]
    [ring.adapter.jetty :as rj]
    [ring.middleware.defaults :as rmd]
    [arcaneflare.middleware :as mw]
    [arcaneflare.database.place :as db.place]
+   [arcaneflare.database.member :as db.member]
    [clojure.string :as str]))
 
 (defn okay [text-type body]
@@ -37,7 +37,10 @@
    :api.private.place/insert! db.place/insert!
    :api.private.place/upsert! db.place/upsert!
    :api.public.place/single-by db.place/single-by
-   :api.public.place/full-list db.place/full-list})
+   :api.public.place/full-list db.place/full-list
+   :api.public.member/insert! db.member/insert!
+   :api.public.member/member-by db.member/member-by
+   :api.public.member/authenticate db.member/authenticate})
 
 (defn public-api? [k]
   (-> k namespace

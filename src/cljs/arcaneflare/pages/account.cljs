@@ -14,7 +14,7 @@
    {:on-click #(do (println "logging out…")
                    (reset! c.state/member nil)
                    (tk/remove!)
-                   (rfe/push-state :page/home))}
+                   (rfe/push-state :route/home))}
    "Log Out"])
 
 (defn profile-section []
@@ -65,7 +65,7 @@
     [:div.column
      [:h3.subtitle.is-6 "Clubs"]
      [:ul
-      [:li [:a {:href "/clubs/x9y8z7-red-palace"} "Red Palace"]]]]
+      [:li [:a {:href "/places/x9y8z7-red-palace"} "Red Palace"]]]]
     [:div.column
      [:h3.subtitle.is-6 "Performers"]
      [:ul

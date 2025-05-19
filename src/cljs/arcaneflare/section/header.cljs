@@ -76,9 +76,9 @@
    [:a.navbar-item {:href "/#/"} [logo]]
    (when-not @is-modal-open? [burger])])
 
-(defn clubs []
-  [:a {:href "/#/clubs"}
-   "Clubs"])
+(defn places []
+  [:a {:href "/#/places"}
+   "Places"])
 
 (defn performers []
   [:a {:href "/#/performers"}
@@ -97,7 +97,7 @@
     [brand]
     [:div.navbar-menu
      [:div.navbar-start
-      [:div.navbar-item [clubs]]
+      [:div.navbar-item [places]]
       [:div.navbar-item [performers]]
       [:div.navbar-item [threads]]]
      [:div.navbar-end

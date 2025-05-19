@@ -1,23 +1,23 @@
-(ns arcaneflare.pages.clubs
+(ns arcaneflare.pages.places
   (:require
    [arcaneflare.state.loaded :as loaded-state]))
 
-(defn club-card [club]
+(defn card [place]
   [:div.column.is-full-mobile.is-half-tablet.is-one-third-desktop
-   {:key (:name club)}
+   {:key (:name place)}
    [:div.card
     [:div.card-content
-     [:p.title.is-5 (:name club)]
-     [:p.subtitle.is-6 (:desc club)]
+     [:p.title.is-5 (:name place)]
+     [:p.subtitle.is-6 (:desc place)]
      [:div.tags.mb-2
-      (for [tag (:tags club)]
+      (for [tag (:tags place)]
         [:span.tag.is-info tag])]
      [:p.has-text-weight-bold.mt-2
-      (str "⭐ " (:rating club))]]]])
+      (str "⭐ " (:rating place))]]]])
 
 (defn node [{:keys [query-params]}]
   (let [page (get query-params :page 1)
-        clubs @loaded-state/clubs]
+        places @loaded-state/places]
     [:section.section
      [:h1 "page: " page]
      [:div.container
@@ -40,5 +40,5 @@
           [:option "Sort by Name"]
           [:option "Sort by Distance"]]]]]
       [:div.columns.is-multiline
-       (for [club clubs]
-         [club-card club])]]]))
+       (for [p places]
+         [card p])]]]))

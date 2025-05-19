@@ -49,7 +49,7 @@
   (tunnel [:api.public.member/login!
            [@username-typed @passcode-typed]]
           (fn [token] (tk/new token)
-            (rtfe/push-state :page/home))
+            (rtfe/push-state :route/home))
           (fn [msg] (assoc c.state/errors :login msg))))
 
 (defn submission []

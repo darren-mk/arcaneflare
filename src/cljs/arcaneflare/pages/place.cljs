@@ -1,13 +1,13 @@
-(ns arcaneflare.pages.club)
+(ns arcaneflare.pages.place)
 
 (defn node [{:keys [path-params]}]
   (let [{:keys [#_handle]} path-params
-        club {:name "Red Velvet"
-              :rating 4.2
-              :area "123 Sunset Blvd, Las Vegas, NV"
-              :image "https://via.placeholder.com/600x300?text=Red+Velvet"
-              :tags ["VIP" "Open Late" "Couples Welcome"]
-              :description "Red Velvet is a high-end club known for its luxurious interior, consistent stage shows, and friendly staff."}
+        place {:name "Red Velvet"
+               :rating 4.2
+               :area "123 Sunset Blvd, Las Vegas, NV"
+               :image "https://via.placeholder.com/600x300?text=Red+Velvet"
+               :tags ["VIP" "Open Late" "Couples Welcome"]
+               :description "Red Velvet is a high-end club known for its luxurious interior, consistent stage shows, and friendly staff."}
         threads [{:id 201 :title "Best night ever at Red Velvet"}
                  {:id 202 :title "Prices were fair and vibe was perfect"}]]
 
@@ -16,30 +16,30 @@
 
       ;; === Back Button
       [:div.mb-4
-       [:a.button.is-light {:href "/#/clubs"}
+       [:a.button.is-light {:href "/#/places"}
         [:span.icon [:i.fas.fa-arrow-left]]
         [:span "Back to Threads"]]]
 
       ;; === Club Header ===
-      [:h1.title (:name club)]
-      [:p.subtitle (str "⭐ " (:rating club))]
+      [:h1.title (:name place)]
+      [:p.subtitle (str "⭐ " (:rating place))]
 
       ;; === Image
       [:figure.image.is-16by9
-       [:img {:src (:image club) :alt (:name club)}]]
+       [:img {:src (:image place) :alt (:name place)}]]
 
       ;; === area & Tags
       [:div.mt-4
        [:p.has-text-weight-semibold "area:"]
-       [:p (:area club)]
+       [:p (:area place)]
        [:div.tags.mt-2
-        (for [tag (:tags club)]
+        (for [tag (:tags place)]
           [:span.tag.is-primary tag])]]
 
       ;; === Description
       [:div.content.mt-5
        [:h2.title.is-5 "About"]
-       [:p (:description club)]]
+       [:p (:description place)]]
 
       ;; === Map (placeholder)
       [:div.box.mt-4

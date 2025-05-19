@@ -87,5 +87,5 @@
           {:port 3000 :join? false})
   :stop (.stop server))
 
-(defn ^:export run [_]
+(defn -main []
   (m/start))

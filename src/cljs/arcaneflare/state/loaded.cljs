@@ -4,25 +4,7 @@
   (:require
    [reagent.core :as r]))
 
-(defonce token
-  (r/atom nil))
-
-(defonce countries
-  (r/atom {}))
-
-(defonce states
-  (r/atom {}))
-
-(defonce counties
-  (r/atom {}))
-
-(defonce cities
-  (r/atom {}))
-
-(defonce districts
-  (r/atom {}))
-
-(defonce spots
+(defonce places
   (r/atom {}))
 
 (defonce clubs

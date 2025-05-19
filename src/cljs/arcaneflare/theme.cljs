@@ -3,12 +3,12 @@
    [arcaneflare.state.controlled :as state]
    [arcaneflare.local :as local]))
 
-(defn locally []
+(defn <-local []
   (-> :theme local/read keyword))
 
 (defn bring []
   (or @state/theme
-      (locally)))
+      (<-local)))
 
 (defn tag []
   (.getElementById

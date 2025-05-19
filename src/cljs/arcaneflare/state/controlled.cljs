@@ -6,17 +6,16 @@
    [reagent.core :as r]))
 
 (defonce theme
-  (r/atom :dark))
+  (r/atom :light))
 
 (defonce areas
   (r/atom #{}))
 
-(defonce user
-  (r/atom
-   #:user{:name "dukovmanutei123"
-          :email "dukov123@eml.com"
-          :description "Bio: I like checking out nightlife spots and writing honest reviews."
-          :areas []
-          :bookmarks []
-          :threads []
-          :replies []}))
+(defonce token
+  (r/atom nil))
+
+(defonce member
+  (r/atom nil))
+
+(defonce errors
+  (r/atom {}))

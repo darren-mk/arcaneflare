@@ -28,7 +28,7 @@
   (r/atom nil))
 
 (def routes
-  [["/" {:name :page/landing :view home-pg/node}]
+  [["/" {:name :page/home :view home-pg/node}]
    ["/account" {:name :page/account :view account-pg/node}]
    ["/login" {:name :page/login :view login-pg/node}]
    ["/signup" {:name :page/signup :view signup-pg/node}]

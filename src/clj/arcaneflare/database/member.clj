@@ -2,7 +2,8 @@
   (:require
    [buddy.hashers :as hashers]
    [hugsql.core :as hugsql]
-   [arcaneflare.database.base :as db.base]))
+   [arcaneflare.database.base :as db.base]
+   [arcaneflare.token :as token]))
 
 (defn hash-passcode [plain]
   (hashers/derive plain))
@@ -15,6 +16,7 @@
 (declare get-member-by-id)
 (declare get-member-by-username)
 (declare get-member-by-email)
+(declare update-last-login!)
 
 (defn insert! [{:keys [passcode] :as member}]
   (let [hashed (hash-passcode passcode)
@@ -35,11 +37,17 @@
 
 (defn authenticate [username passcode]
   (let [{:keys [passcode_hash] :as member}
-        (member-by {:username username})]
-    (boolean
-     (and member
-          (verify-passcode
-           passcode passcode_hash)))))
+        (member-by {:username username})
+        verified? (verify-passcode
+                   passcode passcode_hash)]
+    (and verified? member)))
+
+(defn login! [username passcode]
+  (when-let [{:keys [id username role] :as _member}
+             (authenticate username passcode)]
+    (update-last-login! db.base/db {:id id})
+    (token/gen! {:id id :role role
+                 :username username})))
 
 (comment
   (authenticate "masterplan" "fakepasscode")

@@ -26,3 +26,8 @@ where id = :id;
 select id, username, role
 from member
 order by created_at desc;
+
+-- :name update-last-login! :! :n
+update member
+set last_login = now()
+where id = :id;

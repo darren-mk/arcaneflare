@@ -8,6 +8,7 @@
    [arcaneflare.middleware :as mw]
    [arcaneflare.database.place :as db.place]
    [arcaneflare.database.member :as db.member]
+   [arcaneflare.token :as token]
    [clojure.string :as str]))
 
 (defn okay [text-type body]
@@ -40,7 +41,7 @@
    :api.public.place/full-list db.place/full-list
    :api.public.member/insert! db.member/insert!
    :api.public.member/member-by db.member/member-by
-   :api.public.member/authenticate db.member/authenticate})
+   :api.public.member/login! db.member/login!})
 
 (defn public-api? [k]
   (-> k namespace
@@ -53,7 +54,8 @@
    (let [public? (public-api? k)
          f (get tmap k)]
      (cond public? (apply f args)
-           token (apply f args)))))
+           (and token (token/verify token))
+           (apply f args)))))
 
 (defn tunnel [{:keys [body]}]
   (let [body' (-> body read-string

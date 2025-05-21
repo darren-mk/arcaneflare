@@ -46,3 +46,24 @@ on conflict (id) do update set
   twitter_url = excluded.twitter_url,
   instagram_url = excluded.instagram_url,
   facebook_url = excluded.facebook_url;
+
+-- :name love-place! :! :n
+insert into place_love (member_id, place_id)
+values (:member_id, :place_id)
+on conflict do nothing;
+
+-- :name unlove-place! :! :n
+delete from place_love
+where member_id = :member_id
+and place_id = :place_id;
+
+-- :name get-place-loves :? :1
+select count(*) as loves
+from place_love
+where place_id = :place_id;
+
+-- :name get-member-loved-places :? :*
+select place.*
+from place_love
+join place on place.id = place_love.place_id
+where place_love.member_id = :member_id;

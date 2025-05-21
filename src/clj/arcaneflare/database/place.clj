@@ -11,6 +11,10 @@
 (declare get-place-by-id)
 (declare get-place-by-handle)
 (declare get-full-list)
+(declare love-place!)
+(declare unlove-place!)
+(declare get-place-loves)
+(declare get-member-loved-places)
 
 (defn insert! [m]
   (insert-place!
@@ -36,16 +40,22 @@
                 db.base/db {:handle handle})))
 
 (defn full-list []
-  (vector (get-full-list db.base/db)))
+  (into [] (get-full-list db.base/db)))
+
+(defn love! [member_id place_id]
+  (love-place!
+   db.base/db {:member_id member_id
+               :place_id place_id}))
+
+(defn unlove! [member_id place_id]
+  (love-place!
+   db.base/db {:member_id member_id
+               :place_id place_id}))
+
+(defn how-loved [place_id]
+  (:loves (get-place-loves
+           db.base/db {:place_id place_id})))
 
 (comment
   (time
    (upsert-seeds!)))
-
-(comment
-  (single-by
-   {:id #uuid "d5f1c09d-7459-4cf4-bb7e-d20de74ac089"})
-  (single-by
-   {:handle "d5f1c09d-sapphire-las-vegas"})
-  (get-place-by-id
-   db.base/db {:id #uuid "d5f1c09d-7459-4cf4-bb7e-d20de74ac089"}))

@@ -39,6 +39,8 @@
    :api.private.place/upsert! db.place/upsert!
    :api.public.place/single-by db.place/single-by
    :api.public.place/full-list db.place/full-list
+   :api.private.place/love! db.place/love!
+   :api.private.place/unlove! db.place/unlove!
    :api.public.member/insert! db.member/insert!
    :api.public.member/member-by db.member/member-by
    :api.public.member/login! db.member/login!})

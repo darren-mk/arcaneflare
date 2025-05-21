@@ -67,3 +67,24 @@ select place.*
 from place_love
 join place on place.id = place_love.place_id
 where place_love.member_id = :member_id;
+
+-- :name vote-place! :! :n
+insert into place_vote (member_id, place_id, score)
+values (:member_id, :place_id, :score)
+on conflict (member_id, place_id) do update
+set score = excluded.score,
+    voted_at = now();
+
+-- :name remove-vote! :! :n
+delete from place_vote
+where member_id = :member_id and place_id = :place_id;
+
+-- :name get-vote-score :? :1
+select sum(score) as score
+from place_vote
+where place_id = :place_id;
+
+-- :name get-member-vote :? :1
+select score
+from place_vote
+where member_id = :member_id and place_id = :place_id;

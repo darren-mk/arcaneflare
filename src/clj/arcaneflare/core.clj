@@ -41,6 +41,11 @@
    :api.public.place/full-list db.place/full-list
    :api.private.place/love! db.place/love!
    :api.private.place/unlove! db.place/unlove!
+   :api.private.place/how-loved db.place/how-loved
+   :api.public.place/loved-by-member db.place/loved-by-member
+   :api.private.place/vote! db.place/vote!
+   :api.private.place/unvote! db.place/unvote!
+   :api.private.place/vote-score db.place/vote-score
    :api.public.member/insert! db.member/insert!
    :api.public.member/member-by db.member/member-by
    :api.public.member/login! db.member/login!})

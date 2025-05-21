@@ -19,6 +19,9 @@
 (declare remove-vote!)
 (declare get-vote-score)
 (declare get-member-vote)
+(declare insert-thumbnail!)
+(declare get-thumbnails-for-place)
+(declare delete-thumbnail!)
 
 (defn insert! [m]
   (insert-place!
@@ -93,6 +96,21 @@
     db.base/db
     {:member_id member_id
      :place_id place_id})))
+
+(defn add-thumbnail!
+  [{:keys [_place_id _image_url _alt_text
+           _caption _position] :as m}]
+  (insert-thumbnail!
+   db.base/db
+   (assoc m :id (random-uuid))))
+
+(defn get-thumbnails [place_id]
+  (get-thumbnails-for-place
+   db.base/db {:place_id place_id}))
+
+(defn remove-thumbnail! [id]
+  (delete-thumbnail!
+   db.base/db {:id id}))
 
 (comment
   (time

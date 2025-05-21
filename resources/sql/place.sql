@@ -88,3 +88,20 @@ where place_id = :place_id;
 select score
 from place_vote
 where member_id = :member_id and place_id = :place_id;
+
+-- :name insert-thumbnail! :! :n
+insert into place_thumbnail (
+    id, place_id, image_url,
+    alt_text, caption, position)
+values (
+    :id, :place_id, :image_url,
+    :alt_text, :caption, :position);
+
+-- :name get-thumbnails-for-place :? :*
+select * from place_thumbnail
+where place_id = :place_id
+order by position;
+
+-- :name delete-thumbnail! :! :n
+delete from place_thumbnail
+where id = :id;

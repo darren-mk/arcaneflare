@@ -46,6 +46,9 @@
    :api.private.place/vote! db.place/vote!
    :api.private.place/unvote! db.place/unvote!
    :api.private.place/vote-score db.place/vote-score
+   :api.private.place/add-thumbnail! db.place/add-thumbnail!
+   :api.public.place/get-thumbnails db.place/get-thumbnails
+   :api.private.place/remove-thumbnail! db.place/remove-thumbnail!
    :api.public.member/insert! db.member/insert!
    :api.public.member/member-by db.member/member-by
    :api.public.member/login! db.member/login!})

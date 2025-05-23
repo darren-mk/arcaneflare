@@ -32,12 +32,6 @@
                    passcode passcode-hash)]
     (and verified? member)))
 
-(member-by {:member/username "futomaki123"})
-(authenticate "futomaki123" "asdf1234!@#$")
-(hashers/check
- "asdf1234!@#$"
- "bcrypt+sha512$84f459dd61687b32380842308aaf6d5d$12$4c221418774b858530a6996e00cb1b8cc4dfbfc1223efa61")
-
 (defn update-last-login!
   [{:member/keys [id]}]
   (let [q {:update :member

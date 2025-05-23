@@ -20,7 +20,8 @@
 
 (defn verify [token]
   (try
-    (jwt/unsign token secret {:alg :hs256})
+    (update (jwt/unsign token secret {:alg :hs256})
+            :member/id parse-uuid)
     (catch clojure.lang.ExceptionInfo e
       (let [data (ex-data e)]
         (when-not (= (:cause data) :token-expired)

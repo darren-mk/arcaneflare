@@ -6,7 +6,8 @@
    [ring.adapter.jetty :as rj]
    [ring.middleware.defaults :as rmd]
    [arcaneflare.middleware :as mw]
-   [arcaneflare.database.place :as db.place]
+   [arcaneflare.database.place.root :as db.place.root]
+   [arcaneflare.database.place.love :as db.place.love]
    [arcaneflare.database.member :as db.member]
    [arcaneflare.token :as token]
    [clojure.string :as str]))
@@ -35,19 +36,19 @@
 
 (def fnk-map
   {:api.public.test/hello hello
-   :api.private.place/upsert! db.place/upsert!
-   :api.public.place/single-by db.place/single-by
-   :api.public.place/full-list db.place/full-list
-   :api.private.place/love! db.place/love!
-   :api.private.place/unlove! db.place/unlove!
-   :api.private.place/how-loved db.place/how-loved
-   :api.public.place/loved-by-member db.place/loved-by-member
-   :api.private.place/vote! db.place/vote!
-   :api.private.place/unvote! db.place/unvote!
-   :api.private.place/vote-score db.place/vote-score
-   :api.private.place/add-thumbnail! db.place/add-thumbnail!
-   :api.public.place/get-thumbnails db.place/get-thumbnails
-   :api.private.place/remove-thumbnail! db.place/remove-thumbnail!
+   :api.private.place/upsert! db.place.root/upsert!
+   :api.public.place/single-by db.place.root/single-by
+   :api.public.place/full-list db.place.root/full-list
+   :api.private.place.love/yes! db.place.love/yes!
+   :api.private.place.love/no! db.place.love/no!
+   :api.private.place.love/how db.place.love/how
+   :api.private.place.love/by-member db.place.love/by-member
+   :api.private.place/vote! db.place.root/vote!
+   :api.private.place/unvote! db.place.root/unvote!
+   :api.private.place/vote-score db.place.root/vote-score
+   :api.private.place/add-thumbnail! db.place.root/add-thumbnail!
+   :api.public.place/get-thumbnails db.place.root/get-thumbnails
+   :api.private.place/remove-thumbnail! db.place.root/remove-thumbnail!
    :api.public.member/insert! db.member/insert!
    :api.public.member/member-by db.member/member-by
    :api.public.member/login! db.member/login!})
@@ -64,51 +65,10 @@
          f (get fnk-map fnk)]
      (if private?
        (let [claims (token/verify token)
-             inclusion (select-keys
-                        claims
-                        [:member/id :member/role])]
+             member-info [:member/id :member/role]
+             inclusion (select-keys claims member-info)]
          (f (merge args inclusion)))
        (f args)))))
-
-(comment
-  (api :api.public.member/member-by {:member/username "futomaki123"})
-  (api :api.public.member/login! #:member{:username "futomaki123"
-                                          :passcode "asdf1234!@#$"})
-  (def tk
-    "eyJhbGciOiJIUzI1NiJ9.eyJtZW1iZXIvaWQiOiJlYTdmNDA2OC04MmQ1LTQ5ZjktYmRkOC0xYzNjNjczMTFhNWMiLCJtZW1iZXIvcm9sZSI6InN0YWZmIiwiaWF0IjoxNzQ4MDA4MjQwLCJleHAiOjE3NDgwMDkyNDB9.yb_dLuIMgNGHJPmMG5EzQf_jrGeCJXoGICtUlVGTfLo")
-
-  (api :api.public.member/insert! #:member{:id (random-uuid)
-                                           :username "futomaki123"
-                                           :email "futomaki123@eml.com"
-                                           :role "staff"
-                                           :passcode "asdf1234!@#$"})
-
-  (api :api.private.place/upsert!
-       #:place{:id #uuid "e5f6a7b8-c9d0-1234-ef12-345678901234"
-               :name "Sam's Hofbrau"
-               :handle "e5f6a7b8-sams-hofbrau"
-               :address "1751 E Olympic Blvd, Los Angeles, CA 90021"
-               :city "Los Angeles"
-               :district "Downtown"
-               :state "CA"
-               :zipcode "90021"
-               :country "USA"
-               :county "Los Angeles"
-               :region "West"
-               :lat 34.0245
-               :lon -118.2390
-               :phone-number "(213) 747-9444"
-               :website-url "http://www.samshofbrau.com/"
-               :twitter-url "https://twitter.com/samshofbrau"
-               :instagram-url "https://www.instagram.com/samshofbrau/"
-               :facebook-url "https://www.facebook.com/samshofbrau"}
-       tk)
-
-  (token/verify tk)
-
-  )
-
-
 
 (defn tunnel [{:keys [body]}]
   (let [body' (-> body read-string

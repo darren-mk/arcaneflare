@@ -1,4 +1,4 @@
-(ns arcaneflare.database.place
+(ns arcaneflare.database.place.root
   (:require
    [clojure.edn :as edn]
    [clojure.java.io :as io]
@@ -7,13 +7,6 @@
    [arcaneflare.database.base :as db.base]))
 
 (hugsql/def-db-fns "sql/place.sql")
-(declare get-place-by-id)
-(declare get-place-by-handle)
-(declare get-full-list)
-(declare love-place!)
-(declare unlove-place!)
-(declare get-place-loves)
-(declare get-member-loved-places)
 (declare vote-place!)
 (declare remove-vote!)
 (declare get-vote-score)
@@ -56,37 +49,20 @@
   (doseq [p (load-seeds)]
     (upsert! p)))
 
-(defn single-by [{:keys [id handle]}]
-  (cond id (get-place-by-id
-            db.base/db {:id id})
-        handle (get-place-by-handle
-                db.base/db {:handle handle})))
+(defn single-by
+  [{:keys [place/id place/handle]}]
+  (let [where (cond id [:= :id id]
+                    handle [:= :handle handle])
+        q {:select [:*]
+           :from :place
+           :where where}]
+    (first (db.base/exc (sql/format q)))))
 
-(defn full-list []
-  (into [] (get-full-list db.base/db
-
-                          )))
-
-(defn love!
-  [{:keys [_member_id _place_id] :as m}]
-  (love-place!
-   db.base/db m))
-
-(defn unlove!
-  [{:keys [_member_id _place_id] :as m}]
-  (unlove-place!
-   db.base/db m))
-
-(defn how-loved
-  [{:keys [_place_id] :as m}]
-  (:loves
-   (get-place-loves
-    db.base/db m)))
-
-(defn loved-by-member
-  [{:keys [_member_id] :as m}]
-  (get-member-loved-places
-   db.base/db m))
+(defn full-list [_]
+  (let [q {:select [:id :handle :name]
+           :from [:place]
+           :order-by [:name]}]
+    (db.base/exc (sql/format q))))
 
 (defn vote!
   [{:keys [_member_id _place_id

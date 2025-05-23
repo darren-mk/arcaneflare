@@ -22,17 +22,17 @@
 (comment
   (js/alert 123)
   (tunnel
-   [:api.public.test/hello ["kim"]]
+   [:api.public.test/hello {:first_name "kim"}]
    #(js/alert (:msg %))
    identity)
   (tunnel
    [:api.public.place/single-by
-    [{:handle "d5f1c09d-sapphire-las-vegas"}]]
-   #(println %)
+    {:handle "d5f1c09d-sapphire-las-vegas"}]
+   #(js/alert %)
    identity)
    (tunnel
-   [:api.public.place/full-list]
-   #(println %)
+   [:api.public.place/full-list {}]
+   #(js/alert %)
    identity)
   (tunnel
    [:api.private.place/upsert!
@@ -45,5 +45,5 @@
       :lat 40.7679, :country "USA",
       :district "Manhattan"}]
     "sometoken"]
-   #(println %)
+   #(js/alert %)
    identity))

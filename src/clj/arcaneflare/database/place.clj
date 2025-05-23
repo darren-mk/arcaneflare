@@ -3,11 +3,10 @@
    [clojure.edn :as edn]
    [clojure.java.io :as io]
    [hugsql.core :as hugsql]
+   [honey.sql :as sql]
    [arcaneflare.database.base :as db.base]))
 
 (hugsql/def-db-fns "sql/place.sql")
-(declare upsert-place!)
-(declare insert-place!)
 (declare get-place-by-id)
 (declare get-place-by-handle)
 (declare get-full-list)
@@ -23,13 +22,30 @@
 (declare get-thumbnails-for-place)
 (declare delete-thumbnail!)
 
-(defn insert! [m]
-  (insert-place!
-   db.base/db m))
-
-(defn upsert! [m]
-  (upsert-place!
-   db.base/db m))
+(defn upsert!
+  [{:place/keys [id name handle address city district state
+                 zipcode country county region lat lon phone-number
+                 website-url twitter-url instagram-url facebook-url]}]
+  (let [q {:insert-into :place
+           :columns [:id :name :handle :address :city :district :state
+                     :zipcode :country :county :region :lat :lon :phone-number
+                     :website-url :twitter-url :instagram-url :facebook-url]
+           :values [[id name handle address city district state
+                     zipcode country county region lat lon phone-number
+                     website-url twitter-url instagram-url facebook-url]]
+           :on-conflict [:id]
+           :do-update-set {:name :excluded.name :handle :excluded.handle
+                           :address :excluded.address :city :excluded.city
+                           :district :excluded.district :state :excluded.state
+                           :zipcode :excluded.zipcode :country :excluded.country
+                           :county :excluded.county :region :excluded.region
+                           :lat :excluded.lat :lon :excluded.lon
+                           :phone-number :excluded.phone_number
+                           :website-url :excluded.website_url
+                           :twitter-url :excluded.twitter_url
+                           :instagram-url :excluded.instagram_url
+                           :facebook-url :excluded.facebook_url}}]
+    (db.base/exc (honey.sql/format q))))
 
 (defn load-seeds []
   (-> "seeds/places.edn"
@@ -47,55 +63,51 @@
                 db.base/db {:handle handle})))
 
 (defn full-list []
-  (into [] (get-full-list db.base/db)))
+  (into [] (get-full-list db.base/db
 
-(defn love! [member_id place_id]
+                          )))
+
+(defn love!
+  [{:keys [_member_id _place_id] :as m}]
   (love-place!
-   db.base/db
-   {:member_id member_id
-    :place_id place_id}))
+   db.base/db m))
 
-(defn unlove! [member_id place_id]
+(defn unlove!
+  [{:keys [_member_id _place_id] :as m}]
   (unlove-place!
-   db.base/db
-   {:member_id member_id
-    :place_id place_id}))
+   db.base/db m))
 
-(defn how-loved [place_id]
+(defn how-loved
+  [{:keys [_place_id] :as m}]
   (:loves
    (get-place-loves
-    db.base/db
-    {:place_id place_id})))
+    db.base/db m)))
 
-(defn loved-by-member [member_id]
+(defn loved-by-member
+  [{:keys [_member_id] :as m}]
   (get-member-loved-places
-   db.base/db
-   {:member_id member_id}))
+   db.base/db m))
 
-(defn vote! [member_id place_id up-or-down]
+(defn vote!
+  [{:keys [_member_id _place_id
+           up-or-down] :as m}]
   (vote-place!
    db.base/db
-   {:member_id member_id
-    :place_id place_id
-    :score (case up-or-down
-             :up 1 :down -1)}))
+   (assoc m :score
+          (case up-or-down
+            :up 1 :down -1))))
 
-(defn unvote! [member_id place_id]
+(defn unvote!
+  [{:keys [_member_id _place_id] :as m}]
   (remove-vote!
-   db.base/db
-   {:member_id member_id
-    :place_id place_id}))
+   db.base/db m))
 
 (defn vote-score
-  ([place_id]
-   (get-vote-score
-    db.base/db
-    {:place_id place_id}))
-  ([member_id place_id]
-   (get-member-vote
-    db.base/db
-    {:member_id member_id
-     :place_id place_id})))
+  [{:keys [_place_id member_id] :as m}]
+  (let [f (if member_id
+            get-member-vote
+            get-vote-score)]
+    (f db.base/db m)))
 
 (defn add-thumbnail!
   [{:keys [_place_id _image_url _alt_text
@@ -104,13 +116,15 @@
    db.base/db
    (assoc m :id (random-uuid))))
 
-(defn get-thumbnails [place_id]
+(defn get-thumbnails
+  [{:keys [_place_id] :as m}]
   (get-thumbnails-for-place
-   db.base/db {:place_id place_id}))
+   db.base/db m))
 
-(defn remove-thumbnail! [id]
+(defn remove-thumbnail!
+  [{:keys [_id] :as m}]
   (delete-thumbnail!
-   db.base/db {:id id}))
+   db.base/db m))
 
 (comment
   (time

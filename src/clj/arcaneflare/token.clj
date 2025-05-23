@@ -8,13 +8,14 @@
    (env/config)
    [:jwt :secret]))
 
-(defn gen! [claims]
+(defn gen! [{:keys [member/id] :as payload}]
   (let [now (quot (System/currentTimeMillis) 1000)
         buffer (* 100 10) ;; update
         exp (+ now buffer)]
-    (jwt/sign (assoc claims
-                     :iat now
-                     :exp exp)
+    (when-not id
+      (throw (ex-info "id not present"
+                      {:cause "member id"})))
+    (jwt/sign (assoc payload :iat now :exp exp)
               secret {:alg :hs256})))
 
 (defn verify [token]

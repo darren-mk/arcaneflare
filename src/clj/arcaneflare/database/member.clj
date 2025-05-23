@@ -1,68 +1,53 @@
 (ns arcaneflare.database.member
   (:require
    [buddy.hashers :as hashers]
-   [hugsql.core :as hugsql]
+   [honey.sql :as sql]
    [arcaneflare.database.base :as db.base]
    [arcaneflare.token :as token]))
 
-(defn hash-passcode [plain]
-  (hashers/derive plain))
-
-(defn verify-passcode [plain hashed]
-  (hashers/check plain hashed))
-
-(hugsql/def-db-fns "sql/member.sql")
-(declare insert-member!)
-(declare get-member-by-id)
-(declare get-member-by-username)
-(declare get-member-by-email)
-(declare update-last-login!)
-
-(defn insert! [{:keys [passcode] :as member}]
-  (let [hashed (hash-passcode passcode)
-        member' (-> member (dissoc :passcode)
-                    (assoc :passcode_hash hashed)
-                    (assoc :id (random-uuid)))]
-    (insert-member!
-     db.base/db member')))
+(defn insert!
+  [{:member/keys [id username email role passcode]}]
+  (let [passcode-hash (hashers/derive passcode)
+        q {:insert-into :member
+           :columns [:id :username :email :role
+                     :passcode_hash :created_at]
+           :values [[id username email role
+                     passcode-hash [:raw "now()"]]]}]
+    (db.base/exc (honey.sql/format q))))
 
 (defn member-by
-  [{:keys [id username email]}]
-  (cond id (get-member-by-id
-            db.base/db {:id id})
-        username (get-member-by-username
-                  db.base/db {:username username})
-        email (get-member-by-email
-               db.base/db {:email email})))
+  [{:member/keys [id username email]}]
+  (let [where (cond id [:= :id id]
+                    username [:= :username username]
+                    email [:= :email email])
+        q {:select [:*]
+           :from :member
+           :where where}]
+    (first (db.base/exc (sql/format q)))))
 
-(defn authenticate [username passcode]
-  (let [{:keys [passcode_hash] :as member}
-        (member-by {:username username})
-        verified? (verify-passcode
-                   passcode passcode_hash)]
+(defn- authenticate [username passcode]
+  (let [{:keys [member/passcode-hash] :as member}
+        (member-by {:member/username username})
+        verified? (hashers/check
+                   passcode passcode-hash)]
     (and verified? member)))
 
-(defn login! [username passcode]
-  (when-let [{:keys [id username role] :as _member}
-             (authenticate username passcode)]
-    (update-last-login! db.base/db {:id id})
-    (token/gen! {:id id :role role
-                 :username username})))
+(member-by {:member/username "futomaki123"})
+(authenticate "futomaki123" "asdf1234!@#$")
+(hashers/check
+ "asdf1234!@#$"
+ "bcrypt+sha512$84f459dd61687b32380842308aaf6d5d$12$4c221418774b858530a6996e00cb1b8cc4dfbfc1223efa61")
 
-(comment
-  (authenticate "masterplan" "fakepasscode")
-  (insert! {:username "masterplan"
-            :email "master@plan.com"
-            :role "admin"
-            :passcode "fakepasscode"})
-  (let [hashed (hash-passcode "fakepasscode")]
-    (insert-member!
-     db.base/db {:id (random-uuid)
-                 :username "darren"
-                 :email "darren@example.com"
-                 :role "admin"
-                 :passcode_hash hashed}))
-  (verify-passcode
-   "fakepasscode"
-   "bcrypt+sha512$31cb41...")
-  (time (member-by {:username "masterplan"})))
+(defn update-last-login!
+  [{:member/keys [id]}]
+  (let [q {:update :member
+           :set {:last-login [:raw "now()"]}
+           :where [:= :id id]}]
+    (db.base/exc (sql/format q))))
+
+(defn login! [{:member/keys [username passcode]}]
+  (when-let [{:member/keys [id role] :as _member}
+             (authenticate username passcode)]
+    (update-last-login! {:member/id id})
+    (token/gen! {:member/id id
+                 :member/role role})))

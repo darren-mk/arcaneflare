@@ -30,12 +30,11 @@
         (-> "public/index.html"
             io/resource slurp)))
 
-(defn hello [s]
-  {:msg (str "hello, " s)})
+(defn hello [{:keys [first_name]}]
+  {:msg (str "hello, " first_name)})
 
-(def tmap
+(def fnk-map
   {:api.public.test/hello hello
-   :api.private.place/insert! db.place/insert!
    :api.private.place/upsert! db.place/upsert!
    :api.public.place/single-by db.place/single-by
    :api.public.place/full-list db.place/full-list
@@ -53,19 +52,63 @@
    :api.public.member/member-by db.member/member-by
    :api.public.member/login! db.member/login!})
 
-(defn public-api? [k]
-  (-> k namespace
-      (str/starts-with? "api.public")))
+(defn private-api? [fnk]
+  (-> fnk namespace
+      (str/starts-with? "api.private")))
 
 (defn api
-  ([k] (api k [] nil))
-  ([k args] (api k args nil))
-  ([k args token]
-   (let [public? (public-api? k)
-         f (get tmap k)]
-     (cond public? (apply f args)
-           (and token (token/verify token))
-           (apply f args)))))
+  ([fnk] (api fnk [] nil))
+  ([fnk args] (api fnk args nil))
+  ([fnk args token]
+   (let [private? (private-api? fnk)
+         f (get fnk-map fnk)]
+     (if private?
+       (let [claims (token/verify token)
+             inclusion (select-keys
+                        claims
+                        [:member/id :member/role])]
+         (f (merge args inclusion)))
+       (f args)))))
+
+(comment
+  (api :api.public.member/member-by {:member/username "futomaki123"})
+  (api :api.public.member/login! #:member{:username "futomaki123"
+                                          :passcode "asdf1234!@#$"})
+  (def tk
+    "eyJhbGciOiJIUzI1NiJ9.eyJtZW1iZXIvaWQiOiJlYTdmNDA2OC04MmQ1LTQ5ZjktYmRkOC0xYzNjNjczMTFhNWMiLCJtZW1iZXIvcm9sZSI6InN0YWZmIiwiaWF0IjoxNzQ4MDA4MjQwLCJleHAiOjE3NDgwMDkyNDB9.yb_dLuIMgNGHJPmMG5EzQf_jrGeCJXoGICtUlVGTfLo")
+
+  (api :api.public.member/insert! #:member{:id (random-uuid)
+                                           :username "futomaki123"
+                                           :email "futomaki123@eml.com"
+                                           :role "staff"
+                                           :passcode "asdf1234!@#$"})
+
+  (api :api.private.place/upsert!
+       #:place{:id #uuid "e5f6a7b8-c9d0-1234-ef12-345678901234"
+               :name "Sam's Hofbrau"
+               :handle "e5f6a7b8-sams-hofbrau"
+               :address "1751 E Olympic Blvd, Los Angeles, CA 90021"
+               :city "Los Angeles"
+               :district "Downtown"
+               :state "CA"
+               :zipcode "90021"
+               :country "USA"
+               :county "Los Angeles"
+               :region "West"
+               :lat 34.0245
+               :lon -118.2390
+               :phone-number "(213) 747-9444"
+               :website-url "http://www.samshofbrau.com/"
+               :twitter-url "https://twitter.com/samshofbrau"
+               :instagram-url "https://www.instagram.com/samshofbrau/"
+               :facebook-url "https://www.facebook.com/samshofbrau"}
+       tk)
+
+  (token/verify tk)
+
+  )
+
+
 
 (defn tunnel [{:keys [body]}]
   (let [body' (-> body read-string

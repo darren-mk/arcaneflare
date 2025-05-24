@@ -8,6 +8,8 @@
    [arcaneflare.middleware :as mw]
    [arcaneflare.database.place.root :as db.place.root]
    [arcaneflare.database.place.love :as db.place.love]
+   [arcaneflare.database.place.vote :as db.place.vote]
+   [arcaneflare.database.place.thumbnail :as db.place.thumbnail]
    [arcaneflare.database.member :as db.member]
    [arcaneflare.token :as token]
    [clojure.string :as str]))
@@ -43,12 +45,12 @@
    :api.private.place.love/no! db.place.love/no!
    :api.private.place.love/how db.place.love/how
    :api.private.place.love/by-member db.place.love/by-member
-   :api.private.place/vote! db.place.root/vote!
-   :api.private.place/unvote! db.place.root/unvote!
-   :api.private.place/vote-score db.place.root/vote-score
-   :api.private.place/add-thumbnail! db.place.root/add-thumbnail!
-   :api.public.place/get-thumbnails db.place.root/get-thumbnails
-   :api.private.place/remove-thumbnail! db.place.root/remove-thumbnail!
+   :api.private.place.vote/make! db.place.vote/make!
+   :api.private.place.vote/remove! db.place.vote/remove!
+   :api.private.place.vote/by-place db.place.vote/by-place
+   :api.private.place.thumbnail/add! db.place.thumbnail/add!
+   :api.public.place.thumbnail/get-by db.place.thumbnail/get-by
+   :api.private.place.thumbnail/remove! db.place.thumbnail/remove!
    :api.public.member/insert! db.member/insert!
    :api.public.member/member-by db.member/member-by
    :api.public.member/login! db.member/login!})

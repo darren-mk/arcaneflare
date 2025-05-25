@@ -12,7 +12,7 @@
   (keyword
    (or (System/getProperty "env")
        (System/getenv "ENV")
-       "dev")))
+       "local")))
 
 (defn config []
   (let [k (current)]

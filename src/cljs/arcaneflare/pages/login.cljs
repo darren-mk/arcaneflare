@@ -47,9 +47,12 @@
            @username-typed ", "
            @passcode-typed)
   (tunnel [:api.public.member.root/login!
-           [@username-typed @passcode-typed]]
-          (fn [token] (tk/new token)
-            (rtfe/push-state :route/home))
+           {:member/username @username-typed
+            :member/passcode @passcode-typed}]
+          (fn [token]
+            (when token
+              (tk/new token)
+              (rtfe/push-state :route/home)))
           (fn [msg] (assoc c.state/errors :login msg))))
 
 (defn submission []

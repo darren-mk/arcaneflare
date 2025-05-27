@@ -34,8 +34,8 @@
         (-> "public/index.html"
             io/resource slurp)))
 
-(defn hello [{:keys [first_name]}]
-  {:msg (str "hello, " first_name)})
+(defn hello [{:keys [hello/first-name]}]
+  {:msg (str "hello, " first-name)})
 
 (def fnk-map
   {:api.public.test/hello hello

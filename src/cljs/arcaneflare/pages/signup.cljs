@@ -81,13 +81,13 @@
    [:a {:href "/#/login"} "Log in"]])
 
 (defn submit []
-  (let [payload {:username @username-typed
-                 :email @email-typed
-                 :passcode @passcode-typed
-                 :role @role-selected}]
-    (tunnel [:api.public.member.root/insert! [payload]]
-            (fn [_resp] (rtfe/push-state :route/login))
-            (fn [resp] (js/alert resp)))))
+  (tunnel [:api.public.member.root/insert!
+           #:member{:username @username-typed
+                    :email @email-typed
+                    :passcode @passcode-typed
+                    :role @role-selected}]
+          (fn [_resp] (rtfe/push-state :route/login))
+          (fn [resp] (js/alert resp))))
 
 (defn submission []
   [:div.field.mt-4

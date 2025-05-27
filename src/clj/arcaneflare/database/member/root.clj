@@ -11,9 +11,11 @@
         q {:insert-into :member
            :columns [:id :username :email :role
                      :passcode_hash :created_at]
-           :values [[id username email role
+           :values [[(or id (random-uuid))
+                     username email role
                      passcode-hash [:raw "now()"]]]}]
-    (db.base/exc (honey.sql/format q))))
+    (-> (db.base/run q)
+        first vals first)))
 
 (defn member-by
   [{:member/keys [id username email]}]

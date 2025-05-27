@@ -59,22 +59,27 @@
    :api.private.member.performer/remove! db.member.performer/remove!
    :api.private.member.performer/get-by db.member.performer/get-by})
 
-(defn private-api? [fnk]
+(defn public-api? [fnk]
   (-> fnk namespace
-      (str/starts-with? "api.private")))
+      (str/starts-with? "api.public")))
+
+(defn token->member-info
+  [{:keys [:member/token] :as args}]
+  (when-not token
+    (throw (ex-info "token not present"
+                    {:cause "token missing"})))
+  (let [claims (token/verify token)]
+    (merge (dissoc args :member/token)
+           (dissoc claims :iat :exp))))
 
 (defn api
-  ([fnk] (api fnk [] nil))
-  ([fnk args] (api fnk args nil))
-  ([fnk args token]
-   (let [private? (private-api? fnk)
-         f (get fnk-map fnk)]
-     (if private?
-       (let [claims (token/verify token)
-             member-info [:member/id :member/role]
-             inclusion (select-keys claims member-info)]
-         (f (merge args inclusion)))
-       (f args)))))
+  ([fnk] (api fnk {}))
+  ([fnk args]
+   (let [public? (public-api? fnk)
+         f (get fnk-map fnk)
+         args' (if public? args
+                   (token->member-info args))]
+     (f args'))))
 
 (defn tunnel [{:keys [body]}]
   (let [body' (-> body read-string

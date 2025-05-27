@@ -8,13 +8,13 @@
    (env/config)
    [:jwt :secret]))
 
-(defn gen! [{:keys [member/id] :as payload}]
+(defn gen! [{:keys [member/id member/role] :as payload}]
   (let [now (quot (System/currentTimeMillis) 1000)
         buffer (* 100 10) ;; update
         exp (+ now buffer)]
-    (when-not id
-      (throw (ex-info "id not present"
-                      {:cause "member id"})))
+    (when-not (and id role)
+      (throw (ex-info "id or role not present"
+                      {:cause "member id or role missing"})))
     (jwt/sign (assoc payload :iat now :exp exp)
               secret {:alg :hs256})))
 

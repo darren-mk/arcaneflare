@@ -21,6 +21,7 @@
   (comp exc honey.sql/format))
 
 (comment
+  (exc ["select 1 as abc"])
   (exc ["select * from place_love limit 1"])
   :=> [#:place-love{:member-id #uuid "273e92d4-8134-400e-907d-469227f5dc6e",
                     :place-id #uuid "b2c3d4e5-f6a7-8901-bcde-f12345678901",

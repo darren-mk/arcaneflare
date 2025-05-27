@@ -27,7 +27,13 @@
            :where where}]
     (first (db.base/exc (sql/format q)))))
 
-(defn- authenticate [username passcode]
+(defn remove!
+  [{member-id :member/id}]
+  (let [q {:delete-from :member
+           :where [:= :id member-id]}]
+    (db.base/run q)))
+
+(defn authenticate [username passcode]
   (let [{:keys [member/passcode-hash] :as member}
         (member-by {:member/username username})
         verified? (hashers/check

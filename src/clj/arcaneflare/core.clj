@@ -53,7 +53,7 @@
    :api.public.place.thumbnail/get-by db.place.thumbnail/get-by
    :api.private.place.thumbnail/remove! db.place.thumbnail/remove!
    :api.public.member.root/insert! db.member.root/insert!
-   :api.public.member.root/member-by db.member.root/member-by
+   :api.public.member.root/member-by db.member.root/get-by
    :api.public.member.root/login! db.member.root/login!
    :api.private.member.performer/upsert! db.member.performer/upsert!
    :api.private.member.performer/remove! db.member.performer/remove!

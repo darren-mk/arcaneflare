@@ -17,7 +17,7 @@
     (-> (db.base/run q)
         first vals first)))
 
-(defn member-by
+(defn get-by
   [{:member/keys [id username email]}]
   (let [where (cond id [:= :id id]
                     username [:= :username username]
@@ -35,7 +35,7 @@
 
 (defn authenticate [username passcode]
   (let [{:keys [member/passcode-hash] :as member}
-        (member-by {:member/username username})
+        (get-by {:member/username username})
         verified? (hashers/check
                    passcode passcode-hash)]
     (and verified? member)))

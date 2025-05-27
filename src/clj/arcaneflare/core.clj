@@ -10,7 +10,8 @@
    [arcaneflare.database.place.love :as db.place.love]
    [arcaneflare.database.place.vote :as db.place.vote]
    [arcaneflare.database.place.thumbnail :as db.place.thumbnail]
-   [arcaneflare.database.member :as db.member]
+   [arcaneflare.database.member.root :as db.member.root]
+   [arcaneflare.database.member.performer :as db.member.performer]
    [arcaneflare.token :as token]
    [clojure.string :as str]))
 
@@ -51,9 +52,12 @@
    :api.private.place.thumbnail/add! db.place.thumbnail/add!
    :api.public.place.thumbnail/get-by db.place.thumbnail/get-by
    :api.private.place.thumbnail/remove! db.place.thumbnail/remove!
-   :api.public.member/insert! db.member/insert!
-   :api.public.member/member-by db.member/member-by
-   :api.public.member/login! db.member/login!})
+   :api.public.member.root/insert! db.member.root/insert!
+   :api.public.member.root/member-by db.member.root/member-by
+   :api.public.member.root/login! db.member.root/login!
+   :api.private.member.performer/upsert! db.member.performer/upsert!
+   :api.private.member.performer/remove! db.member.performer/remove!
+   :api.private.member.performer/get-by db.member.performer/get-by})
 
 (defn private-api? [fnk]
   (-> fnk namespace

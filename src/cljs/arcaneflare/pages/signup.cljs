@@ -85,7 +85,7 @@
                  :email @email-typed
                  :passcode @passcode-typed
                  :role @role-selected}]
-    (tunnel [:api.public.member/insert! [payload]]
+    (tunnel [:api.public.member.root/insert! [payload]]
             (fn [_resp] (rtfe/push-state :route/login))
             (fn [resp] (js/alert resp)))))
 

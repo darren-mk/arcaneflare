@@ -1,4 +1,4 @@
-(ns arcaneflare.database.member
+(ns arcaneflare.database.member.root
   (:require
    [buddy.hashers :as hashers]
    [honey.sql :as sql]

@@ -68,3 +68,6 @@
   (if (get m k)
     (update m k f)
     m))
+
+(defn fail-nil [any]
+  (or any (throw (ex-info "nil!" {}))))

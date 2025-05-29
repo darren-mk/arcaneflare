@@ -4,7 +4,6 @@
    [reitit.frontend.easy :as rtfe]
    [arcaneflare.http :refer [tunnel]]
    [arcaneflare.token :as tk]
-   [arcaneflare.state.controlled :as c.state]
    [arcaneflare.utils :refer [reset-tv!]]))
 
 (defonce username-typed
@@ -53,7 +52,8 @@
             (when token
               (tk/new token)
               (rtfe/push-state :route/home)))
-          (fn [msg] (assoc c.state/errors :login msg))))
+          (fn [msg]
+            (println msg))))
 
 (defn submission []
   [:div.field.mt-4

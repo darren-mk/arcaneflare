@@ -48,8 +48,10 @@
     (db.base/exc (sql/format q))))
 
 (defn login! [{:member/keys [username passcode]}]
-  (when-let [{:member/keys [id role] :as _member}
-             (authenticate username passcode)]
+  (let [{:member/keys [id role] :as member}
+        (authenticate username passcode)]
+    (when-not member
+      (throw (ex-info "no match" {:error :not-found})))
     (update-last-login! {:member/id id})
     (token/gen! {:member/id id
                  :member/role role})))

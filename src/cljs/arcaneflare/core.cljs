@@ -33,9 +33,11 @@
    ["/login" {:name :route/login :view login-pg/node}]
    ["/signup" {:name :route/signup :view signup-pg/node}]
    ["/area" {:name :route/area :view area-pg/node}]
-   ["/places" {:name :route/places :view places-pg/node
-              :parameters {:query {:page int?}}}]
-   ["/places/:handle" {:name :route/place :view place-pg/node}]
+   ["/places" {:name :route/places
+               :view places-pg/node
+               :parameters {:query {:page int?}}}]
+   ["/places/:handle" {:name :route/place
+                       :view place-pg/node}]
    ["/performers" {:name :route/performers
                    :view performers-pg/node
                    :parameters {:query {:page int?}}}]

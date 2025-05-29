@@ -41,7 +41,7 @@
                      :height "100%"}}]]]
     [:div.card-content
      [:p.title.is-5
-      [:a {:href (str "/places/" (:handle place))}
+      [:a {:href (str "/#/places/" (:handle place))}
        (:name place)]]
      [:p.subtitle.is-6 (:location place)]
      [:p "⭐ "

@@ -45,8 +45,12 @@
                     handle [:= :handle handle])
         q {:select [:*]
            :from :place
-           :where where}]
-    (first (db.base/exc (sql/format q)))))
+           :where where}
+        read (first (db.base/run q))]
+    (when-not read
+      (throw (ex-info "place not found"
+                      {:errorr :not-found})))
+    read))
 
 (defn full-list [_]
   (let [q {:select [:id :handle :name]

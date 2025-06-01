@@ -1,6 +1,6 @@
 (ns arcaneflare.token
   (:require
-   [arcaneflare.state.controlled :as c.state]
+   [arcaneflare.state :as c.state]
    [arcaneflare.local :as local]))
 
 (defn pull []

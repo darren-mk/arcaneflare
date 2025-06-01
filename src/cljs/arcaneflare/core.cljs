@@ -5,6 +5,7 @@
    [reitit.frontend :as rtf]
    [reitit.frontend.easy :as rtfe]
    [arcaneflare.section.header :as header]
+   [arcaneflare.state :as state]
    [arcaneflare.pages.home :as home-pg]
    [arcaneflare.pages.account :as account-pg]
    [arcaneflare.pages.login :as login-pg]
@@ -23,9 +24,6 @@
    (.getElementById
     js/document
     "arcaneflare")))
-
-(defonce match
-  (r/atom nil))
 
 (def routes
   [["/" {:name :route/home :view home-pg/node}]
@@ -53,16 +51,16 @@
 (defn current-page []
   [:div.container.is-fullhd
    [header/navbar]
-   (when @match
-     (let [view (-> @match :data :view)]
-       [view @match]))])
+   (when @state/match
+     (let [view (-> @state/match :data :view)]
+       [view @state/match]))])
 
 (defn ^:dev/after-load start []
   (rtfe/start!
    (rtf/router routes)
    (fn [m]
      (theme/ensure)
-     (reset! match m))
+     (reset! state/match m))
    {:use-fragment true})
   (rdc/render
    root-container

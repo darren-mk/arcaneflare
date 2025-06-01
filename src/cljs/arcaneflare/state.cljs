@@ -1,9 +1,9 @@
-(ns arcaneflare.state.controlled
-  "loaded from backend initially
-   but expects constantly controlled by client,
-   and synced backend."
+(ns arcaneflare.state
   (:require
    [reagent.core :as r]))
+
+(defonce match
+  (r/atom nil))
 
 (defonce theme
   (r/atom :light))

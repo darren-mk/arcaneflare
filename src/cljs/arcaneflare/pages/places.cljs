@@ -49,41 +49,50 @@
       (:thread-count place)
       " threads"]]]])
 
-(defn node []
-  [:section.section
-   [:div.container
+(defn node [{:keys [query-params]}]
+  (let [{:keys [page per country state city]}
+        query-params]
+    [:div.container
+     [:h1 page]
+     [:h1 per]
+     [:h1 country]
+     [:h1 state]
+     [:h1 city]])
 
-    ;; 🔍 Filter + Search
-    [:div.level.mb-5
-     [:div.level-left
-      [:div.select
-       [:select {:value @selected-city
-                 :on-change #(reset! selected-city (-> % .-target .-value))}
-        [:option {:value ""} "All cities"]
-        [:option {:value "seoul"} "Seoul"]
-        [:option {:value "busan"} "Busan"]]]]
-     [:div.level-right
-      [:div.field.has-addons
-       [:div.control
-        [:input.input {:type "text"
-                       :placeholder "Search places"
-                       :value @search-text
-                       :on-change #(reset! search-text (-> % .-target .-value))}]]
-       [:div.control
-        [:button.button.is-info "Search"]]]]]
+  #_[:section.section
+     [:div.container
 
-    ;; 🧱 Cards
-    [:div.columns.is-multiline
-     (for [place (concat dummy-places dummy-places dummy-places)]
-       ^{:key (:handle place)}
-       [card place])]
+      ;; 🔍 Filter + Search
+      [:div.level.mb-5
+       [:div.level-left
+        [:div.select
+         [:select {:value @selected-city
+                   :on-change #(reset! selected-city (-> % .-target .-value))}
+          [:option {:value ""} "All cities"]
+          [:option {:value "seoul"} "Seoul"]
+          [:option {:value "busan"} "Busan"]]]]
+       [:div.level-right
+        [:div.field.has-addons
+         [:div.control
+          [:input.input {:type "text"
+                         :placeholder "Search places"
+                         :value @search-text
+                         :on-change #(reset! search-text (-> % .-target .-value))}]]
+         [:div.control
+          [:button.button.is-info "Search"]]]]]
 
-    ;; ⏬ Pagination
-    [:nav.pagination.is-centered {:role "navigation" :aria-label "pagination"}
-     [:a.pagination-previous "Previous"]
-     [:a.pagination-next "Next"]
-     [:ul.pagination-list
-      [:li [:a.pagination-link.is-current {:aria-label "Page 1"} "1"]]
-      [:li [:a.pagination-link {:aria-label "Goto page 2"} "2"]]
-      [:li [:span.pagination-ellipsis "…"]]
-      [:li [:a.pagination-link {:aria-label "Goto page 5"} "5"]]]]]])
+      ;; 🧱 Cards
+      [:div.columns.is-multiline
+       (for [place (concat dummy-places dummy-places dummy-places)]
+         ^{:key (:handle place)}
+         [card place])]
+
+      ;; ⏬ Pagination
+      [:nav.pagination.is-centered {:role "navigation" :aria-label "pagination"}
+       [:a.pagination-previous "Previous"]
+       [:a.pagination-next "Next"]
+       [:ul.pagination-list
+        [:li [:a.pagination-link.is-current {:aria-label "Page 1"} "1"]]
+        [:li [:a.pagination-link {:aria-label "Goto page 2"} "2"]]
+        [:li [:span.pagination-ellipsis "…"]]
+        [:li [:a.pagination-link {:aria-label "Goto page 5"} "5"]]]]]])

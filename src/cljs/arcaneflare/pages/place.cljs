@@ -1,7 +1,6 @@
 (ns arcaneflare.pages.place
   (:require
    [reagent.core :as r]
-   [arcaneflare.state.loaded :as loaded-state]
    [arcaneflare.http :refer [tunnel]]))
 
 (defonce loaded

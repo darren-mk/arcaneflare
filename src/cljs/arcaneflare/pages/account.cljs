@@ -2,7 +2,7 @@
   (:require
    [reitit.frontend.easy :as rfe]
    [arcaneflare.token :as tk]
-   [arcaneflare.state.controlled :as c.state]))
+   [arcaneflare.state :as state]))
 
 (defn title []
   [:div.level
@@ -12,7 +12,7 @@
 (defn logout []
   [:button.button.is-danger.is-light
    {:on-click #(do (println "logging out…")
-                   (reset! c.state/member nil)
+                   (reset! state/member nil)
                    (tk/remove!)
                    (rfe/push-state :route/home))}
    "Log Out"])

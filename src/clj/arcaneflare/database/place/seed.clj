@@ -30,22 +30,22 @@
                :county county :region region
                :lat lat' :lon lon'
                :phone-number phone-number})
-      (when website
+      (when (seq website)
         (place.social/upsert!
          {:place/id id'
           :place.social/platform :website
           :place.social/url website}))
-      (when twitter
+      (when (seq twitter)
         (place.social/upsert!
          {:place/id id'
           :place.social/platform :twitter
           :place.social/url twitter}))
-      (when instagram
+      (when (seq instagram)
         (place.social/upsert!
          {:place/id id'
           :place.social/platform :instagram
           :place.social/url instagram}))
-      (when facebook
+      (when (seq facebook)
         (place.social/upsert!
          {:place/id id'
           :place.social/platform :facebook

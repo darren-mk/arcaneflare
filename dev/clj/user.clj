@@ -5,7 +5,8 @@
    [clojure.spec.alpha :as s]
    [orchestra.spec.test :as ost]
    [arcaneflare.core :as c]
-   [arcaneflare.database.migration :as migration]))
+   [arcaneflare.database.migration :as migration]
+   [arcaneflare.database.place.seed :as place.seed]))
 
 (def create-migration
   #'migration/create)
@@ -31,10 +32,15 @@
   (stop)
   (start))
 
+(defn seed []
+  (place.seed/populate!)
+  (println "successfully seeded"))
+
 (comment
   (create-migration)
   (run-migration)
   (rollback-migration)
   (start)
   (stop)
-  (restart))
+  (restart)
+  (seed))

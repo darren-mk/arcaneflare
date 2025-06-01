@@ -41,7 +41,7 @@
         read (cond-> root
                (and root socials?)
                (assoc :place/socials
-                      (place.social/multi-by
+                      (place.social/map-multi-by
                        {:place/id id})))]
     (when-not read
       (throw (ex-info "place not found"

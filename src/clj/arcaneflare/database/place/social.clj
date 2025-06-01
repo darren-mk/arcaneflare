@@ -28,3 +28,11 @@
    {:select [:platform :url]
     :from :place_social
     :where [:= :place_id place-id]}))
+
+(defn map-multi-by
+  [{:keys [place/_id] :as payload}]
+  (let [f (fn [acc {:keys [place-social/platform
+                           place-social/url]}]
+            (assoc acc (keyword platform) url))
+        data (multi-by payload)]
+    (reduce f {} data)))

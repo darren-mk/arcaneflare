@@ -89,7 +89,7 @@
    "Threads"])
 
 (defn navbar []
-  [:nav.navbar.mt-1.mb-6
+  [:nav.navbar.mt-1.mb-2
    {:role "navigation"
     :aria-label "main navigation"}
    [:div.container

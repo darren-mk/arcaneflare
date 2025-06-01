@@ -33,6 +33,9 @@
            :order-by [:applied]}]
     (db-base/exc (honey.sql/format q))))
 
+(defn most-recent []
+  (last (full-list)))
+
 (comment
   (create "create-user-table")
   (run)
@@ -40,3 +43,5 @@
   (up 20111206154000)
   (down 20111206154000)
   (full-list))
+
+(most-recent)

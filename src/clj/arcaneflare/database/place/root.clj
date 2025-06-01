@@ -1,7 +1,8 @@
 (ns arcaneflare.database.place.root
   (:require
    [honey.sql :as sql]
-   [arcaneflare.database.base :as db.base]))
+   [arcaneflare.database.base :as db.base]
+   [arcaneflare.database.place.social :as place.social]))
 
 (defn upsert!
   [{:place/keys [id name handle address city
@@ -31,13 +32,17 @@
     (db.base/exc (honey.sql/format q))))
 
 (defn single-by
-  [{:keys [place/id place/handle]}]
+  [{:keys [place/id place/handle
+           place/socials?]}]
   (let [where (cond id [:= :id id]
                     handle [:= :handle handle])
-        q {:select [:*]
-           :from :place
-           :where where}
-        read (first (db.base/run q))]
+        q {:select [:*] :from :place :where where}
+        {:keys [place/id] :as root} (first (db.base/run q))
+        read (cond-> root
+               (and root socials?)
+               (assoc :place/socials
+                      (place.social/multi-by
+                       {:place/id id})))]
     (when-not read
       (throw (ex-info "place not found"
                       {:errorr :not-found})))

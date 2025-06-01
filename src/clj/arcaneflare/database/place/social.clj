@@ -22,7 +22,7 @@
             [:= :place_id place-id]
             [:= :platform platform]]}))
 
-(defn all-by
+(defn multi-by
   [{place-id :place/id}]
   (db.base/run
    {:select [:platform :url]

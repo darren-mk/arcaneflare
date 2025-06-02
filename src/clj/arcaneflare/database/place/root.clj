@@ -48,8 +48,31 @@
                       {:errorr :not-found})))
     read))
 
+(defn multi-by
+  [{country :place/country state :place/state
+    county :place/county city :place/city
+    district :place/district
+    fraction :place.search/fraction
+    page :place.result/page per :place.result/per}]
+  (let [wrap #(str "%" % "%")
+        filters [(when country [:ilike :country (wrap country)])
+                 (when state [:ilike :state (wrap state)])
+                 (when county [:ilike :county (wrap county)])
+                 (when city [:ilike :city (wrap city)])
+                 (when district [:ilike :district (wrap  district)])
+                 (when fraction [:ilike :name (wrap fraction)])]
+        page' (or page 3)
+        per' (or per 0)
+        where (into [:and] (remove nil? filters))
+        q (merge {:select [:*]
+                  :from :place
+                  :limit page'
+                  :offset (* per' (dec page'))}
+                 (when (seq where) {:where where}))]
+    (db.base/run q)))
+
 (defn full-list [_]
   (let [q {:select [:id :handle :name]
            :from [:place]
            :order-by [:name]}]
-    (db.base/exc (sql/format q))))
+    (db.base/run q)))

@@ -1,6 +1,10 @@
 (ns arcaneflare.pages.places
   (:require
-   [reagent.core :as r]))
+   [reagent.core :as r]
+   [arcaneflare.http :as http]))
+
+(defonce loaded
+  (r/atom nil))
 
 (defonce search-text
   (r/atom nil))
@@ -49,15 +53,34 @@
       (:thread-count place)
       " threads"]]]])
 
+(defn content []
+  [:div
+   (for [{:place/keys [handle name]} @loaded]
+     ^{:key handle}
+     [:a {:href (str "/#/places/" handle)}
+      name])])
+
 (defn node [{:keys [query-params]}]
-  (let [{:keys [page per country state city]}
+  (let [{:keys [page per country state city fraction]}
         query-params]
+    (http/tunnel
+     [:api.public.place/multi-by
+      {:place.result/page page
+       :place.result/per per
+       :place/country country
+       :place/state state
+       :place/city city
+       :place.search/fraction fraction}]
+     #(reset! loaded %)
+     #(js/alert %))
     [:div.container
-     [:h1 page]
-     [:h1 per]
-     [:h1 country]
-     [:h1 state]
-     [:h1 city]])
+     [:h1 "page: " page]
+     [:h1 "per: " per]
+     [:h1 "country: " country]
+     [:h1 "state: " state]
+     [:h1 "city: " city]
+     [:h1 "fraction: " fraction]
+     [content]])
 
   #_[:section.section
      [:div.container

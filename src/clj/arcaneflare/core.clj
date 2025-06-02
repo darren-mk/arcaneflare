@@ -13,6 +13,7 @@
    [arcaneflare.database.member.root :as db.member.root]
    [arcaneflare.database.member.performer :as db.member.performer]
    [arcaneflare.token :as token]
+   [arcaneflare.utils :as u]
    [clojure.string :as str]))
 
 (defn okay [text-type body]
@@ -77,7 +78,9 @@
   ([fnk] (api fnk {}))
   ([fnk args]
    (let [public? (public-api? fnk)
-         f (get fnk-map fnk)
+         f (u/fail-nil
+            (get fnk-map fnk)
+            "api not found")
          args' (if public? args
                    (token->member-info args))]
      (f args'))))

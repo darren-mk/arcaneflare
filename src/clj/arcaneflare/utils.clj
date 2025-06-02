@@ -69,5 +69,10 @@
     (update m k f)
     m))
 
-(defn fail-nil [any]
-  (or any (throw (ex-info "nil!" {}))))
+(defn fail-nil
+  ([any]
+   (fail-nil any "nil!" {}))
+  ([any msg]
+   (fail-nil any msg {}))
+  ([any msg data]
+   (or any (throw (ex-info msg data)))))

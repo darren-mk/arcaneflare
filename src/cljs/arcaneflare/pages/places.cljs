@@ -57,8 +57,9 @@
   [:div
    (for [{:place/keys [handle name]} @loaded]
      ^{:key handle}
-     [:a {:href (str "/#/places/" handle)}
-      name])])
+     [:div
+      [:a {:href (str "/#/places/" handle)}
+       name]])])
 
 (defn node [{:keys [query-params]}]
   (let [{:keys [page per country state city fraction]}

@@ -61,12 +61,12 @@
                  (when city [:ilike :city (wrap city)])
                  (when district [:ilike :district (wrap  district)])
                  (when fraction [:ilike :name (wrap fraction)])]
-        page' (or page 3)
-        per' (or per 0)
+        page' (or page 1)
+        per' (or per 30)
         where (into [:and] (remove nil? filters))
         q (merge {:select [:*]
                   :from :place
-                  :limit page'
+                  :limit per'
                   :offset (* per' (dec page'))}
                  (when (seq where) {:where where}))]
     (db.base/run q)))

@@ -6,14 +6,14 @@
 
 (defn upsert!
   [{:place/keys [id name handle address city
-                 district state zipcode country
+                 district state zipcode nation
                  county region lat lon phone-number]}]
   (let [q {:insert-into :place
            :columns [:id :name :handle :address :city
-                     :district :state :zipcode :country
+                     :district :state :zipcode :nation
                      :county :region :lat :lon :phone-number]
            :values [[id name handle address city
-                     district state zipcode country
+                     district state zipcode nation
                      county region lat lon phone-number]]
            :on-conflict [:id]
            :do-update-set {:name :excluded.name
@@ -23,7 +23,7 @@
                            :district :excluded.district
                            :state :excluded.state
                            :zipcode :excluded.zipcode
-                           :country :excluded.country
+                           :nation :excluded.nation
                            :county :excluded.county
                            :region :excluded.region
                            :lat :excluded.lat
@@ -49,13 +49,13 @@
     read))
 
 (defn multi-by
-  [{country :place/country state :place/state
+  [{nation :place/nation state :place/state
     county :place/county city :place/city
     district :place/district
     fraction :place.search/fraction
     page :place.result/page per :place.result/per}]
   (let [wrap #(str "%" % "%")
-        filters [(when country [:ilike :country (wrap country)])
+        filters [(when nation [:ilike :nation (wrap nation)])
                  (when state [:ilike :state (wrap state)])
                  (when county [:ilike :county (wrap county)])
                  (when city [:ilike :city (wrap city)])

@@ -1,4 +1,4 @@
-id,name,handle,address,city,district,state,zipcode,country,county,region,lat,lon,phone_number,website,twitter,instagram,facebook
+id,name,handle,address,city,district,state,zipcode,nation,county,region,lat,lon,phone_number,website,twitter,instagram,facebook
 52c2476d-37c4-46a2-aee2-f02cdc94136f,Fairways Inn,52c2476d-fairways-inn,"4167 S Dupont Blvd, Smyrna, DE 19977",Smyrna,,DE,19977,USA,,Mid-Atlantic,39.257,-75.6053,(302) 653-7044,,,,
 abc38de5-8381-4c0f-bfb1-e5431710badc,Chase Lounge,abc38de5-chase-lounge,"4123 N DuPont Hwy, Dover, DE 19901",Dover,,DE,19901,USA,,Mid-Atlantic,39.2042,-75.5158,(302) 724-5411,,,,
 6fcaf882-cc84-4197-b67d-70f387bd1abe,Hak's Sports Bar,6fcaf882-haks-sports-bar,"1050 S Market St, Wilmington, DE 19801",Wilmington,,DE,19801,USA,,Mid-Atlantic,39.7312,-75.5487,(302) 655-8515,,,,

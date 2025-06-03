@@ -20,7 +20,7 @@
    [:button
    {:on-click #(reset! selected-tab
                        (case kind
-                         :country :states
+                         :nation :states
                          :state :counties
                          :county :cities
                          :city :districts

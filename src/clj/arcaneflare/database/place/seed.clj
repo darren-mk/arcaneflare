@@ -15,7 +15,7 @@
 
 (defn populate! []
   (doseq [{:keys [id name handle address city
-                  district state zipcode country
+                  district state zipcode nation
                   county region lat lon phone-number
                   website twitter instagram facebook]}
           (bring "resources/seeds/places.csv")]
@@ -26,7 +26,7 @@
        #:place{:id id' :name name :handle handle
                :address address :city city
                :district district :state state
-               :zipcode zipcode :country country
+               :zipcode zipcode :nation nation
                :county county :region region
                :lat lat' :lon lon'
                :phone-number phone-number})

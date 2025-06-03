@@ -55,20 +55,20 @@
 
 (defn content []
   [:div
-   (for [{:place/keys [handle name]} @loaded]
+   (for [{:place/keys [handle name]}
+         @loaded]
      ^{:key handle}
-     [:div
-      [:a {:href (str "/#/places/" handle)}
-       name]])])
+     [:div [:a {:href (str "/#/places/" handle)}
+            name]])])
 
 (defn node [{:keys [query-params]}]
-  (let [{:keys [page per country state city fraction]}
+  (let [{:keys [page per nation state city fraction]}
         query-params]
     (http/tunnel
      [:api.public.place/multi-by
       {:place.result/page page
        :place.result/per per
-       :place/country country
+       :place/nation nation
        :place/state state
        :place/city city
        :place.search/fraction fraction}]
@@ -77,7 +77,7 @@
     [:div.container
      [:h1 "page: " page]
      [:h1 "per: " per]
-     [:h1 "country: " country]
+     [:h1 "nation: " nation]
      [:h1 "state: " state]
      [:h1 "city: " city]
      [:h1 "fraction: " fraction]
@@ -107,7 +107,7 @@
 
       ;; 🧱 Cards
       [:div.columns.is-multiline
-       (for [place (concat dummy-places dummy-places dummy-places)]
+        (for [place (concat dummy-places dummy-places dummy-places)]
          ^{:key (:handle place)}
          [card place])]
 

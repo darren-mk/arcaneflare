@@ -26,7 +26,7 @@
    :district "Lustre District"
    :state "NV"
    :zipcode "89123"
-   :country "Dreamland"})
+   :nation "Dreamland"})
 
 (def mock-threads
   [{:id-slug "a1-experience-review"
@@ -83,7 +83,7 @@
    [:p [:strong "Address:"]]
    [:p (:address mock-place)]
    [:p (str (:district mock-place) ", " (:city mock-place) ", " (:state mock-place) " " (:zipcode mock-place))]
-   [:p (:country mock-place)]])
+   [:p (:nation mock-place)]])
 
 (defn thread-item [thread]
   [:div.box

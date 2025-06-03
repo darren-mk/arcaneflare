@@ -16,7 +16,7 @@
 (defn populate! []
   (doseq [{:keys [id name handle address city
                   district state zipcode nation
-                  county region lat lon phone-number
+                  county lat lon phone-number
                   website twitter instagram facebook]}
           (bring "resources/seeds/places.csv")]
     (let [id' (parse-uuid id)
@@ -27,8 +27,7 @@
                :address address :city city
                :district district :state state
                :zipcode zipcode :nation nation
-               :county county :region region
-               :lat lat' :lon lon'
+               :county county :lat lat' :lon lon'
                :phone-number phone-number})
       (when (seq website)
         (place.social/upsert!

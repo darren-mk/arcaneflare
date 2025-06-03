@@ -82,7 +82,10 @@
   [:div.box
    [:p [:strong "Address:"]]
    [:p (:address mock-place)]
-   [:p (str (:district mock-place) ", " (:city mock-place) ", " (:state mock-place) " " (:zipcode mock-place))]
+   [:p (str (:district mock-place) ", "
+            (:city mock-place) ", "
+            (:state mock-place) " "
+            (:zipcode mock-place))]
    [:p (:nation mock-place)]])
 
 (defn thread-item [thread]

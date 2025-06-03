@@ -7,14 +7,14 @@
 (defn upsert!
   [{:place/keys [id name handle address city
                  district state zipcode nation
-                 county region lat lon phone-number]}]
+                 county lat lon phone-number]}]
   (let [q {:insert-into :place
            :columns [:id :name :handle :address :city
                      :district :state :zipcode :nation
-                     :county :region :lat :lon :phone-number]
+                     :county :lat :lon :phone-number]
            :values [[id name handle address city
                      district state zipcode nation
-                     county region lat lon phone-number]]
+                     county lat lon phone-number]]
            :on-conflict [:id]
            :do-update-set {:name :excluded.name
                            :handle :excluded.handle
@@ -25,7 +25,6 @@
                            :zipcode :excluded.zipcode
                            :nation :excluded.nation
                            :county :excluded.county
-                           :region :excluded.region
                            :lat :excluded.lat
                            :lon :excluded.lon
                            :phone-number :excluded.phone_number}}]

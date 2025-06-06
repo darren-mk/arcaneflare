@@ -6,7 +6,8 @@
    [orchestra.spec.test :as ost]
    [arcaneflare.core :as c]
    [arcaneflare.database.migration :as migration]
-   [arcaneflare.database.place.seed :as place.seed]))
+   [arcaneflare.database.geo.root :as geo.root]
+   [arcaneflare.database.place.root :as place.root]))
 
 (def create-migration
   #'migration/create)
@@ -33,7 +34,8 @@
   (start))
 
 (defn seed []
-  (place.seed/populate!)
+  (geo.root/seed!)
+  (place.root/seed!)
   (println "successfully seeded"))
 
 (comment

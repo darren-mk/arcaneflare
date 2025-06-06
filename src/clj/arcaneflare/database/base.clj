@@ -1,5 +1,7 @@
 (ns arcaneflare.database.base
   (:require
+   [clojure.java.io :as io]
+   [clojure.data.csv :as csv]
    [honey.sql :as sql]
    [next.jdbc :as jdbc]
    [next.jdbc.result-set :as rs]
@@ -19,6 +21,14 @@
 
 (def run
   (comp exc honey.sql/format))
+
+(defn bring-csv [path]
+  (with-open [rdr (io/reader path)]
+    (let [[headers & rows] (csv/read-csv rdr)
+          keys (map keyword headers)]
+      (->> rows
+           (map #(zipmap keys %))
+           vec))))
 
 (comment
   (exc ["select 1 as abc"])

@@ -1,7 +1,7 @@
 (ns arcaneflare.database.place.root
   (:require
    [honey.sql :as sql]
-   [arcaneflare.database.base :as db.base]
+   [arcaneflare.database.base :as base]
    [arcaneflare.database.place.social :as place.social]))
 
 (defn upsert!
@@ -28,7 +28,44 @@
                            :lat :excluded.lat
                            :lon :excluded.lon
                            :phone-number :excluded.phone_number}}]
-    (db.base/exc (honey.sql/format q))))
+    (base/exc (honey.sql/format q))))
+
+(defn seed! []
+  (doseq [{:keys [id name handle address city
+                  district state zipcode nation
+                  county lat lon phone-number
+                  website twitter instagram facebook]}
+          (base/bring-csv "resources/seeds/places.csv")]
+    (let [id' (parse-uuid id)
+          lat' (Float/parseFloat lat)
+          lon' (Float/parseFloat lon)]
+      (upsert!
+       #:place{:id id' :name name :handle handle
+               :address address :city city
+               :district district :state state
+               :zipcode zipcode :nation nation
+               :county county :lat lat' :lon lon'
+               :phone-number phone-number})
+      (when (seq website)
+        (place.social/upsert!
+         {:place/id id'
+          :place.social/platform :website
+          :place.social/url website}))
+      (when (seq twitter)
+        (place.social/upsert!
+         {:place/id id'
+          :place.social/platform :twitter
+          :place.social/url twitter}))
+      (when (seq instagram)
+        (place.social/upsert!
+         {:place/id id'
+          :place.social/platform :instagram
+          :place.social/url instagram}))
+      (when (seq facebook)
+        (place.social/upsert!
+         {:place/id id'
+          :place.social/platform :facebook
+          :place.social/url facebook})))))
 
 (defn single-by
   [{:keys [place/id place/handle
@@ -36,7 +73,7 @@
   (let [where (cond id [:= :id id]
                     handle [:= :handle handle])
         q {:select [:*] :from :place :where where}
-        {:keys [place/id] :as root} (first (db.base/run q))
+        {:keys [place/id] :as root} (first (base/run q))
         read (cond-> root
                (and root socials?)
                (assoc :place/socials
@@ -68,10 +105,11 @@
                   :limit per'
                   :offset (* per' (dec page'))}
                  (when (seq where) {:where where}))]
-    (db.base/run q)))
+    (base/run q)))
 
 (defn full-list [_]
   (let [q {:select [:id :handle :name]
            :from [:place]
            :order-by [:name]}]
-    (db.base/run q)))
+    (base/run q)))
+

@@ -1,0 +1,15 @@
+id,kind,full-name,parent-id,is-ending
+0a0a8194-bbca-446f-bbc9-ce86508cbb50,nation,United States,,false
+17ed2dbc-dec4-4c08-a10e-0897c856aa92,nation,Mexico,,false
+f1a9f35e-482d-46a5-a201-ba8aec512c34,nation,Canada,,false
+294cf5c5-3823-443d-81c5-295b52c0f751,state,New York,0a0a8194-bbca-446f-bbc9-ce86508cbb50,false
+6611b44f-980c-4aff-95c8-2105cdf6d9db,state,New Jersey,0a0a8194-bbca-446f-bbc9-ce86508cbb50,false
+5707c029-2f61-4677-a69f-e4321ecc5951,city,New York City,294cf5c5-3823-443d-81c5-295b52c0f751,false
+cd3970cf-7f56-44fc-8dc1-bea71b9bf228,region,Upstate New York,294cf5c5-3823-443d-81c5-295b52c0f751,false
+bae822c0-0b6b-4786-a75d-64567373e483,borough,Manhattan,5707c029-2f61-4677-a69f-e4321ecc5951,true
+9b718dea-6739-4a7d-b464-533b1cb4fa17,borough,Queens,5707c029-2f61-4677-a69f-e4321ecc5951,true
+ad948d40-4f51-4610-90d3-4f73773a3ca5,borough,Bronx,5707c029-2f61-4677-a69f-e4321ecc5951,true
+048fff8d-2d6b-4e04-8064-7390fc8f74f4,borough,Brooklyn,5707c029-2f61-4677-a69f-e4321ecc5951,true
+9020b343-281e-4c89-85d7-f2f12142a85b,borough,Staten Island,5707c029-2f61-4677-a69f-e4321ecc5951,true
+3b228b2e-1983-47cf-8abe-8a07d1e9eba5,county,Bergen County,6611b44f-980c-4aff-95c8-2105cdf6d9db,false
+83cccc5c-430a-438f-97a6-957a851623f0,city,Edgewater,3b228b2e-1983-47cf-8abe-8a07d1e9eba5,true

@@ -13,3 +13,17 @@ ad948d40-4f51-4610-90d3-4f73773a3ca5,borough,Bronx,5707c029-2f61-4677-a69f-e4321
 9020b343-281e-4c89-85d7-f2f12142a85b,borough,Staten Island,5707c029-2f61-4677-a69f-e4321ecc5951,true
 3b228b2e-1983-47cf-8abe-8a07d1e9eba5,county,Bergen County,6611b44f-980c-4aff-95c8-2105cdf6d9db,false
 83cccc5c-430a-438f-97a6-957a851623f0,city,Edgewater,3b228b2e-1983-47cf-8abe-8a07d1e9eba5,true
+c56c0c19-dd50-4ba3-8be2-1f0eaa123d55,state,Nevada,0a0a8194-bbca-446f-bbc9-ce86508cbb50,false
+c7f8e5e9-ab1a-4a76-ab8a-a2c40a282358,county,Clark County,c56c0c19-dd50-4ba3-8be2-1f0eaa123d55,false
+be8e4de0-05cf-42e0-b8b9-e2f895604ba5,city,Las Vegas,c7f8e5e9-ab1a-4a76-ab8a-a2c40a282358,false
+4da8b92b-7a84-40af-81cc-19148946afda,district,The Strip,be8e4de0-05cf-42e0-b8b9-e2f895604ba5,true
+bc7bbc8e-093b-4d60-8400-a6daae9c0cd9,district,Paradise,be8e4de0-05cf-42e0-b8b9-e2f895604ba5,true
+cca131ca-3e0c-4e22-a772-7ddf591a4631,district,Downtown,be8e4de0-05cf-42e0-b8b9-e2f895604ba5,true
+3432c493-be8b-4a5c-8dab-4f98a588686d,state,Delaware,0a0a8194-bbca-446f-bbc9-ce86508cbb50,false
+544d966c-5452-49f4-a3d2-91ff290da8be,city,Smyrna,3432c493-be8b-4a5c-8dab-4f98a588686d,true
+b765dceb-c874-48b9-ac7b-16e0fafc039c,city,Dover,3432c493-be8b-4a5c-8dab-4f98a588686d,true
+deaa7266-6d5b-484c-862d-c4a9426d70ea,city,Wilmington,3432c493-be8b-4a5c-8dab-4f98a588686d,true
+0e248f17-038f-4cce-8bf0-0581f5f0ae9d,city,Seaford,3432c493-be8b-4a5c-8dab-4f98a588686d,true
+e793c894-57b8-4a48-8528-db0c15807c72,city,Dover,3432c493-be8b-4a5c-8dab-4f98a588686d,true
+cc3d7cf4-c2fc-4f50-8529-dc89fa9cabd3,city,Wilmington,3432c493-be8b-4a5c-8dab-4f98a588686d,true
+e935f068-008e-4473-b93d-63893ffb3ad0,city,Seaford,3432c493-be8b-4a5c-8dab-4f98a588686d,true

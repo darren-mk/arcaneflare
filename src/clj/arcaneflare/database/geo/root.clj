@@ -40,3 +40,27 @@
                   :from :geo}
                  (when (seq where) {:where where}))]
     (base/run q)))
+
+(defn find-children [{id :geo/id}]
+  (base/run
+    {:select [:*]
+     :from :geo
+     :where [:= :parent-id id]}))
+
+(defn find-endings
+  [{:geo/keys [id kind full-name]}]
+  (let [where (if id [:= :id id]
+                  [:and
+                   [:= :kind kind]
+                   [:= :full-name full-name]])
+        q {:with-recursive
+           [[:descendants
+             {:union-all [{:select [:*] :from [:geo]
+                           :where where}
+                          {:select [:g.*] :from [[:geo :g]]
+                           :join [[:descendants :d]
+                                  [:= :g.parent-id :d.id]]}]}]]
+           :select [:id :full-name]
+           :from [:descendants]
+           :where [:= :is-ending true]}]
+    (base/run q)))

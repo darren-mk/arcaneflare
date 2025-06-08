@@ -65,7 +65,7 @@
   (let [{:keys [page per nation state city fraction]}
         query-params]
     (http/tunnel
-     [:api.public.place/multi-by
+     [:api.public.place/multi-by-geo
       {:place.result/page page
        :place.result/per per
        :place/nation nation

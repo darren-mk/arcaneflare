@@ -1,6 +1,5 @@
 (ns arcaneflare.core
   (:require
-   [reagent.core :as r]
    [reagent.dom.client :as rdc]
    [reitit.frontend :as rtf]
    [reitit.frontend.easy :as rtfe]

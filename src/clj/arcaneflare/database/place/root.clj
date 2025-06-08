@@ -5,67 +5,50 @@
    [arcaneflare.database.place.social :as place.social]))
 
 (defn upsert!
-  [{:place/keys [id name handle address city
-                 district state zipcode nation
-                 county lat lon phone-number]}]
+  [{:place/keys [id name handle address
+                 geo-id lat lon phone-number]}]
   (let [q {:insert-into :place
-           :columns [:id :name :handle :address :city
-                     :district :state :zipcode :nation
-                     :county :lat :lon :phone-number]
-           :values [[id name handle address city
-                     district state zipcode nation
-                     county lat lon phone-number]]
+           :columns [:id :name :handle :address :geo-id
+                     :lat :lon :phone-number]
+           :values [[id name handle address
+                     geo-id lat lon phone-number]]
            :on-conflict [:id]
            :do-update-set {:name :excluded.name
                            :handle :excluded.handle
                            :address :excluded.address
-                           :city :excluded.city
-                           :district :excluded.district
-                           :state :excluded.state
-                           :zipcode :excluded.zipcode
-                           :nation :excluded.nation
-                           :county :excluded.county
+                           :geo-id :excluded.geo-id
                            :lat :excluded.lat
                            :lon :excluded.lon
                            :phone-number :excluded.phone_number}}]
     (base/exc (honey.sql/format q))))
 
 (defn seed! []
-  (doseq [{:keys [id name handle address city
-                  district state zipcode nation
-                  county lat lon phone-number
-                  website twitter instagram facebook]}
+  (doseq [{:keys [id name handle address geo-id
+                  lat lon phone-number website
+                  twitter instagram facebook]}
           (base/bring-csv "resources/seeds/places.csv")]
     (let [id' (parse-uuid id)
+          geo-id' (parse-uuid geo-id)
           lat' (Float/parseFloat lat)
-          lon' (Float/parseFloat lon)]
+          lon' (Float/parseFloat lon)
+          update-social! (fn [id platform website]
+                           (place.social/upsert!
+                            {:place/id id
+                             :place.social/platform platform
+                             :place.social/url website}))]
       (upsert!
        #:place{:id id' :name name :handle handle
-               :address address :city city
-               :district district :state state
-               :zipcode zipcode :nation nation
-               :county county :lat lat' :lon lon'
+               :address address :geo-id geo-id'
+               :lat lat' :lon lon'
                :phone-number phone-number})
       (when (seq website)
-        (place.social/upsert!
-         {:place/id id'
-          :place.social/platform :website
-          :place.social/url website}))
+        (update-social! id' :website website))
       (when (seq twitter)
-        (place.social/upsert!
-         {:place/id id'
-          :place.social/platform :twitter
-          :place.social/url twitter}))
+        (update-social! id' :twitter twitter))
       (when (seq instagram)
-        (place.social/upsert!
-         {:place/id id'
-          :place.social/platform :instagram
-          :place.social/url instagram}))
+        (update-social! id' :instagram instagram))
       (when (seq facebook)
-        (place.social/upsert!
-         {:place/id id'
-          :place.social/platform :facebook
-          :place.social/url facebook})))))
+        (update-social! id' :facebook facebook)))))
 
 (defn single-by
   [{:keys [place/id place/handle
@@ -84,32 +67,42 @@
                       {:errorr :not-found})))
     read))
 
-(defn multi-by
-  [{nation :place/nation state :place/state
-    county :place/county city :place/city
-    district :place/district
-    fraction :place.search/fraction
-    page :place.result/page per :place.result/per}]
-  (let [wrap #(str "%" % "%")
-        filters [(when nation [:ilike :nation (wrap nation)])
-                 (when state [:ilike :state (wrap state)])
-                 (when county [:ilike :county (wrap county)])
-                 (when city [:ilike :city (wrap city)])
-                 (when district [:ilike :district (wrap  district)])
-                 (when fraction [:ilike :name (wrap fraction)])]
-        page' (or page 1)
-        per' (or per 30)
-        where (into [:and] (remove nil? filters))
-        q (merge {:select [:*]
-                  :from :place
-                  :limit per'
-                  :offset (* per' (dec page'))}
-                 (when (seq where) {:where where}))]
-    (base/run q)))
-
 (defn full-list [_]
   (let [q {:select [:id :handle :name]
            :from [:place]
            :order-by [:name]}]
     (base/run q)))
 
+(defn multi-by-geo
+  [{geo-id :geo/id
+    page :place.result/page
+    per :place.result/per}]
+  (let [page' (or page 1)
+        per' (or per 30)
+        q {:with-recursive
+           [[:geo-subtree
+             {:union-all [{:select [:id] :from [:geo]
+                           :where [:= :id geo-id]}
+                          {:select [:g.id] :from [[:geo :g]]
+                           :join [[:geo-subtree :s]
+                                  [:= :g.parent-id :s.id]]}]}]]
+           :select [:p.*]
+           :from [[:place :p]]
+           :join [[:geo-subtree :s] [:= :p.geo-id :s.id]]
+           :limit per'
+           :offset (* per' (dec page'))}]
+    (base/run q)))
+
+(defn multi-by-fraction
+  [{fraction :place/fraction
+    page :place.result/page
+    per :place.result/per}]
+  (let [wrap #(str "%" % "%")
+        page' (or page 1)
+        per' (or per 30)
+        q (merge {:select [:*]
+                  :from :place
+                  :where [:ilike :name (wrap fraction)]
+                  :limit per'
+                  :offset (* per' (dec page'))})]
+    (base/run q)))

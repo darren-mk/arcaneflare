@@ -19,6 +19,9 @@
    {:builder-fn
     rs/as-kebab-maps}))
 
+(def code
+  honey.sql/format)
+
 (def run
   (comp exc honey.sql/format))
 

@@ -42,7 +42,8 @@
   {:api.public.test/hello hello
    :api.private.place/upsert! db.place.root/upsert!
    :api.public.place/single-by db.place.root/single-by
-   :api.public.place/multi-by db.place.root/multi-by
+   :api.public.place/multi-by-geo db.place.root/multi-by-geo
+   :api.public.place/multi-by-fraction db.place.root/multi-by-fraction
    :api.public.place/full-list db.place.root/full-list
    :api.private.place.love/yes! db.place.love/yes!
    :api.private.place.love/no! db.place.love/no!

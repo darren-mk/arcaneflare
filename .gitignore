@@ -25,3 +25,4 @@ resources/public/js/
 .github
 out/
 profiles.edn
+*.code-workspace

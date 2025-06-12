@@ -6,6 +6,7 @@
    [ring.adapter.jetty :as rj]
    [ring.middleware.defaults :as rmd]
    [arcaneflare.middleware :as mw]
+   [arcaneflare.database.geo.root :as db.geo.root]
    [arcaneflare.database.place.root :as db.place.root]
    [arcaneflare.database.place.love :as db.place.love]
    [arcaneflare.database.place.vote :as db.place.vote]
@@ -40,9 +41,13 @@
 
 (def fnk-map
   {:api.public.test/hello hello
+   :api.public.geo/countries db.geo.root/countries
+   :api.public.geo/find-children db.geo.root/find-children
+   :api.public.geo/multi-by db.geo.root/multi-by
    :api.private.place/upsert! db.place.root/upsert!
    :api.public.place/single-by db.place.root/single-by
-   :api.public.place/multi-by-geo db.place.root/multi-by-geo
+   :api.public.place/multi-by-geo-ids db.place.root/multi-by-geo-ids
+   :api.public.place/multi-by-ids db.place.root/multi-by-ids
    :api.public.place/multi-by-fraction db.place.root/multi-by-fraction
    :api.public.place/full-list db.place.root/full-list
    :api.private.place.love/yes! db.place.love/yes!
@@ -86,10 +91,15 @@
                    (token->member-info args))]
      (f args'))))
 
+(defn revolve [vecs]
+  (if (keyword? (first vecs))
+    (apply api vecs)
+    (vec (apply concat (map revolve vecs)))))
+
 (defn tunnel [{:keys [body]}]
   (let [body' (-> body read-string
                   last read-string)]
-    (okay :plain (apply api body'))))
+    (okay :plain (revolve body'))))
 
 (def router
   (rmd/wrap-defaults

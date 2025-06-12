@@ -1,36 +1,12 @@
 (ns arcaneflare.pages.places
   (:require
    [reagent.core :as r]
+   [arcaneflare.state :as state]
+   [arcaneflare.component.geographical :as geography]
    [arcaneflare.http :as http]))
 
-(defonce loaded
+(defonce items
   (r/atom nil))
-
-(defonce search-text
-  (r/atom nil))
-
-(defonce selected-city
-  (r/atom nil))
-
-(defonce dummy-places
-  [{:handle "a1b2c3-skyroom"
-    :name "Skyroom"
-    :location "Gangnam, Seoul"
-    :rating 4.6
-    :thread-count 12
-    :thumbnail "https://cdn.nysapphire.com/wp-content/uploads/2024/05/29191727/SapphireOnly-1.png"}
-   {:handle "d4e5f6-midnight"
-    :name "Midnight Club"
-    :location "Itaewon, Seoul"
-    :rating 4.2
-    :thread-count 8
-    :thumbnail "https://www.rickschicago.com/images/sites/34/hero.mp4"}
-   {:handle "g7h8i9-moonlight"
-    :name "Moonlight"
-    :location "Busan"
-    :rating 4.8
-    :thread-count 15
-    :thumbnail "https://www.rickschicago.com/images/sites/34/1909/ricks7.JPG"}])
 
 (defn card [place]
   [:div.column.is-one-third-tablet.is-one-quarter-desktop
@@ -56,33 +32,72 @@
 (defn content []
   [:div
    (for [{:place/keys [handle name]}
-         @loaded]
+         @items]
      ^{:key handle}
      [:div [:a {:href (str "/#/places/" handle)}
             name]])])
 
-(defn node [{:keys [query-params]}]
-  (let [{:keys [page per nation state city fraction]}
-        query-params]
-    (http/tunnel
-     [:api.public.place/multi-by-geo
-      {:place.result/page page
-       :place.result/per per
-       :place/nation nation
-       :place/state state
-       :place/city city
-       :place.search/fraction fraction}]
-     #(reset! loaded %)
-     #(js/alert %))
-    [:div.container
-     [:h1 "page: " page]
-     [:h1 "per: " per]
-     [:h1 "nation: " nation]
-     [:h1 "state: " state]
-     [:h1 "city: " city]
-     [:h1 "fraction: " fraction]
-     [content]])
+(comment
+  ;; => "state"
+  ;; => ["state" "city" "borough"]
+  ;; by area
+  ;; by name
 
+  )
+
+(defn search-hover-btn []
+  (let [active? (r/atom false)]
+    (fn []
+      [:div.dropdown
+       (when @active? {:class [:is-active]})
+       [:div.dropdown-trigger
+        [:button.button {:aria-haspopup true
+                         :on-click #(swap! active? not)}
+         [:span "Search"]
+         [:span.icon.is-small
+          [:i.fas.fa-angle-down {:aria-hidden "true"}]]]]
+       [:div.dropdown-menu {:id "dropdown-menu4"
+                            :role "menu"}
+        [:div.dropdown-content
+         [:div.dropdown-item
+          [:button
+           {:on-click #(println "by area!")}
+           "By Area"]]
+         [:div.dropdown-item
+          [:button
+           {:on-click #(println "by name!")}
+           "By Name"]]]]])))
+
+(defn extract []
+  (reduce
+   (fn [acc [_ {place-id :place/id
+                geo-id :geo/id}]]
+     (cond-> acc
+       geo-id (update :geo-ids conj geo-id)
+       place-id (update :place-ids conj place-id)))
+   {:geo-ids [] :place-ids []} @state/geographies))
+
+(defn pull []
+  (let [{:keys [geo-ids place-ids]} (extract)
+        km [(when (seq geo-ids)
+              [:api.public.place/multi-by-geo-ids
+               {:geo/ids geo-ids}])
+            (when (seq place-ids)
+              [:api.public.place/multi-by-ids
+               {:place/ids place-ids}])]
+        payload (remove nil? km)]
+    (http/tunnel
+     payload
+     #(reset! items %)
+     #(js/alert "?"))))
+
+(defn node []
+  [:div.container
+   [geography/tags {:reaction pull}]
+   [:div.container.is-flex.is-flex-direction-column
+    {:style {:gap 20}}
+    (for [{:keys [place/name]} @items]
+      [:div [:h1 (str name)]])]]
   #_[:section.section
      [:div.container
 
@@ -107,7 +122,7 @@
 
       ;; 🧱 Cards
       [:div.columns.is-multiline
-        (for [place (concat dummy-places dummy-places dummy-places)]
+       (for [place (concat dummy-places dummy-places dummy-places)]
          ^{:key (:handle place)}
          [card place])]
 

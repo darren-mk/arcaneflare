@@ -29,7 +29,7 @@
 
 (defn full-list []
   (let [q {:select [:*]
-           :from [:migration]
+           :from [:schema-migration]
            :order-by [:applied]}]
     (db-base/exc (honey.sql/format q))))
 
@@ -42,6 +42,5 @@
   (rollback)
   (up 20111206154000)
   (down 20111206154000)
-  (full-list))
-
-(most-recent)
+  (full-list)
+  (most-recent))

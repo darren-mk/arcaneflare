@@ -8,14 +8,11 @@
 (defonce theme
   (r/atom :light))
 
-(defonce areas
-  (r/atom #{}))
+(defonce geographies
+  (r/atom {}))
 
 (defonce token
   (r/atom nil))
 
 (defonce member
   (r/atom nil))
-
-(defonce errors
-  (r/atom {}))

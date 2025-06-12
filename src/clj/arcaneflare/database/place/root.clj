@@ -73,8 +73,8 @@
            :order-by [:name]}]
     (base/run q)))
 
-(defn multi-by-geo
-  [{geo-id :geo/id
+(defn multi-by-geo-ids
+  [{geo-ids :geo/ids
     page :place.result/page
     per :place.result/per}]
   (let [page' (or page 1)
@@ -82,7 +82,7 @@
         q {:with-recursive
            [[:geo-subtree
              {:union-all [{:select [:id] :from [:geo]
-                           :where [:= :id geo-id]}
+                           :where [:in :id geo-ids]}
                           {:select [:g.id] :from [[:geo :g]]
                            :join [[:geo-subtree :s]
                                   [:= :g.parent-id :s.id]]}]}]]
@@ -91,6 +91,19 @@
            :join [[:geo-subtree :s] [:= :p.geo-id :s.id]]
            :limit per'
            :offset (* per' (dec page'))}]
+    (base/run q)))
+
+(defn multi-by-ids
+  [{ids :place/ids
+    page :place.result/page
+    per :place.result/per}]
+  (let [page' (or page 1)
+        per' (or per 30)
+        q (merge {:select [:*]
+                  :from :place
+                  :where [:in :id ids]
+                  :limit per'
+                  :offset (* per' (dec page'))})]
     (base/run q)))
 
 (defn multi-by-fraction

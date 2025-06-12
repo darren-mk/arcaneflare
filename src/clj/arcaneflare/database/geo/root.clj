@@ -41,6 +41,12 @@
                  (when (seq where) {:where where}))]
     (base/run q)))
 
+(defn countries [_]
+  (base/run
+   {:select [:*]
+    :from :geo
+    :where [:= :kind "country"]}))
+
 (defn find-children [{id :geo/id}]
   (base/run
     {:select [:*]

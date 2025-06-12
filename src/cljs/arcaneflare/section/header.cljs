@@ -48,13 +48,10 @@
     :light [:i.fas.fa-lg.fa-sun
             {:style {:color "hsl(42, 100%, 53%)"}}])])
 
-(defn area-nav-item []
-  [:a {:href "/#/area"}
+(defn geography []
+  [:a {:href "/#/geography"}
    [:span.icon.is-large
-    {:on-click (fn [] (if (seq @state/areas)
-                        (reset! state/areas nil)
-                        (reset! state/areas #{"yo"})))}
-    (if (seq @state/areas)
+    (if (seq @state/geographies)
       [:i.fa-lg.fa-solid.fa-street-view
        {:style {:color "hsl(42, 100%, 53%)"}}]
       [:i.fa-lg.fa-solid.fa-earth-americas
@@ -101,6 +98,6 @@
       [:div.navbar-item [performers]]
       [:div.navbar-item [threads]]]
      [:div.navbar-end
-      [:div.navbar-item [area-nav-item]]
+      [:div.navbar-item [geography]]
       [:div.navbar-item [theme-toggle-btn]]
       [:div.navbar-item [profile]]]]]])

@@ -2,7 +2,7 @@
   (:require
    [reagent.core :as r]
    [arcaneflare.state :as state]
-   [arcaneflare.component.geographical :as geography]
+   [arcaneflare.components.geographical :as g]
    [arcaneflare.http :as http]))
 
 (defonce items
@@ -31,19 +31,10 @@
 
 (defn content []
   [:div
-   (for [{:place/keys [handle name]}
-         @items]
+   (for [{:place/keys [handle name]} @items]
      ^{:key handle}
      [:div [:a {:href (str "/#/places/" handle)}
             name]])])
-
-(comment
-  ;; => "state"
-  ;; => ["state" "city" "borough"]
-  ;; by area
-  ;; by name
-
-  )
 
 (defn search-hover-btn []
   (let [active? (r/atom false)]
@@ -75,7 +66,7 @@
      (cond-> acc
        geo-id (update :geo-ids conj geo-id)
        place-id (update :place-ids conj place-id)))
-   {:geo-ids [] :place-ids []} @state/geographies))
+   {:geo-ids [] :place-ids []} @state/geography))
 
 (defn pull []
   (let [{:keys [geo-ids place-ids]} (extract)
@@ -88,15 +79,17 @@
         payload (remove nil? km)]
     (http/tunnel
      payload
-     #(reset! items %)
+     #(reset! items (set %))
      #(js/alert "?"))))
 
 (defn node []
   [:div.container
-   [geography/tags {:reaction pull}]
+   [g/tags {:reaction pull}]
+   [g/bar {:reaction pull}]
    [:div.container.is-flex.is-flex-direction-column
     {:style {:gap 20}}
-    (for [{:keys [place/name]} @items]
+    (for [{:place/keys [name id]} @items]
+      ^{:key id}
       [:div [:h1 (str name)]])]]
   #_[:section.section
      [:div.container

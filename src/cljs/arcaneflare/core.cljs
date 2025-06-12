@@ -4,13 +4,12 @@
    [reitit.frontend :as rtf]
    [reitit.frontend.controllers :as rfc]
    [reitit.frontend.easy :as rtfe]
-   [arcaneflare.section.header :as header]
+   [arcaneflare.components.header :as header]
    [arcaneflare.state :as state]
    [arcaneflare.pages.home :as home-pg]
    [arcaneflare.pages.account :as account-pg]
    [arcaneflare.pages.login :as login-pg]
    [arcaneflare.pages.signup :as signup-pg]
-   [arcaneflare.pages.geography :as geography-pg]
    [arcaneflare.pages.places :as places-pg]
    [arcaneflare.pages.place :as place-pg]
    [arcaneflare.pages.performers :as performers-pg]
@@ -29,10 +28,6 @@
    ["/account" {:name :route/account :view account-pg/node}]
    ["/login" {:name :route/login :view login-pg/node}]
    ["/signup" {:name :route/signup :view signup-pg/node}]
-   ["/geography" {:name :route/geography
-                  :view geography-pg/node
-                  :controllers [{:start geography-pg/clean
-                                 :stop geography-pg/clean}]}]
    ["/places" {:name :route/places
                :view places-pg/node
                :parameters {:query {:page int?}}

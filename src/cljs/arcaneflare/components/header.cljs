@@ -1,4 +1,4 @@
-(ns arcaneflare.section.header
+(ns arcaneflare.components.header
   (:require
    [reagent.core :as r]
    [arcaneflare.state :as state]
@@ -48,15 +48,6 @@
     :light [:i.fas.fa-lg.fa-sun
             {:style {:color "hsl(42, 100%, 53%)"}}])])
 
-(defn geography []
-  [:a {:href "/#/geography"}
-   [:span.icon.is-large
-    (if (seq @state/geographies)
-      [:i.fa-lg.fa-solid.fa-street-view
-       {:style {:color "hsl(42, 100%, 53%)"}}]
-      [:i.fa-lg.fa-solid.fa-earth-americas
-       {:style {:color "hsl(256, 89%, 65%)"}}])]])
-
 (defn profile []
   (if @state/token
     [:a {:href "/#/account"}
@@ -98,6 +89,5 @@
       [:div.navbar-item [performers]]
       [:div.navbar-item [threads]]]
      [:div.navbar-end
-      [:div.navbar-item [geography]]
       [:div.navbar-item [theme-toggle-btn]]
       [:div.navbar-item [profile]]]]]])

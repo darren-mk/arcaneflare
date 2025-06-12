@@ -45,7 +45,7 @@
              place-name :place/name
              :as m} @items]
         [:button
-         {:on-click #(swap! state/geographies
+         {:on-click #(swap! state/geography
                             assoc (or geo-id place-id) m)}
          (str (or geo-name place-name) " ("
               (or geo-kind "club") ")")])])])

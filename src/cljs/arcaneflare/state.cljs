@@ -8,7 +8,7 @@
 (defonce theme
   (r/atom :light))
 
-(defonce geographies
+(defonce geography
   (r/atom {}))
 
 (defonce token

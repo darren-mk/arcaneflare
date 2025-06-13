@@ -47,13 +47,13 @@
     :from :geo
     :where [:= :kind "country"]}))
 
-(defn find-children [{id :geo/id}]
+(defn children-by [{id :geo/id}]
   (base/run
     {:select [:*]
      :from :geo
      :where [:= :parent-id id]}))
 
-(defn find-endings
+(defn endings-by
   [{:geo/keys [id kind full-name]}]
   (let [where (if id [:= :id id]
                   [:and

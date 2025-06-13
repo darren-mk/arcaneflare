@@ -11,6 +11,7 @@
    [arcaneflare.database.place.love :as db.place.love]
    [arcaneflare.database.place.vote :as db.place.vote]
    [arcaneflare.database.place.thumbnail :as db.place.thumbnail]
+   [arcaneflare.database.post.root :as db.post.root]
    [arcaneflare.database.member.root :as db.member.root]
    [arcaneflare.database.member.performer :as db.member.performer]
    [arcaneflare.token :as token]
@@ -42,8 +43,9 @@
 (def fnk-map
   {:api.public.test/hello hello
    :api.public.geo/countries db.geo.root/countries
-   :api.public.geo/find-children db.geo.root/find-children
+   :api.public.geo/find-children db.geo.root/children-by
    :api.public.geo/multi-by db.geo.root/multi-by
+   :api.public.geo/endings-by db.geo.root/endings-by
    :api.private.place/upsert! db.place.root/upsert!
    :api.public.place/single-by db.place.root/single-by
    :api.public.place/multi-by-geo-ids db.place.root/multi-by-geo-ids
@@ -60,6 +62,9 @@
    :api.private.place.thumbnail/add! db.place.thumbnail/add!
    :api.public.place.thumbnail/get-by db.place.thumbnail/get-by
    :api.private.place.thumbnail/remove! db.place.thumbnail/remove!
+   :api.private.post.root/upsert! db.post.root/upsert!
+   :api.public.post.root/single-by db.post.root/single-by
+   :api.public.post.root/multi-by db.post.root/multi-by
    :api.public.member.root/insert! db.member.root/insert!
    :api.public.member.root/member-by db.member.root/get-by
    :api.public.member.root/login! db.member.root/login!

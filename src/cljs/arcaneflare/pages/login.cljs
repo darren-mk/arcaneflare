@@ -12,70 +12,115 @@
 (defonce passcode-typed
   (r/atom nil))
 
-(defn title []
-  [:h1.title.is-4.has-text-centered
-   "Login"])
-
 (defn username []
-  [:div.field
-   [:label.label "Username"]
-   [:div.control
-    [:input.input
-     {:type "text"
-      :placeholder "Enter username"
-      :value @username-typed
-      :on-change (reset-tv! username-typed)}]]])
+  [:<>
+   [:label {:for "username"
+            :class ["block" "mb-2" "text-sm" "font-medium"
+                    "text-gray-900" "dark:text-white"]}
+    "Your username"]
+   [:input {:type "text" :name "text" :id "username"
+            :placeholder "type your username"
+            :required true :value @username-typed
+            :on-change (reset-tv! username-typed)
+            :class ["bg-gray-50" "border" "border-gray-300"
+                    "text-gray-900" "text-sm" "rounded-lg"
+                    "focus:ring-blue-500" "focus:border-blue-500"
+                    "block" "w-full" "p-2.5"
+                    "dark:bg-gray-600" "dark:border-gray-500"
+                    "dark:placeholder-gray-400" "dark:text-white"]}]])
 
 (defn passcode []
-  [:div.field
-   [:label.label "Password"]
-   [:div.control
-    [:input.input
-     {:type "password"
-      :placeholder "Enter password"
-      :value @passcode-typed
-      :on-change (reset-tv! passcode-typed)}]]])
-
-(defn forgot []
-  [:div.has-text-centered
-   [:a {:href "#"}
-    "Forgot your password?"]])
+  [:<>
+   [:label {:for "password"
+            :class ["block" "mb-2" "text-sm" "font-medium"
+                    "text-gray-900" "dark:text-white"]}
+    "Your passcode"]
+   [:input {:type "password" :name "passcode"
+            :id "passcode" :placeholder "••••••••"
+            :required true :value @passcode-typed
+            :on-change (reset-tv! passcode-typed)
+            :class ["bg-gray-50" "border" "border-gray-300"
+                    "text-gray-900" "text-sm" "rounded-lg"
+                    "focus:ring-blue-500" "focus:border-blue-500"
+                    "block" "w-full" "p-2.5"
+                    "dark:bg-gray-600" "dark:border-gray-500"
+                    "dark:placeholder-gray-400" "dark:text-white"]}]])
 
 (defn submit []
-  (println "logging in with "
-           @username-typed ", "
-           @passcode-typed)
   (tunnel [:api.public.member.root/login!
            {:member/username @username-typed
             :member/passcode @passcode-typed}]
           (fn [token]
-            (when token
-              (tk/new token)
-              (rtfe/push-state :route/home)))
-          (fn [msg]
-            (println msg))))
+            (when token (tk/new token)
+                  (rtfe/push-state :route/home)))
+          (fn [msg] (println msg))))
 
-(defn submission []
-  [:div.field.mt-4
-   [:div.control
-    [:button.button.is-primary.is-fullwidth
-     {:on-click submit}
-     "Log In"]]])
+(defn title []
+  [:h5 {:class ["font-medium" "text-gray-900"
+                "text-xl" "dark:text-white"]}
+   "Sign in to our platform"])
 
-(defn signup []
-  [:p.has-text-centered.mt-2
-   [:span "Don’t have an account? "]
-   [:a {:href "/#/signup"} "Sign up"]])
+(defn remember-me []
+  [:div {:class ["flex" "items-start"]}
+    [:div {:class ["flex" "items-center" "h-5"]}
+     [:input {:id "remember" :type "checkbox" :required true
+              :class ["w-4" "h-4" "border" "border-gray-300" "rounded-sm"
+                      "bg-gray-50" "focus:ring-3" "focus:ring-blue-300"
+                      "dark:bg-gray-700" "dark:border-gray-600"
+                      "dark:focus:ring-blue-600" "dark:ring-offset-gray-800"
+                      "dark:focus:ring-offset-gray-800"]}]]
+    [:label {:for "remember"
+             :class ["ms-2" "text-sm" "font-medium" "text-gray-900"
+                     "dark:text-gray-300"]}
+     "Remember me"]])
+
+(defn lost-passcode []
+  [:a {:href "#" ;; TODO
+       :class ["ms-auto" "text-sm" "text-blue-700" "hover:underline"
+               "dark:text-blue-500"]}
+   "Lost Passcode?"])
+
+(defn remedy []
+  [:div {:class ["flex" "items-start"]}
+   [remember-me]
+   [lost-passcode]])
+
+(defn submit-btn []
+  [:button {:type "submit"
+            :class ["w-full" "text-white" "bg-blue-700"
+                    "hover:bg-blue-800" "focus:ring-4"
+                    "focus:outline-none" "focus:ring-blue-300"
+                    "font-medium" "rounded-lg" "text-sm"
+                    "px-5" "py-2.5" "text-center"
+                    "dark:bg-blue-600" "dark:hover:bg-blue-700"
+                    "dark:focus:ring-blue-800"]
+    :on-click submit}
+   "Login to your account"])
+
+(defn sign-up-link []
+  [:div {:class ["font-medium" "text-gray-500"
+                 "text-sm" "dark:text-gray-300"]}
+   "Not registered? "
+   [:a {:href "#"
+        :class ["text-blue-700" "hover:underline"
+                "dark:text-blue-500"]}
+    "Create account"]])
+
+(defn form []
+  [:div
+   {:class ["w-full" "max-w-sm" "p-4" "bg-white" "border"
+            "border-gray-200" "rounded-lg" "shadow-sm"
+            "sm:p-6" "md:p-8" "dark:bg-gray-800"
+            "dark:border-gray-700"]}
+   [:form {:class ["space-y-6"]}
+    [title]
+    [username]
+    [passcode]
+    [remedy]
+    [submit-btn]
+    [sign-up-link]]])
 
 (defn node []
-  [:section.section
-   {:style {:margin-top "15%"}}
-   [:div.columns.is-centered
-    [:div.column.is-one-third
-     [:div.box
-      [title]
-      [username]
-      [passcode]
-      [submission]
-      [forgot]
-      [signup]]]]])
+  [:div {:class ["flex" "items-center"
+                 "justify-center" "min-h-screen"]}
+   [form]])

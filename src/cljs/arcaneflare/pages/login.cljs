@@ -46,7 +46,7 @@
                     "dark:bg-gray-600" "dark:border-gray-500"
                     "dark:placeholder-gray-400" "dark:text-white"]}]])
 
-(defn submit []
+(defn submit-fn []
   (tunnel [:api.public.member.root/login!
            {:member/username @username-typed
             :member/passcode @passcode-typed}]
@@ -85,7 +85,7 @@
    [remember-me]
    [lost-passcode]])
 
-(defn submit-btn []
+(defn submit []
   [:button {:type "submit"
             :class ["w-full" "text-white" "bg-blue-700"
                     "hover:bg-blue-800" "focus:ring-4"
@@ -94,30 +94,31 @@
                     "px-5" "py-2.5" "text-center"
                     "dark:bg-blue-600" "dark:hover:bg-blue-700"
                     "dark:focus:ring-blue-800"]
-    :on-click submit}
+    :on-click submit-fn}
    "Login to your account"])
 
 (defn sign-up-link []
-  [:div {:class ["font-medium" "text-gray-500"
-                 "text-sm" "dark:text-gray-300"]}
-   "Not registered? "
-   [:a {:href "#"
+  [:div {:class ["flex" "flex-row" "items-center"
+                 "justify-between"]}
+   [:div {:class ["font-medium" "text-gray-500"
+                  "text-sm" "dark:text-gray-300"]}
+    "Not registered?"]
+   [:a {:href "/#/signup"
         :class ["text-blue-700" "hover:underline"
                 "dark:text-blue-500"]}
     "Create account"]])
 
 (defn form []
-  [:div
-   {:class ["w-full" "max-w-sm" "p-4" "bg-white" "border"
-            "border-gray-200" "rounded-lg" "shadow-sm"
-            "sm:p-6" "md:p-8" "dark:bg-gray-800"
-            "dark:border-gray-700"]}
+  [:div {:class ["w-full" "max-w-sm" "p-4" "bg-white"
+                 "border" "border-gray-200" "rounded-lg"
+                 "shadow-sm" "sm:p-6" "md:p-8"
+                 "dark:bg-gray-800" "dark:border-gray-700"]}
    [:form {:class ["space-y-6"]}
     [title]
     [username]
     [passcode]
     [remedy]
-    [submit-btn]
+    [submit]
     [sign-up-link]]])
 
 (defn node []

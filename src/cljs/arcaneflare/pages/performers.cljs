@@ -14,7 +14,7 @@
      [:a.card-footer-item "❤️"]]]]) ; or add toggle logic
 
 (defn node [{:keys [query-params]}]
-  (let [page (get query-params :page 1)
+  (let [page (or (get query-params :page) 1)
         performers [{:name "Luna Love"
                      :club "Red Velvet"
                      :specialty "Pole Dancing"

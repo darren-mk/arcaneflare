@@ -26,9 +26,12 @@
     "arcaneflare")))
 
 (def routes
-  [["/" {:name :route/home :view home-pg/node}]
-   ["/account" {:name :route/account :view account-pg/node}]
-   ["/login" {:name :route/login :view login-pg/node}]
+  [["/" {:name :route/home
+         :view home-pg/node}]
+   ["/account" {:name :route/account
+                :view account-pg/node}]
+   ["/login" {:name :route/login
+              :view login-pg/node}]
    ["/signup" {:name :route/signup :view signup-pg/node}]
    ["/places" {:name :route/places
                :view places-pg/node

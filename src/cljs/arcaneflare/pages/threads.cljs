@@ -3,7 +3,7 @@
    [arcaneflare.sections.geographical :as g]))
 
 (defn node [{:keys [query-params]}]
-  (let [page (get query-params :page 1)
+  (let [page (or (get query-params :page 1) 0)
         reviews [{:user "Alex"
                   :club "Red Velvet"
                   :rating 4.5

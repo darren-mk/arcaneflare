@@ -1,4 +1,6 @@
-(ns arcaneflare.pages.threads)
+(ns arcaneflare.pages.threads
+  (:require
+   [arcaneflare.sections.geographical :as g]))
 
 (defn node [{:keys [query-params]}]
   (let [page (get query-params :page 1)
@@ -12,10 +14,10 @@
                   :comment "Music was too loud but decent drinks."}]]
 
     [:section.section
+     [g/tags]
+     [g/bar]
      [:div.container
-
       [:h1.title "User Reviews" page]
-
       ;; === Table ===
       [:table.table.is-striped.is-fullwidth
        [:thead
@@ -31,12 +33,15 @@
            [:td club]
            [:td (str "⭐ " rating)]
            [:td comment]])]]
-
       ;; === Pagination ===
-      [:nav.pagination.is-centered {:role "navigation" :aria-label "pagination"}
+      [:nav.pagination.is-centered
+       {:role "navigation" :aria-label "pagination"}
        [:a.pagination-previous "Previous"]
        [:a.pagination-next "Next"]
        [:ul.pagination-list
-        [:li [:a.pagination-link.is-current {:aria-label "Page 1"} "1"]]
-        [:li [:a.pagination-link {:aria-label "Goto page 2"} "2"]]
-        [:li [:a.pagination-link {:aria-label "Goto page 3"} "3"]]]]]]))
+        (for [i (range 23)]
+          ^{:key i}
+          [:li [:a.pagination-link
+                (when (= 3 i)
+                  {:class :is-current})
+                (inc i)]])]]]]))

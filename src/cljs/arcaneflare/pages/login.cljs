@@ -4,7 +4,8 @@
    [reitit.frontend.easy :as rtfe]
    [arcaneflare.http :refer [tunnel]]
    [arcaneflare.token :as tk]
-   [arcaneflare.utils :refer [reset-tv!]]))
+   [arcaneflare.utils :refer [reset-tv!]]
+   [arcaneflare.state :as state]))
 
 (defonce username-typed
   (r/atom nil))
@@ -50,9 +51,10 @@
   (tunnel [:api.public.member.root/login!
            {:member/username @username-typed
             :member/passcode @passcode-typed}]
-          (fn [token]
+          (fn [{:keys [member token]}]
             (when token (tk/new token)
-                  (rtfe/push-state :route/home)))
+                  (rtfe/push-state :route/home))
+            (reset! state/member member))
           (fn [msg] (println msg))))
 
 (defn title []
@@ -63,7 +65,8 @@
 (defn remember-me []
   [:div {:class ["flex" "items-start"]}
     [:div {:class ["flex" "items-center" "h-5"]}
-     [:input {:id "remember" :type "checkbox" :required true
+     [:input {:id "remember" :type "checkbox"
+              :required true :default-checked true
               :class ["w-4" "h-4" "border" "border-gray-300" "rounded-sm"
                       "bg-gray-50" "focus:ring-3" "focus:ring-blue-300"
                       "dark:bg-gray-700" "dark:border-gray-600"
@@ -113,7 +116,7 @@
                  "border" "border-gray-200" "rounded-lg"
                  "shadow-sm" "sm:p-6" "md:p-8"
                  "dark:bg-gray-800" "dark:border-gray-700"]}
-   [:form {:class ["space-y-6"]}
+   [:div {:class ["space-y-6"]}
     [title]
     [username]
     [passcode]

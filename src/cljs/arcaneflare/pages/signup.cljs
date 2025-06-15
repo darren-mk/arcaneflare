@@ -18,9 +18,6 @@
 (defonce passcode-typed
   (r/atom nil))
 
-(defonce confirm-passcode-typed
-  (r/atom nil))
-
 (defn title []
   [:h5 {:class ["font-medium" "text-gray-900"
                 "text-xl" "dark:text-white"]}
@@ -81,8 +78,6 @@
       [:option {:value item}
        (cstr/capitalize (name item))])]])
 
-(cstr/capitalize (name :customer))
-
 (defn passcode []
   [:<>
    [:label {:for "password"
@@ -137,7 +132,7 @@
                  "border" "border-gray-200" "rounded-lg"
                  "shadow-sm" "sm:p-6" "md:p-8"
                  "dark:bg-gray-800" "dark:border-gray-700"]}
-   [:form {:class ["space-y-6"]}
+   [:div {:class ["space-y-6"]}
     [title] [username] [role] [email]
     [passcode] [submit] [login-link]]])
 

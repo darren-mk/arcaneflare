@@ -81,7 +81,7 @@
   (when-not token
     (throw (ex-info "token not present"
                     {:cause "token missing"})))
-  (let [claims (token/verify token)]
+  (let [claims (token/unsign token)]
     (merge (dissoc args :member/token)
            (dissoc claims :iat :exp))))
 

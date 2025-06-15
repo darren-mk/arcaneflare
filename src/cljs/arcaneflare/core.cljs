@@ -4,7 +4,7 @@
    [reitit.frontend :as rtf]
    [reitit.frontend.controllers :as rfc]
    [reitit.frontend.easy :as rtfe]
-   [arcaneflare.components.header :as header]
+   [arcaneflare.sections.header :as header]
    [arcaneflare.state :as state]
    [arcaneflare.pages.home :as home-pg]
    [arcaneflare.pages.account :as account-pg]
@@ -15,7 +15,9 @@
    [arcaneflare.pages.performers :as performers-pg]
    [arcaneflare.pages.performer :as performer-pg]
    [arcaneflare.pages.threads :as threads-pg]
-   [arcaneflare.pages.thread :as thread-pg]))
+   [arcaneflare.pages.thread :as thread-pg]
+   [arcaneflare.token :as token]
+   [arcaneflare.http :as http]))
 
 (defonce root-container
   (rdc/create-root
@@ -47,28 +49,38 @@
                         :parameters {:path {:handle string?}}}]])
 
 (defn current-page []
-  [:div.container.is-fullhd
+  [:div
    [header/navbar]
    (when @state/match
      (let [view (-> @state/match :data :view)]
        [view @state/match]))])
 
+(defn pull-member-when-token []
+  (when @state/token
+    (http/tunnel
+     [:api.public.member.root/member-by
+      {:member/token @state/token}]
+     (fn [member]
+       (reset! state/member member))
+     (fn [msg]
+       (token/remove!)
+       (println msg)))))
+
+(defn switch [new]
+  (swap! state/match
+         (fn [old-match]
+           (when new
+             (assoc new :controllers
+                    (rfc/apply-controllers
+                     (:controllers old-match)
+                     new))))))
+
 (defn ^:dev/after-load start []
-  (rtfe/start!
-   (rtf/router routes)
-   (fn [new]
-     (swap!
-      state/match
-      (fn [old-match]
-        (when new
-          (assoc new
-                 :controllers (rfc/apply-controllers
-                               (:controllers old-match)
-                               new))))))
-   {:use-fragment true})
-  (rdc/render
-   root-container
-   [current-page])
+  (rtfe/start! (rtf/router routes) switch
+               {:use-fragment true})
+  (token/reload!)
+  (pull-member-when-token)
+  (rdc/render root-container [current-page])
   (println "arcaneflare frontend app started."))
 
 (defn ^:dev/before-load stop []

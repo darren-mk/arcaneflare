@@ -1,4 +1,4 @@
-(ns arcaneflare.components.geographical
+(ns arcaneflare.sections.geographical
   (:require
    [reagent.core :as r]
    [arcaneflare.http :as http]

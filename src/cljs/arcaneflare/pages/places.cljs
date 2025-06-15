@@ -2,7 +2,7 @@
   (:require
    [reagent.core :as r]
    [arcaneflare.state :as state]
-   [arcaneflare.components.geographical :as g]
+   [arcaneflare.sections.geographical :as g]
    [arcaneflare.http :as http]))
 
 (defonce items

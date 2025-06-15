@@ -7,7 +7,7 @@
   (or @c.state/token
       (local/read :token)))
 
-(defn refresh []
+(defn reload! []
   (reset! c.state/token
           (local/read :token)))
 

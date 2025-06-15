@@ -10,7 +10,7 @@
   (let [token (a/gen! {:id "abc123"
                        :role :performer})
         {:keys [id role iat exp]}
-        (a/verify token)]
+        (a/unsign token)]
     (t/is (and id iat exp
                (= "abc123" id)
                (= role "performer")))))

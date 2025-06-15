@@ -14,18 +14,18 @@
            :values [[(or id (random-uuid))
                      username email role
                      passcode-hash [:raw "now()"]]]}]
-    (-> (db.base/run q)
-        first vals first)))
+    (-> (db.base/run q) first vals first)))
 
 (defn get-by
-  [{:member/keys [id username email]}]
+  [{:member/keys [id username email token]}]
   (let [where (cond id [:= :id id]
                     username [:= :username username]
-                    email [:= :email email])
+                    email [:= :email email]
+                    token [:= :id (-> token token/unsign :member/id)])
         q {:select [:*]
            :from :member
            :where where}]
-    (first (db.base/exc (sql/format q)))))
+    (-> q db.base/run first)))
 
 (defn remove!
   [{member-id :member/id}]
@@ -40,6 +40,8 @@
                    passcode passcode-hash)]
     (and verified? member)))
 
+(get-by {:member/username "guava"})
+
 (defn update-last-login!
   [{:member/keys [id]}]
   (let [q {:update :member
@@ -53,5 +55,6 @@
     (when-not member
       (throw (ex-info "no match" {:error :not-found})))
     (update-last-login! {:member/id id})
-    (token/gen! {:member/id id
-                 :member/role role})))
+    {:member member
+     :token (token/gen! {:member/id id
+                         :member/role role})}))

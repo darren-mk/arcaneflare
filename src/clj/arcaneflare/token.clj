@@ -18,7 +18,7 @@
     (jwt/sign (assoc payload :iat now :exp exp)
               secret {:alg :hs256})))
 
-(defn verify [token]
+(defn unsign [token]
   (try
     (update (jwt/unsign token secret {:alg :hs256})
             :member/id parse-uuid)

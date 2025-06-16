@@ -40,8 +40,6 @@
                    passcode passcode-hash)]
     (and verified? member)))
 
-(get-by {:member/username "guava"})
-
 (defn update-last-login!
   [{:member/keys [id]}]
   (let [q {:update :member

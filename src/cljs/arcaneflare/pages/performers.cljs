@@ -13,8 +13,8 @@
      [:a.card-footer-item {:href (str "/performers/" id)} "View"]
      [:a.card-footer-item "❤️"]]]]) ; or add toggle logic
 
-(defn node [{:keys [query-params]}]
-  (let [page (or (get query-params :page) 1)
+(defn node [{:keys [_query-params]}]
+  (let [#_#_page (or (get query-params :page) 1)
         performers [{:name "Luna Love"
                      :club "Red Velvet"
                      :specialty "Pole Dancing"

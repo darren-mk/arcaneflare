@@ -1,107 +1,76 @@
 (ns arcaneflare.common.schema
-  (:require [clojure.spec.alpha :as s]))
-
+  #_(:require [clojure.spec.alpha :as s]))
+#_
 (s/def :person/id uuid?)
+
+#_
 (s/def :person/email
   (let [rgx #"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,63}$"]
     (s/and string? #(re-matches rgx %))))
-(s/def :person/username string?)
+#_
 (s/def :person/password string?)
+#_
 (s/def :person/role
   #{:role/customer
     :role/provider
     :role/owner
     :role/staff})
-(s/def :person/object
-  (s/keys :req [:person/id
-                :person/email
-                :person/username
-                :person/password
-                :person/role]))
-
-(s/def :script/number
-  int?)
-
-(s/def :script/description
-  string?)
-
-(s/def script/object
-  (s/keys :req [:xt/id
-                :script/number
-                :script/description]))
-
-(s/def :country/label
-  string?)
-
-(s/def :country/acronym
-  string?)
-
-(s/def :country/object
-  (s/keys :req [:xt/id
-                :country/label
-                :country/acronym]))
-
+#_
 (s/def :state/label
   string?)
-
+#_
 (s/def :state/acronym
   string?)
-
+#_
 (s/def :state/country-id
   uuid?)
-
+#_
 (s/def :state/object
   (s/keys :req [:xt/id
                 :state/label
                 :state/acronym
                 :state/country-id]))
-
+#_
 (s/def :district/label
   string?)
-
+#_
 (s/def :district/state-id
   uuid?)
-
+#_
 (s/def :district/object
   (s/keys :req [:xt/id
                 :district/label
                 :district/state-id]))
-
+#_
 (s/def :city/label
   string?)
-
+#_
 (s/def :city/district-id
   uuid?)
-
+#_
 (s/def :city/object
   (s/keys :req [:xt/id
                 :city/label
                 :city/district-id]))
-
+#_
 (s/def :address/street
   string?)
-
+#_
 (s/def :address/zip
   (s/and string?
          #(re-matches
            #"^[0-9]{5}(?:-[0-9]{4})?$" %)))
-
+#_
 (s/def :address/city-id
   uuid?)
-
-(s/def :address/object
-  (s/keys :req [:xt/id
-                :address/street
-                :address/zip
-                :address/city-id]))
-
+#_
 (def language
   "following iso 639 language codes"
   [:enum :en :es :fr])
-
+#_
 (def industry
   [:enum :strip-club :parlor])
-
+#_
 (def place
   [:map {:closed true}
    [:xt/id {:optional true} :uuid]
@@ -120,24 +89,24 @@
    [:place/google-id {:optional true} [:string {:min 1 :max 60}]]
    [:place/google-uri {:optional true} [:string {:min 1 :max 60}]]
    [:place/address-id :uuid]])
-
+#_
 (def nickname
   [:and
    [:string {:min 4 :max 15}]
    [:re #"^[a-zA-Z0-9]+$"]])
-
+#_
 (def email
   "consider adding regex validation"
   [:and
    [:string {:min 5 :max 40}]])
-
+#_
 (def password
   [:re #"^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.* ).{8,16}$"])
-
+#_
 (def roles
   [:enum :customer :performer
    :provider :owner :staff])
-
+#_
 (def person
   [:map {:closed true}
    [:xt/id {:optional true} :uuid]
@@ -148,7 +117,7 @@
    [:person/role roles]
    [:person/agreed? :boolean]
    [:person/preferences {:optional true} :map]])
-
+#_
 (def file
   [:map {:closed true}
    [:xt/id {:optional true} :uuid]
@@ -158,7 +127,7 @@
    [:file/objk [:string {:min 5 :max 60}]]
    [:file/designation [:string {:min 1 :max 60}]]
    [:file/size :int]])
-
+#_
 (def profile
   [:map {:closed true}
    [:xt/id {:optional true} :uuid]
@@ -166,7 +135,7 @@
    [:profile/person-id :uuid]
    [:profile/phrase :string]
    [:profile/place-ids [:set :uuid]]])
-
+#_
 (def session
   [:map {:closed true}
    [:xt/id {:optional true} :uuid]
@@ -174,7 +143,7 @@
    [:session/person-id :uuid]
    [:session/renewal inst?]
    [:session/expiration inst?]])
-
+#_
 (def post
   [:map {:closed true}
    [:xt/id {:optional true} :uuid]
@@ -189,24 +158,6 @@
    [:post/created inst?]
    [:post/updated inst?]
    [:post/person-id :uuid]])
-
-(def commentary
-  [:map {:closed true}
-   [:xt/id {:optional true} :uuid]
-   [:commentary/id :uuid]
-   [:commentary/content [:string {:min 3}]]
-   [:commentary/created inst?]
-   [:commentary/updated inst?]
-   [:commentary/post-id :uuid]
-   [:commentary/person-id :uuid]])
-
-(def recency
-  [:map {:closed true}
-   [:xt/id {:optional true} :uuid]
-   [:recency/id :uuid]
-   [:recency/post-id :uuid]
-   [:recency/commentary-id {:optional true} :uuid]
-   [:recency/timestamp inst?]])
 
 #_
 (def setting

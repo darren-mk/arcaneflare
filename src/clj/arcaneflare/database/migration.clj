@@ -7,7 +7,7 @@
 (def config {:store :database
              :migration-dir "migrations/"
              :migration-table-name "migration"
-             :db db-base/db})
+             :db db-base/spec})
 
 (defn create [label]
   (migratus/create

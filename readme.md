@@ -8,6 +8,14 @@
 clojure -M:prod
 ```
 
+Then you will see details of components started:
+
+```shell
+started:  #'arcaneflare.database.base/ds
+started:  #'arcaneflare.handler/server
+backend successfully started
+```
+
 ### Running Tests
 
 ```shell

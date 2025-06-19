@@ -26,7 +26,7 @@
   (doseq [{:keys [id name handle address geo-id
                   lat lon phone-number website
                   twitter instagram facebook]}
-          (base/bring-csv "resources/seeds/places.csv")]
+          (base/csv "resources/seeds/places.csv")]
     (let [id' (parse-uuid id)
           geo-id' (parse-uuid geo-id)
           lat' (Float/parseFloat lat)

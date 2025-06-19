@@ -2,9 +2,8 @@
   (:require
    [clojure.tools.namespace.repl :as tn]
    [mount.core :as m]
-   [clojure.spec.alpha :as s]
-   [orchestra.spec.test :as ost]
-   [arcaneflare.core :as c]
+   [arcaneflare.database.base]
+   [arcaneflare.handler]
    [arcaneflare.database.migration :as migration]
    [arcaneflare.database.geo.root :as geo.root]
    [arcaneflare.database.place.root :as place.root]))
@@ -19,13 +18,9 @@
   #'migration/rollback)
 
 (defn start []
-  (s/check-asserts true)
-  (ost/instrument)
-  (m/start #'c/server))
+  (m/start))
 
 (defn stop []
-  (s/check-asserts false)
-  (ost/unstrument)
   (m/stop))
 
 (defn restart []

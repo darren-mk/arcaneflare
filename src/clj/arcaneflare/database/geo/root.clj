@@ -17,7 +17,7 @@
 
 (defn seed! []
   (doseq [{:keys [id kind full-name parent-id is-ending]}
-          (base/bring-csv "resources/seeds/geos.csv")]
+          (base/csv "resources/seeds/geos.csv")]
     (upsert!
      #:geo{:id (parse-uuid id)
            :kind kind

@@ -1,7 +1,7 @@
-(ns arcaneflare.core-test
+(ns arcaneflare.handler-test
   (:require
    [clojure.test :as t]
-   [arcaneflare.core :as a]
+   [arcaneflare.handler :as a]
    [arcaneflare.token :as tk]))
 
 (t/deftest public-api?-test

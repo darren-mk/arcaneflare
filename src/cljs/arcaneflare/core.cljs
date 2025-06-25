@@ -17,13 +17,16 @@
    [arcaneflare.pages.threads :as threads-pg]
    [arcaneflare.pages.thread :as thread-pg]
    [arcaneflare.token :as token]
-   [arcaneflare.http :as http]))
+   [arcaneflare.http :as http]
+   [reagent.core :as r]))
 
-(defonce root-container
-  (rdc/create-root
-   (.getElementById
-    js/document
-    "arcaneflare")))
+(def root-elem
+  (.getElementById
+   js/document
+   "arcaneflare"))
+
+(defonce boxed-root
+  (atom nil))
 
 (def routes
   [["/" {:name :route/home
@@ -53,7 +56,7 @@
 
 (defn current-page []
   [:div
-   [header/navbar]
+   [header/root]
    (when @state/match
      (let [view (-> @state/match :data :view)]
        [view @state/match]))])
@@ -67,7 +70,7 @@
        (reset! state/member member))
      (fn [msg]
        (token/remove!)
-       (println msg)))))
+       (js/console.warn msg)))))
 
 (defn switch [new]
   (swap! state/match
@@ -79,15 +82,22 @@
                      new))))))
 
 (defn ^:dev/after-load start []
+  (when-not @boxed-root
+    (reset! boxed-root
+            (rdc/create-root root-elem)))
   (rtfe/start! (rtf/router routes) switch
                {:use-fragment true})
   (token/reload!)
   (pull-member-when-token)
-  (rdc/render root-container [current-page])
-  (println "arcaneflare frontend app started."))
+  (.render @boxed-root
+           (r/as-element [current-page]))
+  (js/console.log "frontend started"))
 
 (defn ^:dev/before-load stop []
-  (println "arcaneflare frontend app stopped."))
+  (when @boxed-root
+    (.unmount @boxed-root)
+    (reset! boxed-root nil))
+  (js/console.log "frontend stopped"))
 
 (defn ^:export init []
   (start))

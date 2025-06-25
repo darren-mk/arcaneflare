@@ -15,35 +15,13 @@
    [arcaneflare.database.post.root :as db.post.root]
    [arcaneflare.database.member.root :as db.member.root]
    [arcaneflare.database.member.performer :as db.member.performer]
+   [arcaneflare.database.tick.root :as db.tick.root]
    [arcaneflare.token :as token]
    [arcaneflare.utils :as u]
    [clojure.string :as str]))
 
-(defn okay [text-type body]
-  {:status 200
-   :headers {"Content-Type"
-             (case text-type
-               :plain "text/plain"
-               :html "text/html")}
-   :body body})
-
-(defn ping [_req]
-  (okay :plain "pong"))
-
-(defn echo [req]
-  (okay :plain (str req)))
-
-(defn frontend [_]
-  (okay :html
-        (-> "public/index.html"
-            io/resource slurp)))
-
-(defn hello [{:keys [hello/first-name]}]
-  {:msg (str "hello, " first-name)})
-
 (def fnk-map
-  {:api.public.test/hello hello
-   :api.public.geo/countries db.geo.root/countries
+  {:api.public.geo/countries db.geo.root/countries
    :api.public.geo/find-children db.geo.root/children-by
    :api.public.geo/multi-by db.geo.root/multi-by
    :api.public.geo/endings-by db.geo.root/endings-by
@@ -71,7 +49,8 @@
    :api.public.member.root/login! db.member.root/login!
    :api.private.member.performer/upsert! db.member.performer/upsert!
    :api.private.member.performer/remove! db.member.performer/remove!
-   :api.private.member.performer/get-by db.member.performer/get-by})
+   :api.private.member.performer/get-by db.member.performer/get-by
+   :api.public.tick.root/now db.tick.root/now})
 
 (defn public-api? [fnk]
   (-> fnk namespace
@@ -102,6 +81,29 @@
     (apply api vecs)
     (vec (apply concat (map revolve vecs)))))
 
+(defn okay [text-type body]
+  {:status 200
+   :headers {"Content-Type"
+             (case text-type
+               :plain "text/plain"
+               :html "text/html")}
+   :body body})
+
+(defn ping [_req]
+  (okay :plain "pong"))
+
+(defn echo [req]
+  (okay :plain (str req)))
+
+(defn frontend [_]
+  (okay :html
+        (-> "public/index.html"
+            io/resource slurp)))
+
+(defn tick [_]
+  (okay :plain
+        (api :api.public.tick.root/now)))
+
 (defn tunnel [{:keys [body]}]
   (let [body' (-> body read-string
                   last read-string)]
@@ -117,7 +119,8 @@
                             mw/stringify-resp-body]}
        ["/tunnel" {:post tunnel}]
        ["/ping" {:get ping}]
-       ["/echo" {:get echo}]]])
+       ["/echo" {:get echo}]
+       ["/tick" {:get tick}]]])
     (rr/routes
      (rr/create-resource-handler {:path "/"})
      (rr/create-default-handler)))

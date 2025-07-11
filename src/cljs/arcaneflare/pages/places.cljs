@@ -83,14 +83,19 @@
      #(js/alert "?"))))
 
 (defn node []
-  [:div.container
+  [:div {:class ['max-w-screen-xl 'flex 'flex-wrap
+                 'items-center 'justify-between
+                 'mx-auto 'p-4]}
    [g/tags {:reaction pull}]
-   [g/bar {:reaction pull}]
+   [g/search-bar {:reaction pull}]
+   [g/search-result]
    [:div.container.is-flex.is-flex-direction-column
     {:style {:gap 20}}
     (for [{:place/keys [name id]} @items]
       ^{:key id}
-      [:div [:h1 (str name)]])]]
+      [:div [:h1 (str name)]])]
+   [:h1 {:class ['text-yellow-300]} "[CONTENT]"]]
+
   #_[:section.section
      [:div.container
 

@@ -54,11 +54,11 @@
                        'truncate 'dark:text-gray-400]}
         email]]
       [:ul {:class ['py-2]}
-       (for [[item f] [[:account #(rfe/push-state :route/account)]
+       (for [[k f] [[:account #(rfe/push-state :route/account)]
                        [:log-out #(do (reset! state/member nil)
                                       (reset! state/token nil)
                                       (token/remove!))]]]
-         ^{:key item}
+         ^{:key k}
          [:li {:on-click #(do (reset! member-dropdown-closed? true)
                               (f))
                :class ['block 'text-sm 'px-4 'py-2
@@ -66,7 +66,7 @@
                        'dark:hover:bg-gray-600
                        'dark:text-gray-200
                        'dark:hover:text-white]}
-          (-> item name cstr/capitalize)])]]]))
+          (-> k name cstr/capitalize)])]]]))
 
 (defonce menu-shown-on-mobile?
   (r/atom false))
@@ -93,10 +93,10 @@
                   'md:mt-0 'md:border-0 'md:bg-white
                   'dark:bg-gray-800 'md:dark:bg-gray-900
                   'dark:border-gray-700]}
-     (for [item [:route/places :route/performers :route/threads]]
-       ^{:key item}
-       (let [selected? (cstr/includes? path (name item))]
-         [:li [:button {:on-click #(rfe/push-state item)
+     (for [k [:route/places :route/performers :route/threads]]
+       (let [selected? (cstr/includes? path (name k))]
+         ^{:key (name k)}
+         [:li [:button {:on-click #(rfe/push-state k)
                         :class [(if selected? 'text-green-400 'text-white)
                                 'block 'py-2 'px-3 'rounded-sm 'text-gray-900
                                 'hover:bg-gray-100 'md:hover:bg-transparent
@@ -104,7 +104,7 @@
                                 'md:dark:hover:text-blue-500 'dark:hover:bg-gray-700
                                 'dark:hover:text-white 'md:dark:hover:bg-transparent
                                 'dark:border-gray-700]}
-               (cstr/capitalize (name item))]]))]))
+               (cstr/capitalize (name k))]]))]))
 
 (defn menu-on-mobile []
   (when @menu-shown-on-mobile?
@@ -128,7 +128,7 @@
    "Get started"])
 
 (defn member []
-  [:div {:class ['flex 'items-center 'md:order-2
+  [:div {:class ['flex 'items-center 'md:order-3
                  'space-x-3 'md:space-x-0
                  'rtl:space-x-reverse]}
    (if @state/member
@@ -136,10 +136,11 @@
      [get-started])
    [mobile-menu-toggle-btn]])
 
-(defn navbar []
+(defn root []
   [:nav {:class ['bg-white 'border-gray-200
                  'dark:bg-gray-900]}
    [:div {:class ['max-w-screen-xl 'flex 'flex-wrap
+                  'md:flex-row
                   'items-center 'justify-between
                   'mx-auto 'p-4]}
     [logo] [member]

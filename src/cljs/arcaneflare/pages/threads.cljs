@@ -15,7 +15,7 @@
 
     [:section.section
      [g/tags]
-     [g/bar]
+     [g/search-bar]
      [:div.container
       [:h1.title "User Reviews" page]
       ;; === Table ===

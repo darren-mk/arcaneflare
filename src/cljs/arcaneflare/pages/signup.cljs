@@ -128,7 +128,7 @@
    "Create your account"])
 
 (defn form []
- [:div {:class ["w-full" "max-w-sm" "p-4" "bg-white"
+  [:div {:class ["w-full" "max-w-sm" "p-4" "bg-white"
                  "border" "border-gray-200" "rounded-lg"
                  "shadow-sm" "sm:p-6" "md:p-8"
                  "dark:bg-gray-800" "dark:border-gray-700"]}
@@ -137,6 +137,6 @@
     [passcode] [submit] [login-link]]])
 
 (defn node []
-   [:div {:class ["flex" "items-center"
+  [:div {:class ["flex" "items-center"
                  "justify-center" "min-h-screen"]}
    [form]])

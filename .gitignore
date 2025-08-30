@@ -26,3 +26,4 @@ resources/public/js/
 out/
 profiles.edn
 *.code-workspace
+output.css

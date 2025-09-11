@@ -22,6 +22,68 @@ backend successfully started
 clojure -M:test
 ```
 
+## Set up Container for Dependencies
+
+Use Podman Compose to run the PostgreSQL database defined in `compose.yml`. The
+application reads connection details from a `profiles.edn` file (ignored by
+Git). A minimal `profiles.edn` for local development looks like:
+
+```edn
+{:local
+ {:jwt {:secret "localsecret"}
+  :pg {:dbtype "postgresql"
+       :host "localhost"
+       :port 5432
+       :dbname "arcaneflare_main_db"
+       :username "localuser"
+       :password "localpass"}}}
+```
+
+### macOS
+
+1. Install podman
+   ```shell
+   brew install podman
+   ```
+
+2. Install podman-compose
+```shell
+brew install podman-compose
+```
+
+3. Initialize and start the Podman virtual machine:
+   ```shell
+   podman machine init
+   podman machine start
+   ```
+
+4. Start the database container:
+   ```shell
+   podman compose up -d
+   ```
+
+4. When finished, stop the container:
+   ```shell
+   podman compose down
+   ```
+
+### Linux (Fedora)
+
+1. podman is usually preinstalled. install podman-compose.
+   ```shell
+   sudo dnf install podman-compose
+   ```
+
+2. Start the database container:
+   ```shell
+   podman compose up -d
+   ```
+
+3. When finished, stop the container:
+   ```shell
+   podman compose down
+   ```
+
 ## Editor Settings
 
 ### Visual Studio Code

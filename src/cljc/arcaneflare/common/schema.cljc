@@ -1,5 +1,8 @@
 (ns arcaneflare.common.schema
-  #_(:require [clojure.spec.alpha :as s]))
+  (:require [spell.core :as s]))
+
+(s/def :geo/id :uuid)
+
 #_
 (s/def :person/id uuid?)
 

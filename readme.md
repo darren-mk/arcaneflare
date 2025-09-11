@@ -47,9 +47,9 @@ Git). A minimal `profiles.edn` for local development looks like:
    ```
 
 2. Install podman-compose
-```shell
-brew install podman-compose
-```
+   ```shell
+   brew install podman-compose
+   ```
 
 3. Initialize and start the Podman virtual machine:
    ```shell

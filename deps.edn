@@ -18,7 +18,9 @@
         ring-cors/ring-cors {:mvn/version "0.1.13"}
         ring/ring-jetty-adapter {:mvn/version "1.12.2"}
         ring/ring-defaults {:mvn/version "0.5.0"}
-        tick/tick {:mvn/version "0.7.5"}}
+        tick/tick {:mvn/version "0.7.5"}
+        io.github.darren-mk/spell {:git/url "https://github.com/darren-mk/spell.git"
+                                   :git/sha "512035dfd02ee1bf2184636ae99b51fde92fb096"}}
  :aliases {:prod {:jvm-opts ["-Denv=prod"]
                   :main-opts ["-m" "arcaneflare.core"]}
            :dev {:extra-deps {nrepl/nrepl {:mvn/version "1.1.0"}
